@@ -26,8 +26,6 @@ public class Testing extends CommandOpMode {
     private Motor frontRight;
     private Motor backLeft;
     private Motor backRight;
-//    private Motor turretLeft;
-//    private Motor turretRight;
 //    private Servo turretServo;
     private Servo intake1;
 
