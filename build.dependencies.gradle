@@ -22,5 +22,4 @@ dependencies {
 
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.6'
 
-    implementation 'com.github.amarcolini.joos:command:0.4.8'
 }

@@ -30,7 +30,6 @@ public class Testing extends CommandOpMode {
 //    private Motor turretRight;
 //    private Servo turretServo;
     private Servo intake1;
-    private Servo intake2;
 
 
     //declaring subsystems and commands
@@ -85,12 +84,12 @@ public class Testing extends CommandOpMode {
         //initialize servos
 //        turretServo = hardwareMap.get(Servo.class, "Servo Turret");
         intake1 = hardwareMap.get(Servo.class, "intake1");
-        intake2 = hardwareMap.get(Servo.class, "intake2");
+
 
         //set servos
 //        turretServo.setPosition(0.5);
         intake1.setPosition(0);
-        intake2.setPosition(0);
+
 
         //Assign drivers to gamepads
         driver1 = new GamepadEx(gamepad1);
@@ -105,10 +104,9 @@ public class Testing extends CommandOpMode {
 //        subsystemIntake = new SubsystemIntake(intake1, intake2);
 //        commandIntake = new CommandIntake(subsystemIntake);
 
-        subsystemIntakeDeroak = new SubsystemIntakeDeroak(intake1, intake2);
+        subsystemIntakeDeroak = new SubsystemIntakeDeroak(intake1);
 
         telemetry.addData("servo", intake1.getPosition());
-        telemetry.addData("2servo", intake2.getPosition());
         //THREADS
 
         //INSTANT COMMANDS
