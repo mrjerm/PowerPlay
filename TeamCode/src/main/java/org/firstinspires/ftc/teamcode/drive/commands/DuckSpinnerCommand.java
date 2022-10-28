@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
-import org.firstinspires.ftc.teamcode.drive.subsystems.DuckSpinnerSubsystem;
+import org.firstinspires.ftc.teamcode.drive.subsystems.other.DuckSpinnerSubsystem;
 
 public class DuckSpinnerCommand extends CommandBase {
 

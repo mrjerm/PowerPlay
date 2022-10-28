@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode.Ivory;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemV4B2;
+import org.firstinspires.ftc.teamcode.drive.subsystems.other.SubsystemV4B2;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 

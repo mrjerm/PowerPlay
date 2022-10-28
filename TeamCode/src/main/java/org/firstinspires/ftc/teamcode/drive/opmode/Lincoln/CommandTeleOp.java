@@ -6,7 +6,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 
-import org.firstinspires.ftc.teamcode.drive.subsystems.DuckSpinnerSubsystem;
+import org.firstinspires.ftc.teamcode.drive.subsystems.other.DuckSpinnerSubsystem;
 
 @TeleOp(name = "Command TeleOp")
 public class CommandTeleOp extends CommandOpMode {

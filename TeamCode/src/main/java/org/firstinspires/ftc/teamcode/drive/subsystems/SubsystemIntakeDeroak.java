@@ -11,8 +11,6 @@ public class SubsystemIntakeDeroak extends SubsystemBase {
 
     public double intake1Open = 0;
     public double intake1Close = 0;
-    public double intake2Open = 0;
-    public double intake2Close = 0;
 
     public boolean isIntakeClosed = false;
 
