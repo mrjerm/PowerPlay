@@ -5,21 +5,25 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 
 public class SubsystemTurnTable extends SubsystemBase{
     public Motor turnTableMotor;
-    private int forwardPos = 0;
-    private int leftPos = 0;
-    private int rightPos = 0;
-    private int backPos = 0;
+    private int northPos = 0;
+    private int northEastPos = 0;
+    private int northWestPos = 0;
+    private int westPos = 0;
+    private int eastPos = 0;
+    private int southPos = 0;
+    private int southEastPos = 0;
+    private int southWestPos = 0;
     public boolean turnTableMoving = false;
 
     public SubsystemTurnTable(Motor turnTableMotor) {
         this.turnTableMotor = turnTableMotor;
     }
 
-    public void forwardPos() {
+    public void northPos() {
         turnTableMoving = true;
         turnTableMotor.setRunMode(Motor.RunMode.PositionControl);
 
-        turnTableMotor.setTargetDistance(forwardPos);
+        turnTableMotor.setTargetDistance(northPos);
 
         turnTableMotor.set(0);
 
