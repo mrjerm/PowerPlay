@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.commands.grabber.CommandCloseGrabber;
 import org.firstinspires.ftc.teamcode.drive.commands.grabber.CommandOpenGrabber;
-import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemGrabber;
+import org.firstinspires.ftc.teamcode.drive.subsystems.other.SubsystemGrabber;
 
 @TeleOp(name="Handcuff Grabber (L)")
 public class OpModeGrabber extends CommandOpMode {
