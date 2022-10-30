@@ -4,8 +4,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
 public class SubsystemDR4B extends SubsystemBase {
-    public Motor leftLiftMotor;
-    public Motor rightLiftMotor;
+    public Motor liftMotor;
     private int highJunctionPos = 0;
     private int midJunctionPos = 0;
     private int lowJunctionPos = 0;
@@ -15,128 +14,121 @@ public class SubsystemDR4B extends SubsystemBase {
     private boolean fineTune = false;
     private boolean isMoving = false;
 
-    public SubsystemDR4B(Motor leftLiftMotor, Motor rightLiftMotor) {
-        this.leftLiftMotor = leftLiftMotor;
-        this.rightLiftMotor = rightLiftMotor;
+    public SubsystemDR4B(Motor liftMotor) {
+        this.liftMotor = liftMotor;
     }
 
     public void liftHome() {
         //run mode
         isMoving = true;
-        leftLiftMotor.setRunMode(Motor.RunMode.PositionControl);
-        rightLiftMotor.setRunMode(Motor.RunMode.PositionControl);
+        liftMotor.setRunMode(Motor.RunMode.PositionControl);
 
         // set the target position
-        leftLiftMotor.setTargetPosition(homePos); // an integer representing desired tick count
-        rightLiftMotor.setTargetPosition(homePos);
+        liftMotor.setTargetPosition(homePos); // an integer representing desired tick count
 
-        leftLiftMotor.set(0);
-        rightLiftMotor.set(0);
+        liftMotor.set(0);
 
         //tolerance
-        leftLiftMotor.setPositionTolerance(13.6);   // allowed maximum error
-        rightLiftMotor.setPositionTolerance(13.6);
+        liftMotor.setPositionTolerance(13.6);   // allowed maximum error
 
         // perform the control loop
-        while (!leftLiftMotor.atTargetPosition()) {
-            leftLiftMotor.set(1);
-            rightLiftMotor.set(1);
+        while (!liftMotor.atTargetPosition()) {
+            liftMotor.set(1);
         }
 
         //stop motor
-        leftLiftMotor.stopMotor();
-        rightLiftMotor.stopMotor();
+        liftMotor.stopMotor();
     }
 
     public void liftTop() {
         // set the run mode
         isMoving = true;
-        leftLiftMotor.setRunMode(Motor.RunMode.PositionControl);
-        rightLiftMotor.setRunMode(Motor.RunMode.PositionControl);
+        liftMotor.setRunMode(Motor.RunMode.PositionControl);
+
 
         // set the target position
-        leftLiftMotor.setTargetPosition(highJunctionPos); // an integer representing desired tick count
-        rightLiftMotor.setTargetPosition(highJunctionPos);
+        liftMotor.setTargetPosition(highJunctionPos); // an integer representing desired tick count
 
-        leftLiftMotor.set(0);
-        rightLiftMotor.set(0);
+
+        liftMotor.set(0);
+
 
         // set the tolerance
-        leftLiftMotor.setPositionTolerance(13.6);   // allowed maximum error
-        rightLiftMotor.setPositionTolerance(13.6);
+        liftMotor.setPositionTolerance(13.6);   // allowed maximum error
+
 
         // perform the control loop
-        while (!leftLiftMotor.atTargetPosition()) {
-            leftLiftMotor.set(1);
-            rightLiftMotor.set(1);
+        while (!liftMotor.atTargetPosition()) {
+            liftMotor.set(1);
+
         }
-        leftLiftMotor.stopMotor();
-        rightLiftMotor.stopMotor();// stop the motor
+        liftMotor.stopMotor();
+
     }
 
     public void liftMid() {
         // set the run mode
         isMoving = true;
-        leftLiftMotor.setRunMode(Motor.RunMode.PositionControl);
-        rightLiftMotor.setRunMode(Motor.RunMode.PositionControl);
+        liftMotor.setRunMode(Motor.RunMode.PositionControl);
+
 
         // set and get the position coefficient
-        leftLiftMotor.setPositionCoefficient(0.05);
-        rightLiftMotor.setPositionCoefficient(0.05);
+        liftMotor.setPositionCoefficient(0.05);
 
-        double leftkP = leftLiftMotor.getPositionCoefficient();
-        double rightkP = rightLiftMotor.getPositionCoefficient();
+
+        double leftkP = liftMotor.getPositionCoefficient();
+
 
         // set the target position
-        leftLiftMotor.setTargetPosition(midJunctionPos); // an integer representing desired tick count
-        rightLiftMotor.setTargetPosition(midJunctionPos);
+        liftMotor.setTargetPosition(midJunctionPos); // an integer representing desired tick count
 
-        leftLiftMotor.set(0);
-        rightLiftMotor.set(0);
+
+        liftMotor.set(0);
+
 
         // set the tolerance
-        leftLiftMotor.setPositionTolerance(13.6);   // allowed maximum error
-        rightLiftMotor.setPositionTolerance(13.6);
+        liftMotor.setPositionTolerance(13.6);   // allowed maximum error
+
 
         // perform the control loop
-        while (!leftLiftMotor.atTargetPosition()) {
-            leftLiftMotor.set(1);
-            rightLiftMotor.set(1);
+        while (!liftMotor.atTargetPosition()) {
+            liftMotor.set(1);
+
         }
-        leftLiftMotor.stopMotor();
-        rightLiftMotor.stopMotor();// stop the motor
+        liftMotor.stopMotor();
+
     }
     public void liftLow() {
         // set the run mode
         isMoving = true;
-        leftLiftMotor.setRunMode(Motor.RunMode.PositionControl);
-        rightLiftMotor.setRunMode(Motor.RunMode.PositionControl);
+        liftMotor.setRunMode(Motor.RunMode.PositionControl);
+
 
         // set and get the position coefficient
-        leftLiftMotor.setPositionCoefficient(0.05);
-        rightLiftMotor.setPositionCoefficient(0.05);
+        liftMotor.setPositionCoefficient(0.05);
 
-        double leftkP = leftLiftMotor.getPositionCoefficient();
-        double rightkP = rightLiftMotor.getPositionCoefficient();
+
+        double leftkP = liftMotor.getPositionCoefficient();
+
 
         // set the target position
-        leftLiftMotor.setTargetPosition(lowJunctionPos); // an integer representing desired tick count
-        rightLiftMotor.setTargetPosition(lowJunctionPos);
+        liftMotor.setTargetPosition(lowJunctionPos); // an integer representing desired tick count
 
-        leftLiftMotor.set(0);
-        rightLiftMotor.set(0);
+
+        liftMotor.set(0);
+
 
         // set the tolerance
-        leftLiftMotor.setPositionTolerance(13.6);   // allowed maximum error
-        rightLiftMotor.setPositionTolerance(13.6);
+        liftMotor.setPositionTolerance(13.6);   // allowed maximum error
+
 
         // perform the control loop
-        while (!leftLiftMotor.atTargetPosition()) {
-            leftLiftMotor.set(1);
-            rightLiftMotor.set(1);
+        while (!liftMotor.atTargetPosition()) {
+            liftMotor.set(1);
+
         }
-        leftLiftMotor.stopMotor();
-        rightLiftMotor.stopMotor();// stop the motor
+        liftMotor.stopMotor();
+
     }
 
 
