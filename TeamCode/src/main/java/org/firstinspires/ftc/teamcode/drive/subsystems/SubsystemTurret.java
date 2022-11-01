@@ -49,7 +49,15 @@ public class SubsystemTurret extends SubsystemBase{
 
     public void moveTurret(double turretx, double turrety) {
         turretMoving = true;
-        if (turretRotation>=0 && turretRotation<=fullrotation) {
+        if (turretx == 0 && turrety == 1) {
+            turretRotation = (90/360) * fullrotation;
+        } else if (turretx == 0 && turrety == -1) {
+            turretRotation = (270/360) * fullrotation;
+        } else if (turretx == 1 && turrety == 0) {
+            turretRotation = (0/360) * fullrotation;
+        } else if (turretx == -1 && turrety == 0) {
+            turretRotation = (180/360) * fullrotation;
+        } else if (turretRotation>=0 && turretRotation<=fullrotation) {
             turretRotation = (((Math.atan2(turrety, turretx)) / 360) * fullrotation);
         }
         turretServo.setPosition(turretRotation);
