@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
-import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemV4B2;
+import org.firstinspires.ftc.teamcode.drive.subsystems.other.SubsystemV4B2;
 
 //import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemV4B;
 

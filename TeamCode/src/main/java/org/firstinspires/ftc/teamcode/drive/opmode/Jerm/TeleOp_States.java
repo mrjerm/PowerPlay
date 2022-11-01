@@ -307,8 +307,8 @@ public class TeleOp_States extends OpMode {
     public void drive(boolean slomo){
         /*TODO: add fast and slow modes. Fancier math for right stick x
          */
-        float x1 = slomo ? (float) (-gamepad1.left_stick_x * salamiSpeed) : -gamepad1.left_stick_x;
-        float y1 = slomo ? (float) (-gamepad1.left_stick_y * salamiSpeed) : -gamepad1.left_stick_y;
+        float y1 = slomo ? (float) (-gamepad1.left_stick_x * salamiSpeed) : -gamepad1.left_stick_x;
+        float x1 = slomo ? (float) (-gamepad1.left_stick_y * salamiSpeed) : -gamepad1.left_stick_y;
         float x2 = slomo ? (float) ((float) Math.pow(gamepad1.right_stick_x, 1) * salamiSpeed * 0.75) : (float) Math.pow(gamepad1.right_stick_x, 3);
 
         double fL = -x1 + y1 + x2;

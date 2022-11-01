@@ -1,3 +1,5 @@
+package org.firstinspires.ftc.teamcode.drive.autonomous;
+
 /*
  * Copyright (c) 2021 OpenFTC Team
  *
@@ -19,13 +21,14 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.drive.vision;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.vision.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.teamcode.drive.vision.AprilTagDetectionPipeline.*;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -35,7 +38,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import java.util.ArrayList;
 
 @Autonomous
-public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
+public class BlueRedTerminalAutonomous extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -191,4 +194,10 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
+
+    public void moveTopJunction() {
+        
+    }
+
+
 }

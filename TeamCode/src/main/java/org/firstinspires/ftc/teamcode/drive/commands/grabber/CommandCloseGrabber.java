@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.commands.grabber;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
-import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemGrabber;
+import org.firstinspires.ftc.teamcode.drive.subsystems.other.SubsystemGrabber;
 
 public class CommandCloseGrabber extends CommandBase {
 
