@@ -6,17 +6,22 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class SubsystemTurret extends SubsystemBase{
     public Servo turretServo;
-    private int northPos = 0;
-    private int northEastPos = 0;
-    private int northWestPos = 0;
-    private int westPos = 0;
-    private int eastPos = 0;
-    private int southPos = 0;
-    private int southEastPos = 0;
-    private int southWestPos = 0;
+    private double northPos = 0;
+    private double northEastPos = 0;
+    private double northWestPos = 0;
+    private double westPos = 0;
+    private double eastPos = 0;
+    private double southPos = 0;
+    private double southEastPos = 0;
+    private double southWestPos = 0;
+    private double fullrotation = 0;
+
     public boolean turretMoving = false;
+
     public int i = 0;
     double distanceArray[] = new double[]{northPos, northEastPos, eastPos, southEastPos, southPos,southWestPos, westPos, northWestPos};
+
+    public double turretRotation = 0;
 
     public SubsystemTurret(Servo turretServo) {
         this.turretServo = turretServo;
@@ -40,6 +45,14 @@ public class SubsystemTurret extends SubsystemBase{
             i=i;
         }
         turretServo.setPosition(distanceArray[i]);
+    }
+
+    public void moveTurret(double turretx, double turrety) {
+        turretMoving = true;
+        if (turretRotation>=0 && turretRotation<=fullrotation) {
+            turretRotation = (((Math.atan2(turrety, turretx)) / 360) * fullrotation);
+        }
+        turretServo.setPosition(turretRotation);
     }
 
 
