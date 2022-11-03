@@ -14,7 +14,7 @@ public class SubsystemDR4B extends SubsystemBase {
     private boolean fineTune = false;
     private boolean isMoving = false;
     int DR4Barray[] = new int[]{floorPos, homePos, groundJunctionPos, lowJunctionPos, midJunctionPos, highJunctionPos};
-    public int j = 0;
+    public int liftIncrement = 0;
 
     public SubsystemDR4B(Motor liftMotor) {
         this.liftMotor = liftMotor;
@@ -26,12 +26,12 @@ public class SubsystemDR4B extends SubsystemBase {
         liftMotor.setRunMode(Motor.RunMode.PositionControl);
 
         // set the target position
-        if (j>=0 || j<=5) {
-            j++;
+        if (liftIncrement >=0 || liftIncrement <=5) {
+            liftIncrement++;
         } else {
-            j=j;
+            liftIncrement = liftIncrement;
         }
-        liftMotor.setTargetPosition(DR4Barray[j]); // an integer representing desired tick count
+        liftMotor.setTargetPosition(DR4Barray[liftIncrement]); // an integer representing desired tick count
 
         liftMotor.set(0);
 
@@ -53,12 +53,12 @@ public class SubsystemDR4B extends SubsystemBase {
         liftMotor.setRunMode(Motor.RunMode.PositionControl);
 
         // set the target position
-        if (j>=1 || j<=6) {
-            j--;
+        if (liftIncrement >=1 || liftIncrement <=6) {
+            liftIncrement--;
         } else {
-            j=j;
+            liftIncrement = liftIncrement;
         }
-        liftMotor.setTargetPosition(DR4Barray[j]); // an integer representing desired tick count
+        liftMotor.setTargetPosition(DR4Barray[liftIncrement]); // an integer representing desired tick count
 
         liftMotor.set(0);
 
