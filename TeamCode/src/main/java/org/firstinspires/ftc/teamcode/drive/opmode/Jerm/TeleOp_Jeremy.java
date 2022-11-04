@@ -40,8 +40,13 @@ public class TeleOp_Jeremy extends OpMode {
 
     }
 
-    public void setSpeedLimit(boolean keybind){
-        if (speedLimit == min && )
+    public void setSpeedLimit(boolean fast, boolean slow){
+        if (fast){
+            speedLimit = max;
+        }
+        else if (slow){
+            speedLimit = min;
+        }
     }
 
     public void drive() {
@@ -58,5 +63,18 @@ public class TeleOp_Jeremy extends OpMode {
         motorBL.setPower(bl * speedLimit);
         motorFR.setPower(fr * speedLimit);
         motorBR.setPower(br * speedLimit);
+    }
+
+    public void turret(float x, float y){
+        double angle = 0;
+        if (x == 0 && y == 0){
+
+        } else if (x == 0){
+            angle = y == 1 ? 90 : -90;
+        } else if (y == 0){
+            angle = x == 1 ? 0 : 180;
+        } else if (Math.abs(x) > 0.2 && Math.abs(y) > 0.2){
+
+        }
     }
 }
