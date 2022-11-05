@@ -45,7 +45,7 @@ public class FinalTeleop extends CommandOpMode{
     private SubsystemV4B subsystemV4B;
 
     private SubsystemTurret subsystemTurret;
-    private CommandTurret commandTurret;
+//    private CommandTurret commandTurret;
 
     private SubsystemIntakeDeroak subsystemIntakeDeroak;
 
@@ -87,9 +87,11 @@ public class FinalTeleop extends CommandOpMode{
 
         //declare servos
         turretServo = hardwareMap.get(Servo.class, "Servo Turret");
+
         fourBarServoLeft = hardwareMap.get(Servo.class, "Servo V4BL");
         fourBarServoRight = hardwareMap.get(Servo.class, "Servo V4BR");
-//        deroakServo = hardwareMap.get(Servo.class, "deroakServo");
+
+        deroakServo = hardwareMap.get(Servo.class, "Servo Intake");
 
         //invert servos
 
@@ -111,6 +113,8 @@ public class FinalTeleop extends CommandOpMode{
 //        commandTurret = new CommandTurret(subsystemTurret, driver2::getRightX, driver2::getRightY);
 
         subsystemV4B = new SubsystemV4B(fourBarServoLeft, fourBarServoRight);
+
+        subsystemIntakeDeroak = new SubsystemIntakeDeroak(deroakServo);
 
         //threads
 
