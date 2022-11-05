@@ -3,10 +3,35 @@ package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class TeleOp_Jeremy extends OpMode {
+
+
+    public DcMotorEx motorFL, motorBL, motorFR, motorBR;
+    public DcMotorEx motorDR4B;
+
+    public Servo servoTurret;
+    public Servo servoGrabber;
+    public Servo servoV4BL, servoV4BR;
+
+//    public CRServo servoIntake;
+//    public Servo servoV4B;
+
+    public double min = 0.5;
+    public double max = 1;
+    public double speedLimit = min;
+
+    public double grabberClose = 0.35;
+    public double grabberOpen = 0.25;
+
+    public double south1 = 0, southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.75, southeast = 0.87, south2 = 1;
+
+    public boolean turretLeftPrevious = false;
+    public boolean turretRightPrevious = false;
+
     public enum TurretState{
         NORTH,
         NORTHEAST,
@@ -45,31 +70,33 @@ public class TeleOp_Jeremy extends OpMode {
     }
     TurretState turretState = TurretState.NORTH;
 
-
-
-    public DcMotorEx motorFL, motorBL, motorFR, motorBR;
-    public DcMotorEx motorDR4B;
-
-    public Servo servoTurret;
-    public Servo servoGrabber;
-    public Servo servoV4BL, servoV4BR;
-
-//    public CRServo servoIntake;
-//    public Servo servoV4B;
-
-    public double min = 0.5;
-    public double max = 1;
-    public double speedLimit = min;
-
-    public double grabberClose = 0.35;
-    public double grabberOpen = 0.25;
-
-    public double south1 = 0, southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.75, southeast = 0.87, south2 = 1;
-
-    public boolean turretLeftPrevious = false;
-    public boolean turretLeftCurrent = false;
-    public boolean turretRightPrevious = false;
-    public boolean turretRightCurrent = false;
+    public enum DR4BState{
+        REST,
+        LOW,
+        MID,
+        HIGH,
+        MAX;
+        public DR4BState next(){
+            switch (this){
+                case REST: return LOW;
+                case LOW: return MID;
+                case MID: return HIGH;
+                case HIGH: return MAX;
+                case MAX: return MAX;
+                default: return REST;
+            }
+        }
+        public DR4BState previous(){
+            switch (this){
+                case MAX: return HIGH;
+                case HIGH: return MID;
+                case MID: return LOW;
+                case LOW: return REST;
+                case REST: return REST;
+                default: return REST;
+            }
+        }
+    }
 
     @Override
     public void init() {
@@ -77,6 +104,9 @@ public class TeleOp_Jeremy extends OpMode {
         motorBL = hardwareMap.get(DcMotorEx.class, "Motor BL");
         motorFR = hardwareMap.get(DcMotorEx.class, "Motor FR");
         motorBR = hardwareMap.get(DcMotorEx.class, "Motor BR");
+        motorFL.setDirection(DcMotorEx.Direction.REVERSE);
+        motorBL.setDirection(DcMotorEx.Direction.REVERSE);
+
         motorDR4B = hardwareMap.get(DcMotorEx.class, "Motor DR4B");
 
         servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
@@ -120,15 +150,15 @@ public class TeleOp_Jeremy extends OpMode {
     }
 
     public void turret(boolean left, boolean right){
-        turretLeftCurrent = left;
+        boolean turretLeftCurrent = left;
         if (turretLeftCurrent && !turretLeftPrevious){
-            turretState.previous();
+            turretState = turretState.previous();
         }
         turretLeftPrevious = turretLeftCurrent;
 
-        turretRightCurrent = right;
+        boolean turretRightCurrent = right;
         if (turretRightCurrent && !turretRightPrevious){
-            turretState.next();
+            turretState = turretState.next();
         }
         turretRightPrevious = turretRightCurrent;
 
@@ -166,6 +196,8 @@ public class TeleOp_Jeremy extends OpMode {
                 telemetry.addData("turret status", "we messed up 💀");
                 telemetry.update();
         }
+        telemetry.addData("turret state", turretState);
+        telemetry.update();
     }
 
     public void grabber(boolean open, boolean close){
@@ -175,5 +207,9 @@ public class TeleOp_Jeremy extends OpMode {
         if (close){
             servoGrabber.setPosition(grabberClose);
         }
+    }
+
+    public void lift(boolean up, boolean down){
+
     }
 }
