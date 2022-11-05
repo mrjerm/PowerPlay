@@ -89,7 +89,7 @@ public class FinalTeleop extends CommandOpMode{
         turretServo = hardwareMap.get(Servo.class, "Servo Turret");
         fourBarServoLeft = hardwareMap.get(Servo.class, "Servo V4BL");
         fourBarServoRight = hardwareMap.get(Servo.class, "Servo V4BR");
-//        deroakServo = hardwareMap.get(Servo.class, "deroakServo");
+        deroakServo = hardwareMap.get(Servo.class, "Servo Intake");
 
         //invert servos
 

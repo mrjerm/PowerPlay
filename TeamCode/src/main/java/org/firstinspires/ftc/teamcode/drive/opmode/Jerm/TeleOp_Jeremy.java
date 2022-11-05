@@ -64,7 +64,7 @@ public class TeleOp_Jeremy extends OpMode {
     public double grabberClose = 0.35;
     public double grabberOpen = 0.25;
 
-    public double south1 = 0, southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.75, southeast = 0.87, south2 = 1;
+    public double south1 = 0, southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.5, northeast = 0.62, east = 0.75, southeast = 0.87, south2 = 1;
 
     public boolean turretLeftPrevious = false;
     public boolean turretLeftCurrent = false;
