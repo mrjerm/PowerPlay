@@ -2,10 +2,47 @@ package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class TeleOp_Jeremy extends OpMode {
+    public enum TurretState{
+        NORTH,
+        NORTHEAST,
+        EAST,
+        SOUTHEAST,
+        SOUTH,
+        SOUTHWEST,
+        WEST,
+        NORTHWEST;
+        public TurretState next(){
+            switch (this){
+                case NORTH: return NORTHEAST;
+                case NORTHEAST: return EAST;
+                case EAST: return SOUTHEAST;
+                case SOUTHEAST: return SOUTH;
+                case SOUTH: return SOUTH;
+                case SOUTHWEST: return WEST;
+                case WEST: return NORTHWEST;
+                case NORTHWEST: return NORTH;
+                default: return NORTH;
+            }
+        }
+        public TurretState previous(){
+            switch (this){
+                case NORTHWEST: return WEST;
+                case WEST: return SOUTHWEST;
+                case SOUTHWEST: return SOUTH;
+                case SOUTH: return SOUTH;
+                case SOUTHEAST: return EAST;
+                case EAST: return NORTHEAST;
+                case NORTHEAST: return NORTH;
+                case NORTH: return NORTHWEST;
+                default: return NORTH;
+            }
+        }
+    }
+    TurretState turretState = TurretState.NORTH;
+
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
     public DcMotorEx motorDR4B;
 
@@ -19,6 +56,13 @@ public class TeleOp_Jeremy extends OpMode {
     public double min = 0.5;
     public double max = 1;
     public double speedLimit = min;
+
+    public double south1 = 0, southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.75, southeast = 0.87, south2 = 1;
+
+    public boolean turretLeftPrevious = false;
+    public boolean turretLeftCurrent = false;
+    public boolean turretRightPrevious = false;
+    public boolean turretRightCurrent = false;
 
     @Override
     public void init() {
@@ -37,7 +81,9 @@ public class TeleOp_Jeremy extends OpMode {
 
     @Override
     public void loop() {
-
+        setSpeedLimit(gamepad1.y, gamepad1.a);
+        drive();
+        turret(gamepad2.left_bumper, gamepad2.right_bumper);
     }
 
     public void setSpeedLimit(boolean fast, boolean slow){
@@ -65,16 +111,52 @@ public class TeleOp_Jeremy extends OpMode {
         motorBR.setPower(br * speedLimit);
     }
 
-    public void turret(float x, float y){
-        double angle = 0;
-        if (x == 0 && y == 0){
+    public void turret(boolean left, boolean right){
+        turretLeftCurrent = left;
+        if (turretLeftCurrent && !turretLeftPrevious){
+            turretState.previous();
+        }
+        turretLeftPrevious = turretLeftCurrent;
 
-        } else if (x == 0){
-            angle = y == 1 ? 90 : -90;
-        } else if (y == 0){
-            angle = x == 1 ? 0 : 180;
-        } else if (Math.abs(x) > 0.2 && Math.abs(y) > 0.2){
+        turretRightCurrent = right;
+        if (turretRightCurrent && !turretRightPrevious){
+            turretState.next();
+        }
+        turretRightPrevious = turretRightCurrent;
 
+        switch (turretState){
+            case SOUTH:
+                if (servoTurret.getPosition() > 0.5){
+                    servoTurret.setPosition(south1);
+                }
+                else {
+                    servoTurret.setPosition(south2);
+                }
+                break;
+            case SOUTHEAST:
+                servoTurret.setPosition(southeast);
+                break;
+            case EAST:
+                servoTurret.setPosition(east);
+                break;
+            case NORTHEAST:
+                servoTurret.setPosition(northeast);
+                break;
+            case NORTH:
+                servoTurret.setPosition(north);
+                break;
+            case NORTHWEST:
+                servoTurret.setPosition(northwest);
+                break;
+            case WEST:
+                servoTurret.setPosition(west);
+                break;
+            case SOUTHWEST:
+                servoTurret.setPosition(southwest);
+                break;
+            default:
+                telemetry.addData("turret status", "we messed up 💀");
+                telemetry.update();
         }
     }
 }
