@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.drive.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class SubsystemDR4B extends SubsystemBase {
     public Motor liftMotor;
     private int highJunctionPos = 0;
@@ -13,7 +16,7 @@ public class SubsystemDR4B extends SubsystemBase {
     private int homePos = 0;
     private boolean fineTune = false;
     private boolean isMoving = false;
-    int DR4Barray[] = new int[]{floorPos, homePos, groundJunctionPos, lowJunctionPos, midJunctionPos, highJunctionPos};
+    public static ArrayList<Integer> DR4Barray = new ArrayList<Integer>(Arrays.<Integer>asList(6 ,7,8,9,10,11));
     public int liftIncrement = 0;
 
     public SubsystemDR4B(Motor liftMotor) {
@@ -31,7 +34,7 @@ public class SubsystemDR4B extends SubsystemBase {
         } else {
             liftIncrement = liftIncrement;
         }
-        liftMotor.setTargetPosition(DR4Barray[liftIncrement]); // an integer representing desired tick count
+        liftMotor.setTargetPosition(DR4Barray.get(liftIncrement)); // an integer representing desired tick count
 
         liftMotor.set(0);
 
@@ -58,7 +61,7 @@ public class SubsystemDR4B extends SubsystemBase {
         } else {
             liftIncrement = liftIncrement;
         }
-        liftMotor.setTargetPosition(DR4Barray[liftIncrement]); // an integer representing desired tick count
+        liftMotor.setTargetPosition(DR4Barray.get(liftIncrement)); // an integer representing desired tick count
 
         liftMotor.set(0);
 

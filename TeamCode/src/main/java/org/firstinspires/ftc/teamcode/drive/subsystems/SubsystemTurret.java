@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.drive.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class SubsystemTurret extends SubsystemBase{
     public Servo turretServo;
     private double northPos = 0;
@@ -18,7 +21,7 @@ public class SubsystemTurret extends SubsystemBase{
     public boolean turretMoving = false;
 
     public int increment = 0;
-    double distanceArray[] = new double[]{northPos, northEastPos, eastPos, southEastPos, southPos,southWestPos, westPos, northWestPos};
+    public static ArrayList<Double> distanceArray = new ArrayList<Double>(Arrays.<Double>asList(0.0, 0.12, 0.23, 0.36, 0.49, 0.62, 0.75, 0.87, 0.98));
 
     public double turretRotation = 0;
 
@@ -33,7 +36,7 @@ public class SubsystemTurret extends SubsystemBase{
         } else {
             increment = increment;
         }
-        turretServo.setPosition(distanceArray[increment]);
+        turretServo.setPosition(distanceArray.get(increment));
     }
 
     public void moveTurretNegative() {
@@ -43,7 +46,7 @@ public class SubsystemTurret extends SubsystemBase{
         } else {
             increment = increment;
         }
-        turretServo.setPosition(distanceArray[increment]);
+        turretServo.setPosition(distanceArray.get(increment));
     }
 
     public void moveTurret(double turretx, double turrety) {

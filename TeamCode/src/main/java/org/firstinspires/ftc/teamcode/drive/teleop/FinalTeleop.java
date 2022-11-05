@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemIntakeDeroak;
 import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemV4B;
 import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemTurret;
 
+@TeleOp
 public class FinalTeleop extends CommandOpMode{
 
     // Declare Motors and Servos
