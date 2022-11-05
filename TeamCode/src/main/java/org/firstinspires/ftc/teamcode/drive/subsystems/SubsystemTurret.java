@@ -31,7 +31,7 @@ public class SubsystemTurret extends SubsystemBase{
 
     public void moveTurretPositive() {
         turretMoving = true;
-        if (increment >=0 || increment <=6) {
+        if (increment >=0 && increment <=6) {
             increment++;
         } else {
             increment = increment;
@@ -41,7 +41,7 @@ public class SubsystemTurret extends SubsystemBase{
 
     public void moveTurretNegative() {
         turretMoving = true;
-        if (increment >=1 || increment <=7) {
+        if (increment >=1 && increment <=7) {
             increment--;
         } else {
             increment = increment;

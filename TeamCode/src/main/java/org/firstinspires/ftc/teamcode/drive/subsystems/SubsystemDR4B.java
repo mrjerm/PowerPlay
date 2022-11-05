@@ -29,7 +29,7 @@ public class SubsystemDR4B extends SubsystemBase {
         liftMotor.setRunMode(Motor.RunMode.PositionControl);
 
         // set the target position
-        if (liftIncrement >=0 || liftIncrement <=5) {
+        if (liftIncrement >=0 && liftIncrement <=5) {
             liftIncrement++;
         } else {
             liftIncrement = liftIncrement;
@@ -56,7 +56,7 @@ public class SubsystemDR4B extends SubsystemBase {
         liftMotor.setRunMode(Motor.RunMode.PositionControl);
 
         // set the target position
-        if (liftIncrement >=1 || liftIncrement <=6) {
+        if (liftIncrement >=1 && liftIncrement <=6) {
             liftIncrement--;
         } else {
             liftIncrement = liftIncrement;

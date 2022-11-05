@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@TeleOp
 public class TeleOp_Jeremy extends OpMode {
     public enum TurretState{
         NORTH,
@@ -43,6 +45,8 @@ public class TeleOp_Jeremy extends OpMode {
     }
     TurretState turretState = TurretState.NORTH;
 
+
+
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
     public DcMotorEx motorDR4B;
 
@@ -56,6 +60,9 @@ public class TeleOp_Jeremy extends OpMode {
     public double min = 0.5;
     public double max = 1;
     public double speedLimit = min;
+
+    public double grabberClose = 0.35;
+    public double grabberOpen = 0.25;
 
     public double south1 = 0, southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.75, southeast = 0.87, south2 = 1;
 
@@ -84,6 +91,7 @@ public class TeleOp_Jeremy extends OpMode {
         setSpeedLimit(gamepad1.y, gamepad1.a);
         drive();
         turret(gamepad2.left_bumper, gamepad2.right_bumper);
+        grabber(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
     }
 
     public void setSpeedLimit(boolean fast, boolean slow){
@@ -157,6 +165,15 @@ public class TeleOp_Jeremy extends OpMode {
             default:
                 telemetry.addData("turret status", "we messed up 💀");
                 telemetry.update();
+        }
+    }
+
+    public void grabber(boolean open, boolean close){
+        if (open){
+            servoGrabber.setPosition(grabberOpen);
+        }
+        if (close){
+            servoGrabber.setPosition(grabberClose);
         }
     }
 }
