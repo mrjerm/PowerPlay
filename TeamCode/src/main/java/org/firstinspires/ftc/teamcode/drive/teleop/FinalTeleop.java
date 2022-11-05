@@ -73,7 +73,7 @@ public class FinalTeleop extends CommandOpMode{
         backLeft = new Motor(hardwareMap, "Motor BL");
         backRight = new Motor(hardwareMap, "Motor BR");
 
-        liftMotor = new Motor(hardwareMap, "liftMotor");
+        liftMotor = new Motor(hardwareMap, "Motor DR4B");
 
         //set zero power behavior
         frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
@@ -85,10 +85,10 @@ public class FinalTeleop extends CommandOpMode{
 
 
         //declare servos
-        turretServo = hardwareMap.get(Servo.class, "turretServo");
-        fourBarServoLeft = hardwareMap.get(Servo.class, "fourBarServoLeft");
-        fourBarServoRight = hardwareMap.get(Servo.class, "fourBarServoRight");
-        deroakServo = hardwareMap.get(Servo.class, "deroakServo");
+        turretServo = hardwareMap.get(Servo.class, "Servo Turret");
+        fourBarServoLeft = hardwareMap.get(Servo.class, "Servo V4BL");
+        fourBarServoRight = hardwareMap.get(Servo.class, "Servo V4BR");
+//        deroakServo = hardwareMap.get(Servo.class, "deroakServo");
 
         //invert servos
 
