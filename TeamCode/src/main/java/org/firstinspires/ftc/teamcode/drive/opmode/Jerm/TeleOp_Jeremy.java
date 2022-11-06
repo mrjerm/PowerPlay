@@ -31,8 +31,8 @@ public class TeleOp_Jeremy extends OpMode {
     public double max = 1;
     public double speedLimit = min;
 
-    public double grabberClose = 0.35;
-    public double grabberOpen = 0.25;
+    public double grabberClose = 0.38;
+    public double grabberOpen = 0.20;
 
     public double south1 = 0.01 , southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.75, southeast = 0.87, south2 = 0.99;
 
@@ -124,16 +124,18 @@ public class TeleOp_Jeremy extends OpMode {
         motorBL.setDirection(DcMotorEx.Direction.REVERSE);
 
         motorDR4B = hardwareMap.get(DcMotorEx.class, "Motor DR4B");
-//        motorDR4B.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-//        motorDR4B.setTargetPosition(0);
-//        motorDR4B.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        motorDR4B.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorDR4B.setDirection(DcMotorEx.Direction.REVERSE);
+        motorDR4B.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
+
+        servoV4BL.setPosition(0.18);
+        servoV4BR.setPosition(0.18);
     }
 
     @Override
@@ -142,8 +144,8 @@ public class TeleOp_Jeremy extends OpMode {
         drive();
         turret(gamepad2.left_bumper, gamepad2.right_bumper);
         grabber(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
-//        lift(gamepad2.dpad_up, gamepad2.dpad_down);
-        stick((-gamepad2.right_stick_y) > 0.3, (gamepad2.right_stick_y) < -0.3);
+        lift(gamepad2.dpad_up, gamepad2.dpad_down);
+        stick(gamepad2.dpad_right, gamepad2.dpad_left);
     }
 
     public void setSpeedLimit(boolean fast, boolean slow){
@@ -229,46 +231,48 @@ public class TeleOp_Jeremy extends OpMode {
         }
     }
 
-//    public void lift(boolean up, boolean down){
-//        boolean moveUpCurrent = up;
-//        if (moveUpCurrent && !moveUpPrevious){
-//            dr4BState = dr4BState.next();
-//        }
-//        moveUpPrevious = moveUpCurrent;
-//
-//        boolean moveDownCurrent = down;
-//        if (moveDownCurrent && !moveDownPrevious){
-//            dr4BState = dr4BState.previous();
-//        }
-//        moveDownPrevious = moveDownCurrent;
-//
-//        switch (dr4BState){
-//            case REST:
-//                setLiftPosition(DR4B_REST);
-//                break;
-//            case LOW:
-//                setLiftPosition(DR4B_LOW);
-//                break;
-//            case MID:
-//                setLiftPosition(DR4B_MID);
-//                break;
-//            case HIGH:
-//                setLiftPosition(DR4B_HIGH);
-//                break;
-//            case MAX:
-//                setLiftPosition(DR4B_MAX);
-//                break;
-//            default:
-//                telemetry.addData("lift is broken", "☹️☹️☹️☹️☹️☹️☹️");
-//                telemetry.update();
-//        }
-//    }
-//
-//    public void setLiftPosition(int position){
-//        motorDR4B.setTargetPosition(position);
-//        motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        motorDR4B.setPower(1);
-//    }
+    public void lift(boolean up, boolean down){
+        boolean moveUpCurrent = up;
+        if (moveUpCurrent && !moveUpPrevious){
+            dr4BState = dr4BState.next();
+        }
+        moveUpPrevious = moveUpCurrent;
+
+        boolean moveDownCurrent = down;
+        if (moveDownCurrent && !moveDownPrevious){
+            dr4BState = dr4BState.previous();
+        }
+        moveDownPrevious = moveDownCurrent;
+
+        switch (dr4BState){
+            case REST:
+                setLiftPosition(DR4B_REST);
+                break;
+            case LOW:
+                setLiftPosition(DR4B_LOW);
+                break;
+            case MID:
+                setLiftPosition(DR4B_MID);
+                break;
+            case HIGH:
+                setLiftPosition(DR4B_HIGH);
+                break;
+            case MAX:
+                setLiftPosition(DR4B_MAX);
+                break;
+            default:
+                telemetry.addData("lift is broken", "☹️☹️☹️☹️☹️☹️☹️");
+                telemetry.update();
+        }
+        telemetry.addData("dr4b", dr4BState);
+        telemetry.update();
+    }
+
+    public void setLiftPosition(int position){
+        motorDR4B.setTargetPosition(position);
+        motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorDR4B.setPower(1);
+    }
 
     public void stick(boolean extend, boolean retract){
         boolean extendCurrent = extend;
@@ -282,17 +286,18 @@ public class TeleOp_Jeremy extends OpMode {
             setV4B(getV4BPosition() - 0.01);
         }
         retractPrevious = retractCurrent;
-    }
 
-    public void setV4B(double position){
-        servoV4BL.setPosition(position);
-        servoV4BR.setPosition(position);
         telemetry.addData("left v4b", servoV4BL.getPosition());
         telemetry.addData("right v4b", servoV4BR.getPosition());
         telemetry.update();
     }
 
+    public void setV4B(double position){
+        servoV4BL.setPosition(position);
+        servoV4BR.setPosition(position);
+    }
+
     public double getV4BPosition(){
-        return ((servoV4BL.getPosition()) + servoV4BR.getPosition())/2;
+        return servoV4BL.getPosition();
     }
 }
