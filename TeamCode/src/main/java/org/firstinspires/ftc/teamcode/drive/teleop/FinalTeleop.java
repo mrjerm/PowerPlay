@@ -59,11 +59,17 @@ public class FinalTeleop extends CommandOpMode{
     private InstantCommand instantCommandDR4BUp;
     private InstantCommand instantCommandDR4BDown;
 
+    private InstantCommand InstantCommandSwitchHighOrLow;
+
     //threads
+    public Thread HighOrLow;
 
     //declare gamepads
     GamepadEx driver1;
     GamepadEx driver2;
+
+    //switch
+    boolean HighOrLowBoolean = false;
 
     @Override
     public void initialize() {
@@ -81,6 +87,7 @@ public class FinalTeleop extends CommandOpMode{
         frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        liftMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
 
         // Reset encoders
 
@@ -122,6 +129,33 @@ public class FinalTeleop extends CommandOpMode{
 
         //threads
 
+        HighOrLow = new Thread(() -> {
+            if (!HighOrLowBoolean) {
+                subsystemV4B.fourBarMoving = true;
+                subsystemTurret.turretNorth();
+                subsystemDR4B.liftHigh();
+                subsystemV4B.fourBarHigh();
+                subsystemIntakeDeroak.openIntake();
+                sleep(100);
+
+                subsystemIntakeDeroak.closeIntake();
+                subsystemV4B.fourBarDown();
+                subsystemDR4B.liftRest();
+            } else {
+                subsystemV4B.fourBarMoving = true;
+                subsystemTurret.turretNorth();
+                subsystemDR4B.liftLow();
+                subsystemV4B.fourBarHorizontal();
+                subsystemIntakeDeroak.openIntake();
+                sleep(100);
+
+                subsystemIntakeDeroak.closeIntake();
+                subsystemV4B.fourBarDown();
+                subsystemDR4B.liftRest();
+            }
+        });
+
+
         //instant commands
         instantCommandTurretPositive = new InstantCommand(() -> {
             subsystemTurret.moveTurretPositive();
@@ -147,9 +181,21 @@ public class FinalTeleop extends CommandOpMode{
             subsystemDR4B.moveLiftDown();
         }, subsystemDR4B);
 
+        InstantCommandSwitchHighOrLow = new InstantCommand(() -> {
+            if (!HighOrLowBoolean)
+                HighOrLowBoolean = true;
+            else
+                HighOrLowBoolean = false;
+        });
+
 
 
         //buttons
+
+        Button highOrLowButton = new GamepadButton(driver1, GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> HighOrLow.start());
+
+        Button switchHighorLow = new GamepadButton(driver1, GamepadKeys.Button.DPAD_DOWN).whenPressed(InstantCommandSwitchHighOrLow);
+
         Button moveTurretPositive = new GamepadButton(driver2, GamepadKeys.Button.DPAD_RIGHT).whenPressed(instantCommandTurretPositive);
         Button moveTurretNegative = new GamepadButton(driver2, GamepadKeys.Button.DPAD_LEFT).whenPressed(instantCommandTurretNegative);
         Button openIntake = new GamepadButton(driver2, GamepadKeys.Button.LEFT_BUMPER).whenPressed(instantCommandDeroakOpen);

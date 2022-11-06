@@ -9,8 +9,8 @@ public class SubsystemIntakeDeroak extends SubsystemBase {
 
     public final Servo intakeDeroak;
 
-    public double intakeDeroakOpen = 0;
-    public double intakeDeroakClose = 0;
+    public double intakeDeroakOpen = 0.2;
+    public double intakeDeroakClose = 0.38;
 
     public boolean isIntakeClosed = false;
 

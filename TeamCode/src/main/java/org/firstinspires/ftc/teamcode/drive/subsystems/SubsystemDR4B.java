@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +74,38 @@ public class SubsystemDR4B extends SubsystemBase {
 
         //stop motor
         liftMotor.stopMotor();
+    }
+
+    public void liftRest () {
+        isMoving = true;
+        liftMotor.setTargetPosition(restPos);
+        while (!liftMotor.atTargetPosition()) {
+            liftMotor.set(1);
+        }
+    }
+
+    public void liftLow () {
+        isMoving = true;
+        liftMotor.setTargetPosition(lowJunctionPos);
+        while (!liftMotor.atTargetPosition()) {
+            liftMotor.set(1);
+        }
+    }
+
+    public void liftMid () {
+        isMoving = true;
+        liftMotor.setTargetPosition(midJunctionPos);
+        while (!liftMotor.atTargetPosition()) {
+            liftMotor.set(1);
+        }
+    }
+
+    public void liftHigh () {
+        isMoving = true;
+        liftMotor.setTargetPosition(highJunctionPos);
+        while (!liftMotor.atTargetPosition()) {
+            liftMotor.set(1);
+        }
     }
 
 //    public void liftHome() {
