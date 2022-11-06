@@ -6,12 +6,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class SubsystemV4B extends SubsystemBase {
     public Servo fourBarServoLeft;
     public Servo fourBarServoRight;
-    private double fourBarTopPos = 0;
-    private double fourBarInPos = 0;
-    private double fourBarDownPos = 0;
-    private double fourBarPosition = 0;
-    public boolean fourBarTopCheck = false;
-    public boolean fourBarInCheck = false;
+    private double fourBarRetractedPos = 0.18;
+    private double fourBarHighPos = 0.33;
+    private double fourBarHorizontalPos = 0.65;
+    private double fourBarDownPos = 0.85;
+
+    public boolean fourBarHighCheck = false;
+    public boolean fourBarRetractedCheck = false;
+    public boolean fourBarHorizontalCheck = false;
     public boolean fourBarDownCheck = false;
     public boolean fourBarMoving = false;
 
@@ -20,27 +22,42 @@ public class SubsystemV4B extends SubsystemBase {
         this.fourBarServoRight = fourBarServoRight;
     }
 
-    public void fourBarTop() {
-        fourBarServoRight.setPosition(fourBarTopPos);
-        fourBarServoLeft.setPosition(fourBarTopPos);
-        fourBarTopCheck = true;
-        fourBarInCheck = false;
+    public void fourBarRetracted() {
+        fourBarServoRight.setPosition(fourBarRetractedPos);
+        fourBarServoLeft.setPosition(fourBarRetractedPos);
+        fourBarRetractedCheck = true;
+        fourBarHighCheck = false;
+        fourBarHorizontalCheck = false;
+        fourBarDownCheck = false;
+
+    }
+
+    public void fourBarHigh() {
+        fourBarServoRight.setPosition(fourBarHighPos);
+        fourBarServoLeft.setPosition(fourBarHighPos);
+        fourBarRetractedCheck = false;
+        fourBarHighCheck = true;
+        fourBarHorizontalCheck = false;
         fourBarDownCheck = false;
     }
 
-    public void fourBarIn() {
-        fourBarServoRight.setPosition(fourBarInPos);
-        fourBarServoLeft.setPosition(fourBarInPos);
-        fourBarTopCheck = false;
-        fourBarInCheck = true;
+    public void fourBarHorizontal() {
+        fourBarServoRight.setPosition(fourBarHorizontalPos);
+        fourBarServoLeft.setPosition(fourBarHorizontalPos);
+        fourBarRetractedCheck = false;
+        fourBarHighCheck = false;
+        fourBarHorizontalCheck = true;
         fourBarDownCheck = false;
     }
+
     public void fourBarDown() {
         fourBarServoRight.setPosition(fourBarDownPos);
         fourBarServoLeft.setPosition(fourBarDownPos);
-        fourBarTopCheck = false;
-        fourBarInCheck = false;
+        fourBarRetractedCheck = false;
+        fourBarHighCheck = false;
+        fourBarHorizontalCheck = false;
         fourBarDownCheck = true;
     }
+
 
 }

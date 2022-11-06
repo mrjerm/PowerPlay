@@ -84,6 +84,8 @@ public class FinalTeleop extends CommandOpMode{
 
         // Reset encoders
 
+        //invert motors
+        liftMotor.setInverted(true);
 
         //declare servos
         turretServo = hardwareMap.get(Servo.class, "Servo Turret");
@@ -94,6 +96,8 @@ public class FinalTeleop extends CommandOpMode{
         deroakServo = hardwareMap.get(Servo.class, "Servo Intake");
 
         //invert servos
+
+        fourBarServoLeft.setDirection(Servo.Direction.REVERSE);
 
         //home servos
 

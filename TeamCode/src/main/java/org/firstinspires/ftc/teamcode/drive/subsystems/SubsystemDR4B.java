@@ -8,15 +8,13 @@ import java.util.Arrays;
 
 public class SubsystemDR4B extends SubsystemBase {
     public Motor liftMotor;
-    private int highJunctionPos = 0;
-    private int midJunctionPos = 0;
-    private int lowJunctionPos = 0;
-    private int groundJunctionPos = 0;
-    private int floorPos = 0;
-    private int homePos = 0;
+    private int highJunctionPos = 144;
+    private int midJunctionPos = 47;
+    private int lowJunctionPos = 8;
+    private int restPos = 0;
     private boolean fineTune = false;
     private boolean isMoving = false;
-    public static ArrayList<Integer> DR4Barray = new ArrayList<Integer>(Arrays.<Integer>asList(6 ,7,8,9,10,11));
+    public static ArrayList<Integer> DR4Barray = new ArrayList<Integer>(Arrays.<Integer>asList(0, 8, 47, 144));
     public int liftIncrement = 0;
 
     public SubsystemDR4B(Motor liftMotor) {
@@ -29,7 +27,7 @@ public class SubsystemDR4B extends SubsystemBase {
         liftMotor.setRunMode(Motor.RunMode.PositionControl);
 
         // set the target position
-        if (liftIncrement >=0 && liftIncrement <=5) {
+        if (liftIncrement >=0 && liftIncrement <=4) {
             liftIncrement++;
         } else {
             liftIncrement = liftIncrement;
@@ -56,7 +54,7 @@ public class SubsystemDR4B extends SubsystemBase {
         liftMotor.setRunMode(Motor.RunMode.PositionControl);
 
         // set the target position
-        if (liftIncrement >=1 && liftIncrement <=6) {
+        if (liftIncrement >=1 && liftIncrement <=5) {
             liftIncrement--;
         } else {
             liftIncrement = liftIncrement;
