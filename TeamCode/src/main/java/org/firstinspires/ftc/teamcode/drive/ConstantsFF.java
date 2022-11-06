@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive;
 
-public class Constants {
+public class ConstantsFF {
     public static int duckSpinTime = 4000;
     public static double clawOpenPos = 0.28;
     public static double clawClosePos = 0.08;
