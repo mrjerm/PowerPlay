@@ -59,17 +59,26 @@ public class FinalTeleop extends CommandOpMode{
     private InstantCommand instantCommandDR4BUp;
     private InstantCommand instantCommandDR4BDown;
 
-    private InstantCommand InstantCommandSwitchHighOrLow;
+    private InstantCommand InstantCommandSwitchHighOrMid;
+    private InstantCommand InstantCommandSwitchLowOrGround;
 
     //threads
-    public Thread HighOrLow;
+    public Thread HighOrMid;
+    public Thread LowOrGround;
+    public Thread highJunction;
+    public Thread midJunction;
+    public Thread lowJunction;
+    public Thread groundJunction;
+    public Thread scoringThread;
+
 
     //declare gamepads
     GamepadEx driver1;
     GamepadEx driver2;
 
     //switch
-    boolean HighOrLowBoolean = false;
+    boolean HighOrMidBoolean = false;
+    boolean LowOrGroundBoolean = false;
 
     @Override
     public void initialize() {
@@ -103,10 +112,12 @@ public class FinalTeleop extends CommandOpMode{
         deroakServo = hardwareMap.get(Servo.class, "Servo Intake");
 
         //invert servos
-
         fourBarServoLeft.setDirection(Servo.Direction.REVERSE);
 
         //home servos
+        deroakServo.setPosition(0.38);
+        fourBarServoLeft.setPosition(0.18);
+        fourBarServoRight.setPosition(0.18);
 
         // Assign gamepads to drivers
         driver1 = new GamepadEx(gamepad1);
@@ -129,31 +140,63 @@ public class FinalTeleop extends CommandOpMode{
 
         //threads
 
-        HighOrLow = new Thread(() -> {
-            if (!HighOrLowBoolean) {
-                subsystemV4B.fourBarMoving = true;
-                subsystemTurret.turretNorth();
-                subsystemDR4B.liftHigh();
-                subsystemV4B.fourBarHigh();
-                subsystemIntakeDeroak.openIntake();
-                sleep(100);
+//        HighOrMid = new Thread(() -> {
+//            if (!HighOrMidBoolean) {
+//                subsystemV4B.fourBarMoving = true;
+//                subsystemDR4B.liftHigh();
+//                subsystemV4B.fourBarHigh();
+//            } else {
+//                subsystemV4B.fourBarMoving = true;
+//                subsystemDR4B.liftMid();
+//                subsystemV4B.fourBarHorizontal();
+//            }
+//        });
+//
+//        LowOrGround = new Thread(() -> {
+//            if (!LowOrGroundBoolean) {
+//                subsystemV4B.fourBarMoving = true;
+//                subsystemDR4B.liftLow();
+//                subsystemV4B.fourBarHorizontal();
+//            } else {
+//                subsystemV4B.fourBarMoving = true;
+//                subsystemDR4B.liftRest();
+//                subsystemV4B.fourBarHorizontal();
+//            }
+//        });
 
-                subsystemIntakeDeroak.closeIntake();
-                subsystemV4B.fourBarDown();
-                subsystemDR4B.liftRest();
-            } else {
-                subsystemV4B.fourBarMoving = true;
-                subsystemTurret.turretNorth();
-                subsystemDR4B.liftLow();
-                subsystemV4B.fourBarHorizontal();
-                subsystemIntakeDeroak.openIntake();
-                sleep(100);
-
-                subsystemIntakeDeroak.closeIntake();
-                subsystemV4B.fourBarDown();
-                subsystemDR4B.liftRest();
-            }
+        highJunction = new Thread(() -> {
+            subsystemV4B.fourBarMoving = true;
+            subsystemDR4B.liftHigh();
+            subsystemV4B.fourBarHigh();
         });
+
+        midJunction = new Thread(() -> {
+            subsystemV4B.fourBarMoving = true;
+            subsystemDR4B.liftMid();
+            subsystemV4B.fourBarHorizontal();
+        });
+
+        lowJunction = new Thread(() -> {
+            subsystemV4B.fourBarMoving = true;
+            subsystemDR4B.liftLow();
+            subsystemV4B.fourBarHorizontal();
+        });
+
+        groundJunction = new Thread(() -> {
+            subsystemV4B.fourBarMoving = true;
+            subsystemDR4B.liftRest();
+            subsystemV4B.fourBarHorizontal();
+        });
+
+        scoringThread = new Thread(() -> {
+            subsystemIntakeDeroak.openIntake();
+            sleep(200);
+
+            subsystemIntakeDeroak.closeIntake();
+            subsystemV4B.fourBarHigh();
+            subsystemDR4B.liftRest();
+        });
+
 
 
         //instant commands
@@ -181,20 +224,35 @@ public class FinalTeleop extends CommandOpMode{
             subsystemDR4B.moveLiftDown();
         }, subsystemDR4B);
 
-        InstantCommandSwitchHighOrLow = new InstantCommand(() -> {
-            if (!HighOrLowBoolean)
-                HighOrLowBoolean = true;
+        InstantCommandSwitchHighOrMid = new InstantCommand(() -> {
+            if (!HighOrMidBoolean)
+                HighOrMidBoolean = true;
             else
-                HighOrLowBoolean = false;
+                HighOrMidBoolean = false;
+        });
+
+        InstantCommandSwitchLowOrGround = new InstantCommand(() -> {
+            if (!LowOrGroundBoolean)
+                LowOrGroundBoolean = true;
+            else
+                LowOrGroundBoolean = false;
         });
 
 
 
         //buttons
 
-        Button highOrLowButton = new GamepadButton(driver1, GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> HighOrLow.start());
+//        Button HighOrMidButton = new GamepadButton(driver1, GamepadKeys.Button.DPAD_UP).whenPressed(() -> HighOrMid.start());
+//        Button LowOrGroundButton = new GamepadButton(driver1, GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> LowOrGround.start());
+//        Button switchHighOrMid = new GamepadButton(driver1, GamepadKeys.Button.LEFT_BUMPER).whenPressed(InstantCommandSwitchHighOrMid);
+//        Button switchLowOrGround = new GamepadButton(driver1, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(InstantCommandSwitchLowOrGround);
 
-        Button switchHighorLow = new GamepadButton(driver1, GamepadKeys.Button.DPAD_DOWN).whenPressed(InstantCommandSwitchHighOrLow);
+
+        Button highJunctionPosition = new GamepadButton(driver1, GamepadKeys.Button.DPAD_UP).whenPressed(() -> highJunction.start());
+        Button midJunctionPosition = new GamepadButton(driver1, GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> midJunction.start());
+        Button lowJunctionPosition = new GamepadButton(driver1, GamepadKeys.Button.DPAD_RIGHT).whenPressed(() -> lowJunction.start());
+        Button groundJunctionPosition = new GamepadButton(driver1, GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> groundJunction.start());
+        Button scoringThreadButton = new GamepadButton(driver1, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(() -> scoringThread.start());
 
         Button moveTurretPositive = new GamepadButton(driver2, GamepadKeys.Button.DPAD_RIGHT).whenPressed(instantCommandTurretPositive);
         Button moveTurretNegative = new GamepadButton(driver2, GamepadKeys.Button.DPAD_LEFT).whenPressed(instantCommandTurretNegative);
