@@ -1,16 +1,11 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_HIGH;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOW;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MAX;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MID;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_REST;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.*;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
@@ -27,14 +22,7 @@ public class TeleOp_Jeremy extends OpMode {
 //    public CRServo servoIntake;
 //    public Servo servoV4B;
 
-    public double min = 0.5;
-    public double max = 1;
-    public double speedLimit = min;
 
-    public double grabberClose = 0.38;
-    public double grabberOpen = 0.20;
-
-    public double south1 = 0.01 , southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.75, southeast = 0.87, south2 = 0.99;
 
     public boolean turretLeftPrevious = false;
     public boolean turretRightPrevious = false;
@@ -114,6 +102,36 @@ public class TeleOp_Jeremy extends OpMode {
 
     DR4BState dr4BState = DR4BState.REST;
 
+    public enum V4BState{
+        RETRACTED,
+        PEAK,
+        DIAGONAL,
+        EXTENDED,
+        DOWN;
+        public V4BState next(){
+            switch (this){
+                case RETRACTED: return PEAK;
+                case PEAK: return DIAGONAL;
+                case DIAGONAL: return EXTENDED;
+                case EXTENDED: return DOWN;
+                case DOWN: return DOWN;
+                default: return RETRACTED;
+            }
+        }
+        public V4BState previous(){
+            switch (this){
+                case DOWN: return EXTENDED;
+                case EXTENDED: return DIAGONAL;
+                case DIAGONAL: return PEAK;
+                case PEAK: return RETRACTED;
+                case RETRACTED: return RETRACTED;
+                default: return RETRACTED;
+            }
+        }
+    }
+
+    V4BState v4BState = V4BState.RETRACTED;
+
     @Override
     public void init() {
         motorFL = hardwareMap.get(DcMotorEx.class, "Motor FL");
@@ -140,15 +158,15 @@ public class TeleOp_Jeremy extends OpMode {
 
     @Override
     public void loop() {
-        setSpeedLimit(gamepad1.y, gamepad1.a);
-        drive();
-        turret(gamepad2.left_bumper, gamepad2.right_bumper);
-        grabber(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
-        lift(gamepad2.dpad_up, gamepad2.dpad_down);
-        stick(gamepad2.dpad_right, gamepad2.dpad_left);
+        turtle(gamepad1.y, gamepad1.a);
+        swerve();
+        spinny(gamepad2.left_bumper, gamepad2.right_bumper);
+        grippers(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
+        thrust(gamepad2.dpad_up, gamepad2.dpad_down);
+        stick(gamepad2.y, gamepad2.a);
     }
 
-    public void setSpeedLimit(boolean fast, boolean slow){
+    public void turtle(boolean fast, boolean slow){
         if (fast){
             speedLimit = max;
         }
@@ -157,7 +175,7 @@ public class TeleOp_Jeremy extends OpMode {
         }
     }
 
-    public void drive() {
+    public void swerve() {
         float x1 = gamepad1.left_stick_x;
         float y1 = -gamepad1.left_stick_y;
         float x2 = gamepad1.right_stick_x;
@@ -173,7 +191,7 @@ public class TeleOp_Jeremy extends OpMode {
         motorBR.setPower(br * speedLimit);
     }
 
-    public void turret(boolean left, boolean right){
+    public void spinny(boolean left, boolean right){
         boolean turretLeftCurrent = left;
         if (turretLeftCurrent && !turretLeftPrevious){
             turretState = turretState.previous();
@@ -222,7 +240,7 @@ public class TeleOp_Jeremy extends OpMode {
         telemetry.update();
     }
 
-    public void grabber(boolean open, boolean close){
+    public void grippers(boolean open, boolean close){
         if (open){
             servoGrabber.setPosition(grabberOpen);
         }
@@ -231,7 +249,7 @@ public class TeleOp_Jeremy extends OpMode {
         }
     }
 
-    public void lift(boolean up, boolean down){
+    public void thrust(boolean up, boolean down){
         boolean moveUpCurrent = up;
         if (moveUpCurrent && !moveUpPrevious){
             dr4BState = dr4BState.next();
@@ -277,27 +295,40 @@ public class TeleOp_Jeremy extends OpMode {
     public void stick(boolean extend, boolean retract){
         boolean extendCurrent = extend;
         if (extendCurrent && !extendPrevious){
-            setV4B(getV4BPosition() + 0.01);
+            v4BState = v4BState.next();
         }
         extendPrevious = extendCurrent;
 
         boolean retractCurrent = retract;
         if (retractCurrent && !retractPrevious){
-            setV4B(getV4BPosition() - 0.01);
+            v4BState = v4BState.previous();
         }
         retractPrevious = retractCurrent;
 
-        telemetry.addData("left v4b", servoV4BL.getPosition());
-        telemetry.addData("right v4b", servoV4BR.getPosition());
-        telemetry.update();
+        switch (v4BState){
+            case RETRACTED:
+                setV4B(V4B_RETRACTED);
+                break;
+            case PEAK:
+                setV4B(V4B_PEAK);
+                break;
+            case DIAGONAL:
+                setV4B(V4B_DIAGONAL);
+                break;
+            case EXTENDED:
+                setV4B(V4B_EXTENDED);
+                break;
+            case DOWN:
+                setV4B(V4B_DOWN);
+                break;
+            default:
+                telemetry.addData("v4b is broken", "😮😮😮😮😮");
+                telemetry.update();
+        }
     }
 
     public void setV4B(double position){
         servoV4BL.setPosition(position);
         servoV4BR.setPosition(position);
-    }
-
-    public double getV4BPosition(){
-        return servoV4BL.getPosition();
     }
 }
