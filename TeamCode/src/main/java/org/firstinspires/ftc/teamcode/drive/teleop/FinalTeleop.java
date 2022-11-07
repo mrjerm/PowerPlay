@@ -253,8 +253,8 @@ public class FinalTeleop extends CommandOpMode{
 
 
 
-        //buttons
 
+        //driver 1 buttons
 //        Button HighOrMidButton = new GamepadButton(driver1, GamepadKeys.Button.DPAD_UP).whenPressed(() -> HighOrMid.start());
 //        Button LowOrGroundButton = new GamepadButton(driver1, GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> LowOrGround.start());
 //        Button switchHighOrMid = new GamepadButton(driver1, GamepadKeys.Button.LEFT_BUMPER).whenPressed(InstantCommandSwitchHighOrMid);
@@ -266,6 +266,8 @@ public class FinalTeleop extends CommandOpMode{
         Button lowJunctionPosition = new GamepadButton(driver1, GamepadKeys.Button.DPAD_RIGHT).whenPressed(() -> lowJunction.start());
         Button groundJunctionPosition = new GamepadButton(driver1, GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> groundJunction.start());
         Button scoringThreadButton = new GamepadButton(driver1, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(() -> scoringThread.start());
+
+        //driver 2 buttons
 
         Button moveTurretPositive = new GamepadButton(driver2, GamepadKeys.Button.DPAD_RIGHT).whenPressed(instantCommandTurretPositive);
         Button moveTurretNegative = new GamepadButton(driver2, GamepadKeys.Button.DPAD_LEFT).whenPressed(instantCommandTurretNegative);
