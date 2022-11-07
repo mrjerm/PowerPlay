@@ -59,8 +59,13 @@ public class FinalTeleop extends CommandOpMode{
     private InstantCommand instantCommandDR4BUp;
     private InstantCommand instantCommandDR4BDown;
 
+    private InstantCommand instantCommandV4BPositive;
+    private InstantCommand instantCommandV4BNegative;
+
     private InstantCommand InstantCommandSwitchHighOrMid;
     private InstantCommand InstantCommandSwitchLowOrGround;
+
+
 
     //threads
     public Thread HighOrMid;
@@ -167,7 +172,7 @@ public class FinalTeleop extends CommandOpMode{
         highJunction = new Thread(() -> {
             subsystemV4B.fourBarMoving = true;
             subsystemDR4B.liftHigh();
-            subsystemV4B.fourBarHigh();
+            subsystemV4B.fourBarDiagonal();
         });
 
         midJunction = new Thread(() -> {
@@ -224,6 +229,14 @@ public class FinalTeleop extends CommandOpMode{
             subsystemDR4B.moveLiftDown();
         }, subsystemDR4B);
 
+        instantCommandV4BPositive = new InstantCommand(() -> {
+            subsystemV4B.v4BPositive();
+        }, subsystemV4B);
+
+        instantCommandV4BNegative = new InstantCommand(() -> {
+            subsystemV4B.v4BNegative();
+        }, subsystemV4B);
+
         InstantCommandSwitchHighOrMid = new InstantCommand(() -> {
             if (!HighOrMidBoolean)
                 HighOrMidBoolean = true;
@@ -260,6 +273,8 @@ public class FinalTeleop extends CommandOpMode{
         Button closeIntake = new GamepadButton(driver2, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(instantCommandDeroakClose);
         Button DR4BUp = new GamepadButton(driver2, GamepadKeys.Button.DPAD_UP).whenPressed(instantCommandDR4BUp);
         Button DR4BDown = new GamepadButton(driver2, GamepadKeys.Button.DPAD_DOWN).whenPressed(instantCommandDR4BDown);
+        Button V4BPositive = new GamepadButton(driver2, GamepadKeys.Button.Y).whenPressed(instantCommandV4BPositive);
+        Button V4BNegative = new GamepadButton(driver2, GamepadKeys.Button.A).whenPressed(instantCommandV4BNegative);
 
         //register
         register(subsystemDrive, subsystemDR4B, subsystemTurret, subsystemV4B, subsystemIntakeDeroak);
