@@ -30,6 +30,8 @@ public class TeleOp_Jeremy extends OpMode {
     public boolean moveDownPrevious = false;
     public boolean extendPrevious = false;
     public boolean retractPrevious = false;
+    public boolean upPrevious = false;
+    public boolean downPrevious = false;
 
     public enum TurretState{
         SOUTH1,
@@ -76,21 +78,18 @@ public class TeleOp_Jeremy extends OpMode {
         REST,
         LOW,
         MID,
-        HIGH,
-        MAX;
+        HIGH;
         public DR4BState next(){
             switch (this){
                 case REST: return LOW;
                 case LOW: return MID;
                 case MID: return HIGH;
-                case HIGH: return MAX;
-                case MAX: return MAX;
+                case HIGH: return HIGH;
                 default: return REST;
             }
         }
         public DR4BState previous(){
             switch (this){
-                case MAX: return HIGH;
                 case HIGH: return MID;
                 case MID: return LOW;
                 case LOW: return REST;
@@ -115,6 +114,37 @@ public class TeleOp_Jeremy extends OpMode {
     }
 
     V4BState v4BState = V4BState.RETRACTED;
+
+    public enum RobotState{
+        PICKING_UP,
+        GROUND_JUNCTION,
+        LOW_JUNCTION,
+        MEDIUM_JUNCTION,
+        HIGH_JUNCTION,
+        RETRACT;
+        public RobotState next(){
+            switch (this){
+                case PICKING_UP: return GROUND_JUNCTION;
+                case GROUND_JUNCTION: return LOW_JUNCTION;
+                case LOW_JUNCTION: return MEDIUM_JUNCTION;
+                case MEDIUM_JUNCTION: return HIGH_JUNCTION;
+                case HIGH_JUNCTION: return HIGH_JUNCTION;
+                default: return RETRACT;
+            }
+        }
+        public RobotState previous(){
+            switch (this){
+                case HIGH_JUNCTION: return MEDIUM_JUNCTION;
+                case MEDIUM_JUNCTION: return LOW_JUNCTION;
+                case LOW_JUNCTION: return GROUND_JUNCTION;
+                case GROUND_JUNCTION: return PICKING_UP;
+                case PICKING_UP: return PICKING_UP;
+                default: return RETRACT;
+            }
+        }
+    }
+
+    RobotState robotState = RobotState.RETRACT;
 
     @Override
     public void init() {
@@ -143,11 +173,76 @@ public class TeleOp_Jeremy extends OpMode {
     @Override
     public void loop() {
         turtle(gamepad1.y, gamepad1.a);
-        swerve();
+        drive();
         spinny(gamepad2.left_bumper, gamepad2.right_bumper);
         grippers(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
-        thrust(gamepad2.dpad_up, gamepad2.dpad_down);
-        stick(gamepad2.y, gamepad2.a);
+        setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
+/*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
+        stick(gamepad2.y, gamepad2.a);*/
+    }
+
+    public void setRobotState(boolean up, boolean down){
+        boolean upCurrent = up;
+        if (upCurrent && !upPrevious){
+            robotState = robotState.next();
+        }
+        upPrevious = upCurrent;
+
+        boolean downCurrent = down;
+        if (downCurrent && !downPrevious){
+            robotState = robotState.previous();
+        }
+        downPrevious = downCurrent;
+    }
+
+    public void liftControl(){
+        switch (robotState){
+            case PICKING_UP:
+                dr4BState = DR4BState.REST;
+                break;
+            case GROUND_JUNCTION:
+                dr4BState = DR4BState.REST;
+                break;
+            case LOW_JUNCTION:
+                dr4BState = DR4BState.LOW;
+                break;
+            case MEDIUM_JUNCTION:
+                dr4BState = DR4BState.MID;
+                break;
+            case HIGH_JUNCTION:
+                dr4BState = DR4BState.HIGH;
+                break;
+            case RETRACT:
+                dr4BState = DR4BState.REST;
+                break;
+            default:
+                dr4BState = DR4BState.REST;
+        }
+    }
+
+    public void v4bControl(){
+        switch (robotState){
+            case PICKING_UP:
+                v4BState = V4BState.FLOOR;
+                break;
+            case GROUND_JUNCTION:
+                v4BState = V4BState.GROUND;
+                break;
+            case LOW_JUNCTION:
+                v4BState = V4BState.LOW;
+                break;
+            case MEDIUM_JUNCTION:
+                v4BState = V4BState.MID;
+                break;
+            case HIGH_JUNCTION:
+                v4BState = V4BState.HIGH;
+                break;
+            case RETRACT:
+                v4BState = V4BState.RETRACTED;
+                break;
+            default:
+                v4BState = V4BState.RETRACTED;
+        }
     }
 
     public void turtle(boolean fast, boolean slow){
@@ -159,7 +254,7 @@ public class TeleOp_Jeremy extends OpMode {
         }
     }
 
-    public void swerve() {
+    public void drive() {
         float x1 = gamepad1.left_stick_x;
         float y1 = -gamepad1.left_stick_y;
         float x2 = gamepad1.right_stick_x;
@@ -233,82 +328,12 @@ public class TeleOp_Jeremy extends OpMode {
         }
     }
 
-    public void thrust(boolean up, boolean down){
-        boolean moveUpCurrent = up;
-        if (moveUpCurrent && !moveUpPrevious){
-            dr4BState = dr4BState.next();
-        }
-        moveUpPrevious = moveUpCurrent;
 
-        boolean moveDownCurrent = down;
-        if (moveDownCurrent && !moveDownPrevious){
-            dr4BState = dr4BState.previous();
-        }
-        moveDownPrevious = moveDownCurrent;
-
-        switch (dr4BState){
-            case REST:
-                setLiftPosition(DR4B_REST);
-                break;
-            case LOW:
-                setLiftPosition(DR4B_LOW);
-                break;
-            case MID:
-                setLiftPosition(DR4B_MID);
-                break;
-            case HIGH:
-                setLiftPosition(DR4B_HIGH);
-                break;
-            case MAX:
-                setLiftPosition(DR4B_MAX);
-                break;
-            default:
-                telemetry.addData("lift is broken", "☹️☹️☹️☹️☹️☹️☹️");
-                telemetry.update();
-        }
-        telemetry.addData("dr4b", dr4BState);
-        telemetry.update();
-    }
 
     public void setLiftPosition(int position){
         motorDR4B.setTargetPosition(position);
         motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorDR4B.setPower(1);
-    }
-
-    public void stick(boolean extend, boolean retract){
-        boolean extendCurrent = extend;
-        if (extendCurrent && !extendPrevious){
-            v4BState = v4BState.next();
-        }
-        extendPrevious = extendCurrent;
-
-        boolean retractCurrent = retract;
-        if (retractCurrent && !retractPrevious){
-            v4BState = v4BState.previous();
-        }
-        retractPrevious = retractCurrent;
-
-        switch (v4BState){
-            case RETRACTED:
-                setV4B(V4B_RETRACTED);
-                break;
-            case HIGH:
-                setV4B(V4B_PEAK);
-                break;
-            case MID:
-                setV4B(V4B_DIAGONAL);
-                break;
-            case LOW:
-                setV4B(V4B_EXTENDED);
-                break;
-            case GROUND:
-                setV4B(V4B_DOWN);
-                break;
-            default:
-                telemetry.addData("v4b is broken", "😮😮😮😮😮");
-                telemetry.update();
-        }
     }
 
     public void setV4B(double position){
