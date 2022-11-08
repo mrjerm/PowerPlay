@@ -3,18 +3,17 @@ package org.firstinspires.ftc.teamcode.drive;
 public class ConstantsPP {
 
     //DR4B values
-    public static int DR4B_MAX = 143;
-    public static int DR4B_HIGH = 143;
-    public static int DR4B_MID = 47;
-    public static int DR4B_LOW = 8;
-    public static int DR4B_REST = 0;
+    public static double DR4B_GROUNDFLOORTURRETCLEARANCE = 0;
+    public static double DR4B_LOWJUNCTION = 185;
+    public static double DR4B_MIDHIGHJUNCTION = 350;
 
     //V4B values
-    public static double V4B_RETRACTED = 0.18;
-    public static double V4B_PEAK = 0.33;
-    public static double V4B_DIAGONAL = 0.5;
-    public static double V4B_EXTENDED = 0.65;
-    public static double V4B_DOWN = 0.85;
+    public static double V4B_RETRACTED = 0.15;
+    public static double V4B_HIGHJUNCTION = 0.5;
+    public static double V4B_HORIZONTAL = 0.64;
+    public static double V4B_TURRETCLEARANCE = 0.72;
+    public static double V4B_GROUNDJUNCTION = 0.8;
+    public static double V4B_LOWMIDFLOOR = 0.85;
 
     //drivetrain min/max speeds
     public static double min = 0.5;

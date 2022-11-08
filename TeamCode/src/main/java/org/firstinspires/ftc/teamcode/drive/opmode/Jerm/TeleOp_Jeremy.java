@@ -104,30 +104,14 @@ public class TeleOp_Jeremy extends OpMode {
 
     public enum V4BState{
         RETRACTED,
-        PEAK,
-        DIAGONAL,
-        EXTENDED,
-        DOWN;
-        public V4BState next(){
-            switch (this){
-                case RETRACTED: return PEAK;
-                case PEAK: return DIAGONAL;
-                case DIAGONAL: return EXTENDED;
-                case EXTENDED: return DOWN;
-                case DOWN: return DOWN;
-                default: return RETRACTED;
-            }
-        }
-        public V4BState previous(){
-            switch (this){
-                case DOWN: return EXTENDED;
-                case EXTENDED: return DIAGONAL;
-                case DIAGONAL: return PEAK;
-                case PEAK: return RETRACTED;
-                case RETRACTED: return RETRACTED;
-                default: return RETRACTED;
-            }
-        }
+        HIGH,
+        MID,
+        LOW,
+        GROUND,
+        FLOOR,
+        TURRETCLEARANCE,
+        HORIZONTAL;
+
     }
 
     V4BState v4BState = V4BState.RETRACTED;
@@ -309,16 +293,16 @@ public class TeleOp_Jeremy extends OpMode {
             case RETRACTED:
                 setV4B(V4B_RETRACTED);
                 break;
-            case PEAK:
+            case HIGH:
                 setV4B(V4B_PEAK);
                 break;
-            case DIAGONAL:
+            case MID:
                 setV4B(V4B_DIAGONAL);
                 break;
-            case EXTENDED:
+            case LOW:
                 setV4B(V4B_EXTENDED);
                 break;
-            case DOWN:
+            case GROUND:
                 setV4B(V4B_DOWN);
                 break;
             default:
