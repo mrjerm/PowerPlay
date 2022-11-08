@@ -75,6 +75,8 @@ public class FinalTeleop extends CommandOpMode{
     public Thread lowJunction;
     public Thread groundJunction;
     public Thread scoringThread;
+    public Thread turretSpinPositive;
+    public Thread turretSpinNegative;
 
 
     //declare gamepads
@@ -202,6 +204,18 @@ public class FinalTeleop extends CommandOpMode{
             subsystemDR4B.liftRest();
         });
 
+        turretSpinPositive = new Thread(() -> {
+            subsystemV4B.fourBarHigh();
+            subsystemTurret.moveTurretPositive();
+        });
+
+        turretSpinNegative = new Thread(() -> {
+            subsystemV4B.fourBarHigh();
+            subsystemTurret.moveTurretNegative();
+        });
+
+
+
 
 
         //instant commands
@@ -269,8 +283,12 @@ public class FinalTeleop extends CommandOpMode{
 
         //driver 2 buttons
 
-        Button moveTurretPositive = new GamepadButton(driver2, GamepadKeys.Button.DPAD_RIGHT).whenPressed(instantCommandTurretPositive);
-        Button moveTurretNegative = new GamepadButton(driver2, GamepadKeys.Button.DPAD_LEFT).whenPressed(instantCommandTurretNegative);
+//        Button moveTurretPositive = new GamepadButton(driver2, GamepadKeys.Button.DPAD_RIGHT).whenPressed(instantCommandTurretPositive);
+//        Button moveTurretNegative = new GamepadButton(driver2, GamepadKeys.Button.DPAD_LEFT).whenPressed(instantCommandTurretNegative);
+        Button moveTurretPositive = new GamepadButton(driver2, GamepadKeys.Button.DPAD_RIGHT).whenPressed(() -> turretSpinPositive.start());
+        Button moveTurretNegative = new GamepadButton(driver2, GamepadKeys.Button.DPAD_LEFT).whenPressed(() -> turretSpinNegative.start());
+
+
         Button openIntake = new GamepadButton(driver2, GamepadKeys.Button.LEFT_BUMPER).whenPressed(instantCommandDeroakOpen);
         Button closeIntake = new GamepadButton(driver2, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(instantCommandDeroakClose);
         Button DR4BUp = new GamepadButton(driver2, GamepadKeys.Button.DPAD_UP).whenPressed(instantCommandDR4BUp);
