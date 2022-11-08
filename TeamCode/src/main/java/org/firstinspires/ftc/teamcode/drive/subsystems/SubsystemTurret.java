@@ -18,12 +18,15 @@ public class SubsystemTurret extends SubsystemBase{
     private double northWestPos = 0.87;
     private double fullrotation = 0.98;
 
+
+    public double turretAngle = 0;
+    public double turretRotation = 0;
+
     public boolean turretMoving = false;
 
     public int increment = 0;
     public static ArrayList<Double> distanceArray = new ArrayList<Double>(Arrays.<Double>asList(0.0, 0.12, 0.23, 0.36, 0.49, 0.62, 0.75, 0.87, 0.98));
 
-    public double turretRotation = 0;
 
     public SubsystemTurret(Servo turretServo) {
         this.turretServo = turretServo;
@@ -89,23 +92,22 @@ public class SubsystemTurret extends SubsystemBase{
         turretServo.setPosition(northWestPos);
     }
 
+    public void moveTurret(double turretx, double turrety) {
+        if (turretx ==0) {
+            turretAngle = turrety == 1 ? 90 : -90;
+        }
+        if (turrety == 0) {
+            turretAngle = turretx == 1 ? 0 : 180;
+        }
+        turretAngle = Math.atan2(turrety, turretx) * (180/Math.PI);
+        if (turretAngle < 0) {
+            turretAngle += 360;
+        }
 
-//    public void moveTurret(double turretx, double turrety) {
-//        turretMoving = true;
-//        if (turretx == 0 && turrety == 1) {
-//            turretRotation = (90/360) * fullrotation;
-//        } else if (turretx == 0 && turrety == -1) {
-//            turretRotation = (270/360) * fullrotation;
-//        } else if (turretx == 1 && turrety == 0) {
-//            turretRotation = (0/360) * fullrotation;
-//        } else if (turretx == -1 && turrety == 0) {
-//            turretRotation = (180/360) * fullrotation;
-//        } else if (turretRotation>=0 && turretRotation<=fullrotation) {
-//            turretRotation = (((Math.atan2(turrety, turretx)) / 360) * fullrotation);
-//        }
-//        turretServo.setPosition(turretRotation);
-//    }
+        turretRotation = (turretAngle/360) * (fullrotation);
 
+        turretServo.setPosition(turretRotation);
+    }
 
 
 

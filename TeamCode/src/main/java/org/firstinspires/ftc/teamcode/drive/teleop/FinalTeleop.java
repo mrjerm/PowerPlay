@@ -45,7 +45,7 @@ public class FinalTeleop extends CommandOpMode{
     private SubsystemV4B subsystemV4B;
 
     private SubsystemTurret subsystemTurret;
-//    private CommandTurret commandTurret;
+    private CommandTurret commandTurret;
 
     private SubsystemIntakeDeroak subsystemIntakeDeroak;
 
@@ -139,7 +139,7 @@ public class FinalTeleop extends CommandOpMode{
         subsystemDR4B = new SubsystemDR4B(liftMotor);
 
         subsystemTurret = new SubsystemTurret(turretServo);
-//        commandTurret = new CommandTurret(subsystemTurret, driver2::getRightX, driver2::getRightY);
+        commandTurret = new CommandTurret(subsystemTurret, driver2::getRightX, driver2::getRightY);
 
         subsystemV4B = new SubsystemV4B(fourBarServoLeft, fourBarServoRight);
 
@@ -299,7 +299,7 @@ public class FinalTeleop extends CommandOpMode{
         //register
         register(subsystemDrive, subsystemDR4B, subsystemTurret, subsystemV4B, subsystemIntakeDeroak);
         subsystemDrive.setDefaultCommand(commandDrive);
-//        subsystemTurret.setDefaultCommand(commandTurret);
+        subsystemTurret.setDefaultCommand(commandTurret);
 
 
     }
