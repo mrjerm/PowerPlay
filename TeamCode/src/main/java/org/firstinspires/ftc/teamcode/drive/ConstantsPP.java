@@ -21,9 +21,9 @@ public class ConstantsPP {
     public static double speedLimit = min;
 
     //grabber positions
-    public static double grabberClose = 0.38;
+    public static double grabberClose = 0.37;
     public static double grabberOpen = 0.20;
 
     //turret positions
-    public static double south1 = 0.01 , southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.75, southeast = 0.87, south2 = 0.99;
+    public static double south1 = 0.01 , southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.48, northeast = 0.62, east = 0.74, southeast = 0.87, south2 = 0.98;
 }

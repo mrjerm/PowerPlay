@@ -10,7 +10,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class TeleOp_Jeremy extends OpMode {
-
+/*TODO: REMOVE 45 DEGREE TURRET POSITIONS*/
+    /*TODO: GRABBER CLOSE DURING INIT AND RETRACT*/
+/*TODO: DR4B BRAKING TOO WEAK, CHANGE TOLERANCE FROM 5 TO 10 TICKS, DR4B JITTERING*/
+    /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
+    /*TODO: DRIVING TEST TO MAKE SURE ROBOT DOES NOT TIP OVER*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
     public DcMotorEx motorDR4B;
@@ -124,6 +128,7 @@ public class TeleOp_Jeremy extends OpMode {
         RETRACT;
         public RobotState next(){
             switch (this){
+                case RETRACT: return PICKING_UP;
                 case PICKING_UP: return GROUND_JUNCTION;
                 case GROUND_JUNCTION: return LOW_JUNCTION;
                 case LOW_JUNCTION: return MEDIUM_JUNCTION;
@@ -138,7 +143,8 @@ public class TeleOp_Jeremy extends OpMode {
                 case MEDIUM_JUNCTION: return LOW_JUNCTION;
                 case LOW_JUNCTION: return GROUND_JUNCTION;
                 case GROUND_JUNCTION: return PICKING_UP;
-                case PICKING_UP: return PICKING_UP;
+                case PICKING_UP: return RETRACT;
+                case RETRACT: return RETRACT;
                 default: return RETRACT;
             }
         }
@@ -166,8 +172,8 @@ public class TeleOp_Jeremy extends OpMode {
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
-        servoV4BL.setPosition(0.18);
-        servoV4BR.setPosition(0.18);
+        servoV4BL.setPosition(V4B_RETRACTED);
+        servoV4BR.setPosition(V4B_RETRACTED);
     }
 
     @Override
@@ -382,8 +388,12 @@ public class TeleOp_Jeremy extends OpMode {
 
     public void setLiftPosition(int position){
         motorDR4B.setTargetPosition(position);
-        motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorDR4B.setPower(1);
+        if (Math.abs(motorDR4B.getCurrentPosition() - motorDR4B.getTargetPosition()) < 5){
+            motorDR4B.setPower(0);
+        } else {
+            motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorDR4B.setPower(1);
+        }
     }
 
     public void setV4B(double position){
