@@ -82,7 +82,7 @@ public class SubsystemDR4B extends SubsystemBase {
         while (!liftMotor.atTargetPosition()) {
             liftMotor.set(1);
         }
-        liftMotor.set(0);
+        liftMotor.stopMotor();
     }
 
     public void liftLow () {
@@ -91,7 +91,7 @@ public class SubsystemDR4B extends SubsystemBase {
         while (!liftMotor.atTargetPosition()) {
             liftMotor.set(1);
         }
-        liftMotor.set(0);
+        liftMotor.stopMotor();
     }
 
     public void liftMid () {
@@ -100,7 +100,7 @@ public class SubsystemDR4B extends SubsystemBase {
         while (!liftMotor.atTargetPosition()) {
             liftMotor.set(1);
         }
-        liftMotor.set(0);
+        liftMotor.stopMotor();
     }
 
     public void liftHigh () {
@@ -109,7 +109,7 @@ public class SubsystemDR4B extends SubsystemBase {
         while (!liftMotor.atTargetPosition()) {
             liftMotor.set(1);
         }
-        liftMotor.set(0);
+        liftMotor.stopMotor();
     }
 
 //    public void liftHome() {
