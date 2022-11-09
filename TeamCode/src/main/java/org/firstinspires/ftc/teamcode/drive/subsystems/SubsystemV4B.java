@@ -31,7 +31,7 @@ public class SubsystemV4B extends SubsystemBase {
     }
 
     public void v4BPositive () {
-        if (v4BIncrement >=0 && v4BIncrement<= 3) {
+        if (v4BIncrement >= 0 && v4BIncrement <= 3) {
             v4BIncrement++;
         } else {
             v4BIncrement = v4BIncrement;
@@ -41,7 +41,7 @@ public class SubsystemV4B extends SubsystemBase {
     }
 
     public void v4BNegative () {
-        if (v4BIncrement >=1 && v4BIncrement<= 4) {
+        if (v4BIncrement >= 1 && v4BIncrement <= 4) {
             v4BIncrement--;
         } else {
             v4BIncrement = v4BIncrement;

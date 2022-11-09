@@ -92,22 +92,22 @@ public class SubsystemTurret extends SubsystemBase{
         turretServo.setPosition(northWestPos);
     }
 
-    public void moveTurret(double turretx, double turrety) {
-        if (turretx ==0) {
-            turretAngle = turrety == 1 ? 90 : -90;
-        }
-        if (turrety == 0) {
-            turretAngle = turretx == 1 ? 0 : 180;
-        }
-        turretAngle = Math.atan2(turrety, turretx) * (180/Math.PI);
-        if (turretAngle < 0) {
-            turretAngle += 360;
-        }
-
-        turretRotation = (turretAngle/360) * (fullrotation);
-
-        turretServo.setPosition(turretRotation);
-    }
+//    public void moveTurret(double turretx, double turrety) {
+//        if (turretx ==0) {
+//            turretAngle = turrety == 1 ? 90 : -90;
+//        }
+//        if (turrety == 0) {
+//            turretAngle = turretx == 1 ? 0 : 180;
+//        }
+//        turretAngle = Math.atan2(turrety, turretx) * (180/Math.PI);
+//        if (turretAngle < 0) {
+//            turretAngle += 360;
+//        }
+//
+//        turretRotation = (turretAngle/360) * (fullrotation);
+//
+//        turretServo.setPosition(turretRotation);
+//    }
 
 
 
