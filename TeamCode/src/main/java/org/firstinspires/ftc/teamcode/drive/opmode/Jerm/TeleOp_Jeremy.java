@@ -177,6 +177,8 @@ public class TeleOp_Jeremy extends OpMode {
         spinny(gamepad2.left_bumper, gamepad2.right_bumper);
         grippers(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
         setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
+        liftControl();
+        v4bControl();
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
     }
@@ -218,6 +220,23 @@ public class TeleOp_Jeremy extends OpMode {
             default:
                 dr4BState = DR4BState.REST;
         }
+
+        switch (dr4BState){
+            case REST:
+                setLiftPosition(DR4B_GROUNDFLOORTURRETCLEARANCE);
+                break;
+            case LOW:
+                setLiftPosition(DR4B_LOWJUNCTION);
+                break;
+            case MID:
+                setLiftPosition(DR4B_MIDHIGHJUNCTION);
+                break;
+            case HIGH:
+                setLiftPosition(DR4B_MIDHIGHJUNCTION);
+                break;
+            default:
+                setLiftPosition(DR4B_GROUNDFLOORTURRETCLEARANCE);
+        }
     }
 
     public void v4bControl(){
@@ -242,6 +261,35 @@ public class TeleOp_Jeremy extends OpMode {
                 break;
             default:
                 v4BState = V4BState.RETRACTED;
+        }
+
+        switch (v4BState){
+            case RETRACTED:
+                setV4B(V4B_RETRACTED);
+                break;
+            case HIGH:
+                setV4B(V4B_HIGHJUNCTION);
+                break;
+            case MID:
+                setV4B(V4B_LOWMIDFLOOR);
+                break;
+            case LOW:
+                setV4B(V4B_LOWMIDFLOOR);
+                break;
+            case GROUND:
+                setV4B(V4B_GROUNDJUNCTION);
+                break;
+            case FLOOR:
+                setV4B(V4B_LOWMIDFLOOR);
+                break;
+            case TURRETCLEARANCE:
+                setV4B(V4B_TURRETCLEARANCE);
+                break;
+            case HORIZONTAL:
+                setV4B(V4B_HORIZONTAL);
+                break;
+            default:
+                setV4B(V4B_RETRACTED);
         }
     }
 
@@ -271,49 +319,51 @@ public class TeleOp_Jeremy extends OpMode {
     }
 
     public void spinny(boolean left, boolean right){
-        boolean turretLeftCurrent = left;
-        if (turretLeftCurrent && !turretLeftPrevious){
-            turretState = turretState.previous();
-        }
-        turretLeftPrevious = turretLeftCurrent;
+        if (v4BState != V4BState.GROUND && v4BState != V4BState.FLOOR) {
+            boolean turretLeftCurrent = left;
+            if (turretLeftCurrent && !turretLeftPrevious) {
+                turretState = turretState.previous();
+            }
+            turretLeftPrevious = turretLeftCurrent;
 
-        boolean turretRightCurrent = right;
-        if (turretRightCurrent && !turretRightPrevious){
-            turretState = turretState.next();
-        }
-        turretRightPrevious = turretRightCurrent;
+            boolean turretRightCurrent = right;
+            if (turretRightCurrent && !turretRightPrevious) {
+                turretState = turretState.next();
+            }
+            turretRightPrevious = turretRightCurrent;
 
-        switch (turretState){
-            case SOUTH1:
-                servoTurret.setPosition(south1);
-                break;
-            case SOUTH2:
-                servoTurret.setPosition(south2);
-                break;
-            case SOUTHEAST:
-                servoTurret.setPosition(southeast);
-                break;
-            case EAST:
-                servoTurret.setPosition(east);
-                break;
-            case NORTHEAST:
-                servoTurret.setPosition(northeast);
-                break;
-            case NORTH:
-                servoTurret.setPosition(north);
-                break;
-            case NORTHWEST:
-                servoTurret.setPosition(northwest);
-                break;
-            case WEST:
-                servoTurret.setPosition(west);
-                break;
-            case SOUTHWEST:
-                servoTurret.setPosition(southwest);
-                break;
-            default:
-                telemetry.addData("turret status", "we messed up 💀");
-                telemetry.update();
+            switch (turretState) {
+                case SOUTH1:
+                    servoTurret.setPosition(south1);
+                    break;
+                case SOUTH2:
+                    servoTurret.setPosition(south2);
+                    break;
+                case SOUTHEAST:
+                    servoTurret.setPosition(southeast);
+                    break;
+                case EAST:
+                    servoTurret.setPosition(east);
+                    break;
+                case NORTHEAST:
+                    servoTurret.setPosition(northeast);
+                    break;
+                case NORTH:
+                    servoTurret.setPosition(north);
+                    break;
+                case NORTHWEST:
+                    servoTurret.setPosition(northwest);
+                    break;
+                case WEST:
+                    servoTurret.setPosition(west);
+                    break;
+                case SOUTHWEST:
+                    servoTurret.setPosition(southwest);
+                    break;
+                default:
+                    telemetry.addData("turret status", "we messed up 💀");
+                    telemetry.update();
+            }
         }
         telemetry.addData("turret state", turretState);
         telemetry.update();
