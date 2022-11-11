@@ -8,11 +8,12 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
 import org.firstinspires.ftc.teamcode.drive.commands.CommandDrive;
-import org.firstinspires.ftc.teamcode.drive.commands.CommandTurret;
 import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemDrive;
 import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemDR4B;
 import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemIntakeDeroak;
@@ -28,7 +29,7 @@ public class FinalTeleop extends CommandOpMode{
     private Motor backLeft;
     private Motor backRight;
 
-    private Motor liftMotor;
+    private DcMotorEx liftMotor;
 
     private Servo turretServo;
     private Servo fourBarServoLeft;
@@ -96,19 +97,19 @@ public class FinalTeleop extends CommandOpMode{
         backLeft = new Motor(hardwareMap, "Motor BL");
         backRight = new Motor(hardwareMap, "Motor BR");
 
-        liftMotor = new Motor(hardwareMap, "Motor DR4B");
+        liftMotor = hardwareMap.get(DcMotorEx.class, "Motor DR4B");
 
         //set zero power behavior
         frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        liftMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        liftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         // Reset encoders
 
         //invert motors
-        liftMotor.setInverted(true);
+        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //declare servos
         turretServo = hardwareMap.get(Servo.class, "Servo Turret");

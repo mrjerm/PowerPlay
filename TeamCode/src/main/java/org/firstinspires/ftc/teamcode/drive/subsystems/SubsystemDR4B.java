@@ -3,12 +3,13 @@ package org.firstinspires.ftc.teamcode.drive.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SubsystemDR4B extends SubsystemBase {
-    public Motor liftMotor;
+    public DcMotorEx liftMotor;
     private int highJunctionPos = 144;
     private int midJunctionPos = 47;
     private int lowJunctionPos = 8;
@@ -18,14 +19,14 @@ public class SubsystemDR4B extends SubsystemBase {
     public static ArrayList<Integer> DR4Barray = new ArrayList<Integer>(Arrays.<Integer>asList(0, 8, 47, 144));
     public int liftIncrement = 0;
 
-    public SubsystemDR4B(Motor liftMotor) {
+    public SubsystemDR4B(DcMotorEx liftMotor) {
         this.liftMotor = liftMotor;
     }
 
     public void moveLiftUp() {
         //run mode
         isMoving = true;
-        liftMotor.setRunMode(Motor.RunMode.PositionControl);
+        liftMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
         // set the target position
         if (liftIncrement >=0 && liftIncrement <=2) {

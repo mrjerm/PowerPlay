@@ -1,6 +1,28 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.*;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORTURRETCLEARANCE;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MIDHIGHJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_GROUNDJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMIDFLOOR;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.east;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.max;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.min;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.north;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.northeast;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.northwest;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south1;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south2;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.southeast;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.southwest;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,9 +31,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-public class TeleOp_Jeremy extends OpMode {
+public class TeleOp_JeremyBeta extends OpMode {
 /*TODO: REMOVE 45 DEGREE TURRET POSITIONS*/
-    /*TODO: GRABBER CLOSE DURING INIT AND RETRACT*/
 /*TODO: DR4B BRAKING TOO WEAK, CHANGE TOLERANCE FROM 5 TO 10 TICKS, DR4B JITTERING*/
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
     /*TODO: DRIVING TEST TO MAKE SURE ROBOT DOES NOT TIP OVER*/
@@ -39,39 +60,27 @@ public class TeleOp_Jeremy extends OpMode {
 
     public enum TurretState{
         SOUTH1,
-        SOUTHWEST,
         WEST,
-        NORTHWEST,
         NORTH,
-        NORTHEAST,
         EAST,
-        SOUTHEAST,
         SOUTH2;
         public TurretState next(){
             switch (this){
-                case NORTH: return NORTHEAST;
-                case NORTHEAST: return EAST;
-                case EAST: return SOUTHEAST;
-                case SOUTHEAST: return SOUTH2;
+                case SOUTH1: return WEST;
+                case WEST: return NORTH;
+                case NORTH: return EAST;
+                case EAST: return SOUTH2;
                 case SOUTH2: return SOUTH2;
-                case SOUTH1: return SOUTHWEST;
-                case SOUTHWEST: return WEST;
-                case WEST: return NORTHWEST;
-                case NORTHWEST: return NORTH;
                 default: return NORTH;
             }
         }
         public TurretState previous(){
             switch (this){
-                case NORTHWEST: return WEST;
-                case WEST: return SOUTHWEST;
-                case SOUTHWEST: return SOUTH1;
+                case SOUTH2: return EAST;
+                case EAST: return NORTH;
+                case NORTH: return WEST;
+                case WEST: return SOUTH1;
                 case SOUTH1: return SOUTH1;
-                case SOUTH2: return SOUTHEAST;
-                case SOUTHEAST: return EAST;
-                case EAST: return NORTHEAST;
-                case NORTHEAST: return NORTH;
-                case NORTH: return NORTHWEST;
                 default: return NORTH;
             }
         }
@@ -168,6 +177,7 @@ public class TeleOp_Jeremy extends OpMode {
 
         servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
+        servoGrabber.setPosition(grabberClose);
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
@@ -346,26 +356,14 @@ public class TeleOp_Jeremy extends OpMode {
                 case SOUTH2:
                     servoTurret.setPosition(south2);
                     break;
-                case SOUTHEAST:
-                    servoTurret.setPosition(southeast);
-                    break;
                 case EAST:
                     servoTurret.setPosition(east);
-                    break;
-                case NORTHEAST:
-                    servoTurret.setPosition(northeast);
                     break;
                 case NORTH:
                     servoTurret.setPosition(north);
                     break;
-                case NORTHWEST:
-                    servoTurret.setPosition(northwest);
-                    break;
                 case WEST:
                     servoTurret.setPosition(west);
-                    break;
-                case SOUTHWEST:
-                    servoTurret.setPosition(southwest);
                     break;
                 default:
                     telemetry.addData("turret status", "we messed up 💀");
