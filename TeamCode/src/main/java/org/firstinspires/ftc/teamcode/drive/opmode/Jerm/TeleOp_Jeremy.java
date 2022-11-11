@@ -181,10 +181,11 @@ public class TeleOp_Jeremy extends OpMode {
         turtle(gamepad1.y, gamepad1.a);
         drive();
         spinny(gamepad2.left_bumper, gamepad2.right_bumper);
-        grippers(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
+        grippers(gamepad2.right_trigger > 0.3, gamepad2.left_trigger > 0.3);
         setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
         liftControl();
         v4bControl();
+        low(gamepad2.a);
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
     }
@@ -400,5 +401,11 @@ public class TeleOp_Jeremy extends OpMode {
     public void setV4B(double position){
         servoV4BL.setPosition(position);
         servoV4BR.setPosition(position);
+    }
+
+    public void low(boolean keybind){
+        if (keybind) {
+            robotState = RobotState.PICKING_UP;
+        }
     }
 }
