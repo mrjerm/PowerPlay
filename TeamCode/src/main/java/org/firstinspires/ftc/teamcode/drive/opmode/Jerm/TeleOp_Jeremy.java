@@ -11,10 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 public class TeleOp_Jeremy extends OpMode {
 /*TODO: REMOVE 45 DEGREE TURRET POSITIONS*/
-    /*TODO: GRABBER CLOSE DURING INIT AND RETRACT*/
 /*TODO: DR4B BRAKING TOO WEAK, CHANGE TOLERANCE FROM 5 TO 10 TICKS, DR4B JITTERING*/
-    /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
-    /*TODO: DRIVING TEST TO MAKE SURE ROBOT DOES NOT TIP OVER*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
     public DcMotorEx motorDR4B;
@@ -272,7 +269,7 @@ public class TeleOp_Jeremy extends OpMode {
 
         switch (v4BState){
             case RETRACTED:
-                setV4B(V4B_RETRACTED);
+                setV4B(V4B_VERTICAL);
                 servoGrabber.setPosition(grabberClose);
                 break;
             case HIGH:
@@ -297,7 +294,7 @@ public class TeleOp_Jeremy extends OpMode {
                 setV4B(V4B_HORIZONTAL);
                 break;
             default:
-                setV4B(V4B_RETRACTED);
+                setV4B(V4B_VERTICAL);
         }
     }
 
