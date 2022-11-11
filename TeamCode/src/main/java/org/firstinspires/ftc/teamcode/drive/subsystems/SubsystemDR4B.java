@@ -26,7 +26,6 @@ public class SubsystemDR4B extends SubsystemBase {
     public void moveLiftUp() {
         //run mode
         isMoving = true;
-        liftMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
         // set the target position
         if (liftIncrement >=0 && liftIncrement <=2) {
@@ -36,81 +35,77 @@ public class SubsystemDR4B extends SubsystemBase {
         }
         liftMotor.setTargetPosition(DR4Barray.get(liftIncrement)); // an integer representing desired tick count
 
-        liftMotor.set(0);
-
-        //tolerance
-        liftMotor.setPositionTolerance(13.6);   // allowed maximum error
-
-        // perform the control loop
-        while (!liftMotor.atTargetPosition()) {
-            liftMotor.set(1);
+        if (Math.abs(liftMotor.getCurrentPosition() - liftMotor.getTargetPosition()) < 5){
+            liftMotor.setPower(0);
+        } else {
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor.setPower(1);
         }
 
-        //stop motor
-        liftMotor.stopMotor();
     }
 
     public void moveLiftDown() {
         //run mode
         isMoving = true;
-        liftMotor.setRunMode(Motor.RunMode.PositionControl);
 
         // set the target position
-        if (liftIncrement >=1 && liftIncrement <=3) {
-            liftIncrement--;
+        if (liftIncrement >=0 && liftIncrement <=2) {
+            liftIncrement++;
         } else {
             liftIncrement = liftIncrement;
         }
         liftMotor.setTargetPosition(DR4Barray.get(liftIncrement)); // an integer representing desired tick count
 
-        liftMotor.set(0);
-
-        //tolerance
-        liftMotor.setPositionTolerance(13.6);   // allowed maximum error
-
-        // perform the control loop
-        while (!liftMotor.atTargetPosition()) {
-            liftMotor.set(1);
+        if (Math.abs(liftMotor.getCurrentPosition() - liftMotor.getTargetPosition()) < 5){
+            liftMotor.setPower(0);
+        } else {
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor.setPower(1);
         }
-
-        //stop motor
-        liftMotor.stopMotor();
     }
 
     public void liftRest () {
         isMoving = true;
         liftMotor.setTargetPosition(restPos);
-        while (!liftMotor.atTargetPosition()) {
-            liftMotor.set(1);
+        if (Math.abs(liftMotor.getCurrentPosition() - liftMotor.getTargetPosition()) < 5){
+            liftMotor.setPower(0);
+        } else {
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor.setPower(1);
         }
-        liftMotor.stopMotor();
     }
 
     public void liftLow () {
         isMoving = true;
         liftMotor.setTargetPosition(lowJunctionPos);
-        while (!liftMotor.atTargetPosition()) {
-            liftMotor.set(1);
+        if (Math.abs(liftMotor.getCurrentPosition() - liftMotor.getTargetPosition()) < 5){
+            liftMotor.setPower(0);
+        } else {
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor.setPower(1);
         }
-        liftMotor.stopMotor();
     }
 
     public void liftMid () {
         isMoving = true;
         liftMotor.setTargetPosition(midJunctionPos);
-        while (!liftMotor.atTargetPosition()) {
-            liftMotor.set(1);
+        if (Math.abs(liftMotor.getCurrentPosition() - liftMotor.getTargetPosition()) < 5){
+            liftMotor.setPower(0);
+        } else {
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor.setPower(1);
         }
-        liftMotor.stopMotor();
     }
 
     public void liftHigh () {
         isMoving = true;
         liftMotor.setTargetPosition(highJunctionPos);
-        while (!liftMotor.atTargetPosition()) {
-            liftMotor.set(1);
+        if (Math.abs(liftMotor.getCurrentPosition() - liftMotor.getTargetPosition()) < 5){
+            liftMotor.setPower(0);
+        } else {
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor.setPower(1);
         }
-        liftMotor.stopMotor();
     }
 
 //    public void liftHome() {
