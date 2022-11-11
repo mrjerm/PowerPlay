@@ -207,13 +207,21 @@ public class FinalTeleop extends CommandOpMode{
         });
 
         turretSpinPositive = new Thread(() -> {
-            subsystemV4B.fourBarHigh();
-            subsystemTurret.moveTurretPositive();
+            if (subsystemV4B.fourBarDownCheck == true) {
+                subsystemV4B.fourBarHigh();
+                subsystemTurret.moveTurretPositive();
+            } else {
+                subsystemTurret.moveTurretPositive();
+            }
         });
 
         turretSpinNegative = new Thread(() -> {
-            subsystemV4B.fourBarHigh();
-            subsystemTurret.moveTurretNegative();
+            if (subsystemV4B.fourBarDownCheck == true) {
+                subsystemV4B.fourBarHigh();
+                subsystemTurret.moveTurretPositive();
+            } else {
+                subsystemTurret.moveTurretNegative();
+            }
         });
 
 
@@ -222,12 +230,22 @@ public class FinalTeleop extends CommandOpMode{
 
         //instant commands
         instantCommandTurretPositive = new InstantCommand(() -> {
-            subsystemTurret.moveTurretPositive();
-        }, subsystemTurret);
+            if (subsystemV4B.fourBarDownCheck == true) {
+                subsystemV4B.fourBarHigh();
+                subsystemTurret.moveTurretPositive();
+            } else {
+                subsystemTurret.moveTurretPositive();
+            }
+        }, subsystemTurret, subsystemV4B);
 
         instantCommandTurretNegative = new InstantCommand(() -> {
-            subsystemTurret.moveTurretNegative();
-        }, subsystemTurret);
+            if (subsystemV4B.fourBarDownCheck == true) {
+                subsystemV4B.fourBarHigh();
+                subsystemTurret.moveTurretNegative();
+            } else {
+                subsystemTurret.moveTurretNegative();
+            }
+        }, subsystemTurret, subsystemV4B);
 
         instantCommandDeroakOpen = new InstantCommand(() -> {
             subsystemIntakeDeroak.openIntake();
