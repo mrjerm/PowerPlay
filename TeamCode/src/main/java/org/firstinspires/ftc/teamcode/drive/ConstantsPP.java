@@ -9,6 +9,7 @@ public class ConstantsPP {
 
     //V4B values
     public static double V4B_RETRACTED = 0.15;
+    public static double V4B_VERTICAL = 0.4;
     public static double V4B_HIGHJUNCTION = 0.5;
     public static double V4B_HORIZONTAL = 0.64;
     public static double V4B_TURRETCLEARANCE = 0.72;

@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMIDFLOOR;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.east;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
@@ -195,8 +196,16 @@ public class TeleOp_JeremyBeta extends OpMode {
         setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
         liftControl();
         v4bControl();
+                low(gamepad2.a);
+
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
+    }
+
+        public void low(boolean keybind){
+        if (keybind) {
+            robotState = RobotState.PICKING_UP;
+        }
     }
 
     public void setRobotState(boolean up, boolean down){
@@ -281,7 +290,7 @@ public class TeleOp_JeremyBeta extends OpMode {
 
         switch (v4BState){
             case RETRACTED:
-                setV4B(V4B_RETRACTED);
+                setV4B(V4B_VERTICAL);
                 servoGrabber.setPosition(grabberClose);
                 break;
             case HIGH:
@@ -306,7 +315,7 @@ public class TeleOp_JeremyBeta extends OpMode {
                 setV4B(V4B_HORIZONTAL);
                 break;
             default:
-                setV4B(V4B_RETRACTED);
+                setV4B(V4B_VERTICAL);
         }
     }
 
