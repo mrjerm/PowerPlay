@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMIDFLOOR;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.east;
@@ -25,6 +26,7 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.southwest;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -33,10 +35,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class TeleOp_JeremyBeta extends OpMode {
-/*TODO: REMOVE 45 DEGREE TURRET POSITIONS*/
-/*TODO: DR4B BRAKING TOO WEAK, CHANGE TOLERANCE FROM 5 TO 10 TICKS, DR4B JITTERING*/
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
-    /*TODO: DRIVING TEST TO MAKE SURE ROBOT DOES NOT TIP OVER*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
     public DcMotorEx motorDR4B;
@@ -396,7 +395,7 @@ public class TeleOp_JeremyBeta extends OpMode {
 
     public void setLiftPosition(int position){
         motorDR4B.setTargetPosition(position);
-        if (Math.abs(motorDR4B.getCurrentPosition() - motorDR4B.getTargetPosition()) < 5){
+        if (Math.abs(motorDR4B.getCurrentPosition() - motorDR4B.getTargetPosition()) < 10){
             motorDR4B.setPower(0);
         } else {
             motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -405,7 +404,7 @@ public class TeleOp_JeremyBeta extends OpMode {
     }
 
     public void setV4B(double position){
-        servoV4BL.setPosition(position);
+        servoV4BL.setPosition(position * V4B_SCALELEFT);
         servoV4BR.setPosition(position);
     }
 }

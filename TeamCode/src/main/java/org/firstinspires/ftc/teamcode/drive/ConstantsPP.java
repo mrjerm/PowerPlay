@@ -14,7 +14,8 @@ public class ConstantsPP {
     public static double V4B_HORIZONTAL = 0.64;
     public static double V4B_TURRETCLEARANCE = 0.72;
     public static double V4B_GROUNDJUNCTION = 0.8;
-    public static double V4B_LOWMIDFLOOR = 0.85;
+    public static double V4B_LOWMIDFLOOR = 0.86;
+    public static double V4B_SCALELEFT = 1.01162791;
 
     //drivetrain min/max speeds
     public static double min = 0.5;
