@@ -6,15 +6,17 @@ public class ConstantsPP {
     public static int DR4B_GROUNDFLOORTURRETCLEARANCE = 0;
     public static int DR4B_LOWJUNCTION = 185;
     public static int DR4B_MIDHIGHJUNCTION = 350;
+    public static double DR4B_LOWPOWER = 0.15;
 
     //V4B values
-    public static double V4B_RETRACTED = 0.15;
+    public static double V4B_RETRACTED = 0.13;
     public static double V4B_VERTICAL = 0.4;
     public static double V4B_HIGHJUNCTION = 0.5;
     public static double V4B_HORIZONTAL = 0.64;
     public static double V4B_TURRETCLEARANCE = 0.72;
     public static double V4B_GROUNDJUNCTION = 0.8;
-    public static double V4B_LOWMIDFLOOR = 0.85;
+    public static double V4B_LOWMIDFLOOR = 0.86;
+    public static double V4B_SCALELEFT = 1.01162791;
 
     //drivetrain min/max speeds
     public static double min = 0.5;

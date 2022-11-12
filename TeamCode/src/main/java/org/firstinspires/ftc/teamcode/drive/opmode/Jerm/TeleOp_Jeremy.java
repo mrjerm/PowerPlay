@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.*;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
+@Disabled
 public class TeleOp_Jeremy extends OpMode {
 /*TODO: REMOVE 45 DEGREE TURRET POSITIONS*/
 /*TODO: DR4B BRAKING TOO WEAK, CHANGE TOLERANCE FROM 5 TO 10 TICKS, DR4B JITTERING*/
@@ -33,6 +35,8 @@ public class TeleOp_Jeremy extends OpMode {
     public boolean retractPrevious = false;
     public boolean upPrevious = false;
     public boolean downPrevious = false;
+    public double dr4bPower = 1;
+
 
     public enum TurretState{
         SOUTH1,
@@ -191,12 +195,15 @@ public class TeleOp_Jeremy extends OpMode {
         boolean upCurrent = up;
         if (upCurrent && !upPrevious){
             robotState = robotState.next();
+            dr4bPower = 1;
+
         }
         upPrevious = upCurrent;
 
         boolean downCurrent = down;
         if (downCurrent && !downPrevious){
             robotState = robotState.previous();
+            dr4bPower = DR4B_LOWPOWER;
         }
         downPrevious = downCurrent;
     }
@@ -387,22 +394,23 @@ public class TeleOp_Jeremy extends OpMode {
 
     public void setLiftPosition(int position){
         motorDR4B.setTargetPosition(position);
-        if (Math.abs(motorDR4B.getCurrentPosition() - motorDR4B.getTargetPosition()) < 5){
+        if (Math.abs(motorDR4B.getCurrentPosition() - motorDR4B.getTargetPosition()) < 10){
             motorDR4B.setPower(0);
         } else {
             motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorDR4B.setPower(1);
+            motorDR4B.setPower(dr4bPower);
         }
     }
 
     public void setV4B(double position){
-        servoV4BL.setPosition(position);
+        servoV4BL.setPosition(position * V4B_SCALELEFT);
         servoV4BR.setPosition(position);
     }
 
     public void low(boolean keybind){
         if (keybind) {
             robotState = RobotState.PICKING_UP;
+            dr4bPower = DR4B_LOWPOWER;
         }
     }
 }
