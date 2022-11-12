@@ -6,6 +6,7 @@ public class ConstantsPP {
     public static int DR4B_GROUNDFLOORTURRETCLEARANCE = 0;
     public static int DR4B_LOWJUNCTION = 185;
     public static int DR4B_MIDHIGHJUNCTION = 350;
+    public static double DR4B_LOWPOWER = 0.4;
 
     //V4B values
     public static double V4B_RETRACTED = 0.15;

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORTURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWPOWER;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MIDHIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_GROUNDJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
@@ -205,7 +206,7 @@ public class TeleOp_JeremyBeta extends OpMode {
         public void low(boolean keybind){
         if (keybind) {
             robotState = RobotState.PICKING_UP;
-            dr4bPower = 0.1;
+            dr4bPower = DR4B_LOWPOWER;
 
         }
     }
@@ -221,7 +222,7 @@ public class TeleOp_JeremyBeta extends OpMode {
         boolean downCurrent = down;
         if (downCurrent && !downPrevious){
             robotState = robotState.previous();
-            dr4bPower = 0.1;
+            dr4bPower = DR4B_LOWPOWER;
         }
         downPrevious = downCurrent;
     }

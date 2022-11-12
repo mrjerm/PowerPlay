@@ -203,7 +203,7 @@ public class TeleOp_Jeremy extends OpMode {
         boolean downCurrent = down;
         if (downCurrent && !downPrevious){
             robotState = robotState.previous();
-            dr4bPower = 0.1;
+            dr4bPower = DR4B_LOWPOWER;
         }
         downPrevious = downCurrent;
     }
@@ -410,7 +410,7 @@ public class TeleOp_Jeremy extends OpMode {
     public void low(boolean keybind){
         if (keybind) {
             robotState = RobotState.PICKING_UP;
-            dr4bPower = 0.1;
+            dr4bPower = DR4B_LOWPOWER;
         }
     }
 }
