@@ -394,7 +394,7 @@ public class TeleOp_Jeremy extends OpMode {
 
     public void setLiftPosition(int position){
         motorDR4B.setTargetPosition(position);
-        if (Math.abs(motorDR4B.getCurrentPosition() - motorDR4B.getTargetPosition()) < 5){
+        if (Math.abs(motorDR4B.getCurrentPosition() - motorDR4B.getTargetPosition()) < 10){
             motorDR4B.setPower(0);
         } else {
             motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
