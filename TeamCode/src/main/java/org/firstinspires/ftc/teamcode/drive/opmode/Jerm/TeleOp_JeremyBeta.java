@@ -57,6 +57,7 @@ public class TeleOp_JeremyBeta extends OpMode {
     public boolean retractPrevious = false;
     public boolean upPrevious = false;
     public boolean downPrevious = false;
+    public double dr4bPower = 1;
 
     public enum TurretState{
         SOUTH1,
@@ -204,6 +205,8 @@ public class TeleOp_JeremyBeta extends OpMode {
         public void low(boolean keybind){
         if (keybind) {
             robotState = RobotState.PICKING_UP;
+            dr4bPower = 0.1;
+
         }
     }
 
@@ -211,12 +214,14 @@ public class TeleOp_JeremyBeta extends OpMode {
         boolean upCurrent = up;
         if (upCurrent && !upPrevious){
             robotState = robotState.next();
+            dr4bPower = 1;
         }
         upPrevious = upCurrent;
 
         boolean downCurrent = down;
         if (downCurrent && !downPrevious){
             robotState = robotState.previous();
+            dr4bPower = 0.1;
         }
         downPrevious = downCurrent;
     }
@@ -399,7 +404,7 @@ public class TeleOp_JeremyBeta extends OpMode {
             motorDR4B.setPower(0);
         } else {
             motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorDR4B.setPower(1);
+            motorDR4B.setPower(dr4bPower);
         }
     }
 
