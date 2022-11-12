@@ -213,22 +213,42 @@ public class teleopALna extends OpMode {
     
     public void turretPositive(boolean moveturretpositive) {
         turretMoving = true;
-        if (increment >=0 && increment <=6) {
-            increment++;
+        if (fourBarDownCheck == true) {
+            fourBarHigh();
+            if (increment >=0 && increment <=6) {
+                increment++;
+            } else {
+                increment = increment;
+            }
+            turretServo.setPosition(TurretDistanceArray.get(increment));
         } else {
-            increment = increment;
+            if (increment >= 0 && increment <= 6) {
+                increment++;
+            } else {
+                increment = increment;
+            }
+            turretServo.setPosition(TurretDistanceArray.get(increment));
         }
-        turretServo.setPosition(TurretDistanceArray.get(increment));
     }
 
     public void turretNegative(boolean moveturretnegative) {
         turretMoving = true;
-        if (increment >=1 && increment <=7) {
-            increment--;
+        if (fourBarDownCheck == true) {
+            fourBarHigh();
+            if (increment >=1 && increment <=7) {
+                increment--;
+            } else {
+                increment = increment;
+            }
+            turretServo.setPosition(TurretDistanceArray.get(increment));
         } else {
-            increment = increment;
+            if (increment >= 1 && increment <= 7) {
+                increment--;
+            } else {
+                increment = increment;
+            }
+            turretServo.setPosition(TurretDistanceArray.get(increment));
         }
-        turretServo.setPosition(TurretDistanceArray.get(increment));
     }
 
     public void turretSetNorth() {
@@ -348,5 +368,40 @@ public class teleopALna extends OpMode {
         fourBarDiagonalCheck = false;
         fourBarHorizontalCheck = false;
         fourBarDownCheck = true;
+    }
+
+    public void highJunction(boolean junctionhigh) {
+        if (junctionhigh == true) {
+            liftHigh();
+            fourBarDiagonal();
+        }
+    }
+
+    public void midJunction (boolean junctionmid) {
+        if (junctionmid == true) {
+            liftMid();
+            fourBarHorizontal();
+        }
+    }
+
+    public void lowJunction (boolean junctionlow) {
+        if (junctionlow == true) {
+            liftLow();
+            fourBarHorizontal();
+        }
+    }
+
+    public void groundJunction (boolean junctionGround) {
+        if (junctionGround == true) {
+            liftLow();
+            fourBarDown();
+        }
+    }
+
+    public void score (boolean scoring) {
+        if (scoring == true) {
+            intakeServo.setPosition(intakeOpen);
+
+        }
     }
 }
