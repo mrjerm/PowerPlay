@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.TimeUnit;
 
-public class Timer {
+public class TimerTiming {
 
     public static class Timer {
         private ElapsedTime time;

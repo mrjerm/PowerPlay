@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.firstinspires.ftc.teamcode.drive.TimerTiming;
 
 
 @TeleOp
@@ -67,6 +68,8 @@ public class teleopALna extends OpMode {
 
     public double intakeOpen = 0.2;
     public double intakeClose = 0.38;
+
+    TimerTiming.Timer timer;
 
 
     @Override
@@ -402,6 +405,16 @@ public class teleopALna extends OpMode {
         if (scoring == true) {
             intakeServo.setPosition(intakeOpen);
 
+            timer = new TimerTiming.Timer(200);
+            timer.start();
+            while (!timer.done()) {
+
+            }
+            timer.pause();
+
+            intakeServo.setPosition(intakeClose);
+            fourBarHigh();
+            liftRest();
         }
     }
 }
