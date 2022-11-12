@@ -20,6 +20,7 @@ public class Timer {
             time.reset();
         }
 
+
         public Timer(long timerLength) {
             this(timerLength, TimeUnit.MILLISECONDS);
         }
