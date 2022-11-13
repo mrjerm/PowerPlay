@@ -109,14 +109,18 @@ public class teleopALna extends OpMode {
 
     @Override
     public void loop() {
-        liftUp(gamepad1.dpad_up);
-        liftDown(gamepad1.dpad_down);
-        turretPositive(gamepad1.dpad_right);
-        turretNegative(gamepad1.dpad_left);
+        liftUp(gamepad2.dpad_up);
+        liftDown(gamepad2.dpad_down);
+        turretPositive(gamepad2.dpad_right);
+        turretNegative(gamepad2.dpad_left);
         movev4bPositive(gamepad2.dpad_right);
         movev4BNegative(gamepad2.dpad_left);
         intakeOpen(gamepad1.left_bumper);
         intakeClose(gamepad1.right_bumper);
+        highJunction(gamepad1.y);
+        midJunction(gamepad1.x);
+        lowJunction(gamepad1.b);
+        groundJunction(gamepad1.a);
     }
 
     public void driveCode() {
