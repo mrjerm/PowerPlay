@@ -143,6 +143,7 @@ public class teleopALna extends OpMode {
         groundJunction(gamepad1.a);
         moveForward(gamepad1.dpad_up);
         moveBackward(gamepad1.dpad_down);
+        drive.update();
     }
 
     public void driveCode() {
