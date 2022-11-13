@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.drive.teleop.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
+
+@Disabled
 
 public class TurretTest extends LinearOpMode {
     public Servo turretServo;

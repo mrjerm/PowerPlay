@@ -23,6 +23,7 @@ package org.firstinspires.ftc.teamcode.drive.autonomous;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -37,6 +38,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
 
+@Disabled
 @Autonomous
 public class BlueRedTerminalAutonomous extends LinearOpMode
 {

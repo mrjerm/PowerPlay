@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.vision;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -18,6 +19,8 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 
 @TeleOp
+@Disabled
+
 public class SignalDetection extends LinearOpMode
 {
     OpenCvWebcam webcam;

@@ -1,13 +1,14 @@
-package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
+package org.firstinspires.ftc.teamcode.drive.UCFSDScrimmage;
 
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORTURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWPOWER;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MIDHIGHJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_FLOOR;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_GROUNDJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMIDFLOOR;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
@@ -18,16 +19,11 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.max;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.min;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.north;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.northeast;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.northwest;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south1;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south2;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.southeast;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.southwest;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -35,7 +31,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-public class TeleOp_JeremyBeta extends OpMode {
+public class TeleOp_UCFSDScrimmage extends OpMode {
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
@@ -302,16 +298,16 @@ public class TeleOp_JeremyBeta extends OpMode {
                 setV4B(V4B_HIGHJUNCTION);
                 break;
             case MID:
-                setV4B(V4B_LOWMIDFLOOR);
+                setV4B(V4B_LOWMID);
                 break;
             case LOW:
-                setV4B(V4B_LOWMIDFLOOR);
+                setV4B(V4B_LOWMID);
                 break;
             case GROUND:
                 setV4B(V4B_GROUNDJUNCTION);
                 break;
             case FLOOR:
-                setV4B(V4B_LOWMIDFLOOR);
+                setV4B(V4B_FLOOR);
                 break;
             case TURRETCLEARANCE:
                 setV4B(V4B_TURRETCLEARANCE);
@@ -350,7 +346,7 @@ public class TeleOp_JeremyBeta extends OpMode {
     }
 
     public void spinny(boolean left, boolean right){
-        if (v4BState != V4BState.GROUND && v4BState != V4BState.FLOOR) {
+        if (robotState != RobotState.PICKING_UP) {
             boolean turretLeftCurrent = left;
             if (turretLeftCurrent && !turretLeftPrevious) {
                 turretState = turretState.previous();

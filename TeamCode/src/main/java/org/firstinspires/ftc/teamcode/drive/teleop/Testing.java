@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -19,6 +20,8 @@ import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemIntakeDeroak;
 
 
 @TeleOp
+@Disabled
+
 public class Testing extends CommandOpMode {
 
     //declaring motors and servos

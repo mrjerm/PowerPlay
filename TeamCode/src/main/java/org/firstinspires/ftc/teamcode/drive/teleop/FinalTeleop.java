@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -21,6 +22,8 @@ import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemV4B;
 import org.firstinspires.ftc.teamcode.drive.subsystems.SubsystemTurret;
 
 @TeleOp
+@Disabled
+
 public class FinalTeleop extends CommandOpMode{
 
     // Declare Motors and Servos

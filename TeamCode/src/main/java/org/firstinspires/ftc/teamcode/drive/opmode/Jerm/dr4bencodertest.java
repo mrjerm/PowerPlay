@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+@Disabled
 
 @TeleOp
 public class dr4bencodertest extends OpMode {

@@ -283,16 +283,16 @@ public class TeleOp_Jeremy extends OpMode {
                 setV4B(V4B_HIGHJUNCTION);
                 break;
             case MID:
-                setV4B(V4B_LOWMIDFLOOR);
+                setV4B(V4B_LOWMID);
                 break;
             case LOW:
-                setV4B(V4B_LOWMIDFLOOR);
+                setV4B(V4B_LOWMID);
                 break;
             case GROUND:
                 setV4B(V4B_GROUNDJUNCTION);
                 break;
             case FLOOR:
-                setV4B(V4B_LOWMIDFLOOR);
+                setV4B(V4B_FLOOR);
                 break;
             case TURRETCLEARANCE:
                 setV4B(V4B_TURRETCLEARANCE);
