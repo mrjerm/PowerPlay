@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.teleop;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,6 +11,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.TimerTiming;
 
 
@@ -74,6 +78,19 @@ public class teleopALna extends OpMode {
 
     TimerTiming.Timer timer;
 
+    public static double driveDistance = 0;
+
+    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+    Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
+            .forward(driveDistance)
+            .build();
+
+    Trajectory trajectoryBackward = drive.trajectoryBuilder(new Pose2d())
+            .back(driveDistance)
+            .build();
+
+
 
     @Override
     public void init() {
@@ -124,6 +141,8 @@ public class teleopALna extends OpMode {
         midJunction(gamepad1.x);
         lowJunction(gamepad1.b);
         groundJunction(gamepad1.a);
+        moveForward(gamepad1.dpad_up);
+        moveBackward(gamepad1.dpad_down);
     }
 
     public void driveCode() {
@@ -420,8 +439,23 @@ public class teleopALna extends OpMode {
             timer.pause();
 
             intakeServo.setPosition(intakeClose);
+            turretSetSouth();
             fourBarHigh();
             liftRest();
         }
     }
+
+    public void moveForward(boolean forward) {
+        if (forward == true) {
+            drive.followTrajectoryAsync(trajectoryForward);
+        }
+    }
+
+    public void moveBackward(boolean backward) {
+        if (backward == true) {
+            drive.followTrajectoryAsync(trajectoryBackward);
+        }
+    }
+
+
 }
