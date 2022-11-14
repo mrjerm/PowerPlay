@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.*;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,10 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-@Disabled
 public class TeleOp_Jeremy extends OpMode {
-/*TODO: REMOVE 45 DEGREE TURRET POSITIONS*/
-/*TODO: DR4B BRAKING TOO WEAK, CHANGE TOLERANCE FROM 5 TO 10 TICKS, DR4B JITTERING*/
+    /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
     public DcMotorEx motorDR4B;
@@ -37,42 +34,29 @@ public class TeleOp_Jeremy extends OpMode {
     public boolean downPrevious = false;
     public double dr4bPower = 1;
 
-
     public enum TurretState{
         SOUTH1,
-        SOUTHWEST,
         WEST,
-        NORTHWEST,
         NORTH,
-        NORTHEAST,
         EAST,
-        SOUTHEAST,
         SOUTH2;
         public TurretState next(){
             switch (this){
-                case NORTH: return NORTHEAST;
-                case NORTHEAST: return EAST;
-                case EAST: return SOUTHEAST;
-                case SOUTHEAST: return SOUTH2;
+                case SOUTH1: return WEST;
+                case WEST: return NORTH;
+                case NORTH: return EAST;
+                case EAST: return SOUTH2;
                 case SOUTH2: return SOUTH2;
-                case SOUTH1: return SOUTHWEST;
-                case SOUTHWEST: return WEST;
-                case WEST: return NORTHWEST;
-                case NORTHWEST: return NORTH;
                 default: return NORTH;
             }
         }
         public TurretState previous(){
             switch (this){
-                case NORTHWEST: return WEST;
-                case WEST: return SOUTHWEST;
-                case SOUTHWEST: return SOUTH1;
+                case SOUTH2: return EAST;
+                case EAST: return NORTH;
+                case NORTH: return WEST;
+                case WEST: return SOUTH1;
                 case SOUTH1: return SOUTH1;
-                case SOUTH2: return SOUTHEAST;
-                case SOUTHEAST: return EAST;
-                case EAST: return NORTHEAST;
-                case NORTHEAST: return NORTH;
-                case NORTH: return NORTHWEST;
                 default: return NORTH;
             }
         }
@@ -169,6 +153,7 @@ public class TeleOp_Jeremy extends OpMode {
 
         servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
+        servoGrabber.setPosition(grabberClose);
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
@@ -182,13 +167,22 @@ public class TeleOp_Jeremy extends OpMode {
         turtle(gamepad1.y, gamepad1.a);
         drive();
         spinny(gamepad2.left_bumper, gamepad2.right_bumper);
-        grippers(gamepad2.right_trigger > 0.3, gamepad2.left_trigger > 0.3);
+        grippers(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
         setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
         liftControl();
         v4bControl();
-        low(gamepad2.a);
+                low(gamepad2.a);
+
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
+    }
+
+        public void low(boolean keybind){
+        if (keybind) {
+            robotState = RobotState.PICKING_UP;
+            dr4bPower = DR4B_LOWPOWER;
+
+        }
     }
 
     public void setRobotState(boolean up, boolean down){
@@ -196,7 +190,6 @@ public class TeleOp_Jeremy extends OpMode {
         if (upCurrent && !upPrevious){
             robotState = robotState.next();
             dr4bPower = 1;
-
         }
         upPrevious = upCurrent;
 
@@ -331,7 +324,7 @@ public class TeleOp_Jeremy extends OpMode {
     }
 
     public void spinny(boolean left, boolean right){
-        if (v4BState != V4BState.GROUND && v4BState != V4BState.FLOOR) {
+        if (robotState != RobotState.PICKING_UP) {
             boolean turretLeftCurrent = left;
             if (turretLeftCurrent && !turretLeftPrevious) {
                 turretState = turretState.previous();
@@ -351,26 +344,14 @@ public class TeleOp_Jeremy extends OpMode {
                 case SOUTH2:
                     servoTurret.setPosition(south2);
                     break;
-                case SOUTHEAST:
-                    servoTurret.setPosition(southeast);
-                    break;
                 case EAST:
                     servoTurret.setPosition(east);
-                    break;
-                case NORTHEAST:
-                    servoTurret.setPosition(northeast);
                     break;
                 case NORTH:
                     servoTurret.setPosition(north);
                     break;
-                case NORTHWEST:
-                    servoTurret.setPosition(northwest);
-                    break;
                 case WEST:
                     servoTurret.setPosition(west);
-                    break;
-                case SOUTHWEST:
-                    servoTurret.setPosition(southwest);
                     break;
                 default:
                     telemetry.addData("turret status", "we messed up 💀");
@@ -405,12 +386,5 @@ public class TeleOp_Jeremy extends OpMode {
     public void setV4B(double position){
         servoV4BL.setPosition(position * V4B_SCALELEFT);
         servoV4BR.setPosition(position);
-    }
-
-    public void low(boolean keybind){
-        if (keybind) {
-            robotState = RobotState.PICKING_UP;
-            dr4bPower = DR4B_LOWPOWER;
-        }
     }
 }
