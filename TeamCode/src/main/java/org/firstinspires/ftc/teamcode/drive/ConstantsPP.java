@@ -5,7 +5,7 @@ public class ConstantsPP {
     //DR4B values
     public static int DR4B_GROUNDFLOORTURRETCLEARANCE = 0;
     public static int DR4B_LOWJUNCTION = 185;
-    public static int DR4B_MIDHIGHJUNCTION = 350;
+    public static int DR4B_MIDHIGHJUNCTION = 365;
     public static double DR4B_LOWPOWER = 0.15;
 
     //V4B values
@@ -23,6 +23,7 @@ public class ConstantsPP {
     public static double min = 0.5;
     public static double max = 1;
     public static double speedLimit = min;
+    public static double accel = 0.6;
 
     //grabber positions
     public static double grabberClose = 0.37;

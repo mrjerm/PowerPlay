@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.UCFSDScrimmage;
+package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORTURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
@@ -31,7 +31,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-public class TeleOp_UCFSDScrimmage extends OpMode {
+public class TeleOp_SinglePlayer extends OpMode {
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
@@ -188,22 +188,31 @@ public class TeleOp_UCFSDScrimmage extends OpMode {
     public void loop() {
         turtle(gamepad1.y, gamepad1.a);
         drive();
-        spinny(gamepad2.left_bumper, gamepad2.right_bumper);
-        grippers(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
-        setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
+        spinny(gamepad1.left_bumper, gamepad1.right_bumper);
+        grippers(gamepad1.left_trigger > 0.3, gamepad1.right_trigger > 0.3);
+        setRobotState(gamepad1.dpad_up, gamepad1.dpad_down);
         liftControl();
         v4bControl();
-        low(gamepad2.a);
+        low(gamepad1.x);
+        high(gamepad1.b);
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
     }
 
-        public void low(boolean keybind){
+    public void high(boolean keybind){
+        if (keybind){
+            robotState = RobotState.HIGH_JUNCTION;
+            dr4bPower = 1;
+            turretState = TurretState.WEST;
+        }
+    }
+
+    public void low(boolean keybind){
         if (keybind) {
             robotState = RobotState.PICKING_UP;
             dr4bPower = DR4B_LOWPOWER;
-
+            turretState = TurretState.SOUTH1;
         }
     }
 
