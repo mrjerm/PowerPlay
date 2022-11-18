@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.teleop;
 
+import static com.qualcomm.robotcore.hardware.DcMotorEx.*;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -11,6 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.TimerTiming;
@@ -20,6 +23,8 @@ import org.firstinspires.ftc.teamcode.drive.TimerTiming;
 @Disabled
 
 public class teleopALna extends OpMode {
+
+    Pose2d newPose;
 
     private DcMotorEx frontLeft;
     private DcMotorEx frontRight;
@@ -68,6 +73,8 @@ public class teleopALna extends OpMode {
     private double northWestPos = 0.87;
     private double fullrotation = 0.98;
 
+    List<DcMotorEx> motors = new ArrayList<>();
+
     public boolean turretMoving = false;
 
     public int increment = 0;
@@ -80,7 +87,9 @@ public class teleopALna extends OpMode {
 
     public static double driveDistance = 0;
 
+
     SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
 
     Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
             .forward(driveDistance)
@@ -91,7 +100,6 @@ public class teleopALna extends OpMode {
             .build();
 
 
-
     @Override
     public void init() {
         //declare motors
@@ -99,17 +107,21 @@ public class teleopALna extends OpMode {
         frontRight = hardwareMap.get(DcMotorEx.class, "Motor FR");
         backLeft = hardwareMap.get(DcMotorEx.class, "Motor BL");
         backRight = hardwareMap.get(DcMotorEx.class, "Motor BR");
-        frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
-        backLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        frontLeft.setDirection(Direction.REVERSE);
+        backLeft.setDirection(Direction.REVERSE);
 
         liftMotor = hardwareMap.get(DcMotorEx.class, "Motor DR4B");
 
         //set zero power behavior
-        frontLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        liftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        frontLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        liftMotor.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
+        motors.add(frontLeft);
+        motors.add(frontRight);
+        motors.add(backLeft);
+        motors.add(backRight);
 
         // Reset encoders
 
@@ -147,6 +159,7 @@ public class teleopALna extends OpMode {
     }
 
     public void driveCode() {
+
         float x1 = gamepad1.left_stick_x;
         float y1 = -gamepad1.left_stick_y;
         float x2 = gamepad1.right_stick_x;
@@ -161,7 +174,15 @@ public class teleopALna extends OpMode {
         backLeft.setPower(fr);
         backRight.setPower(br);
     }
-    
+
+    public void switchDriveWithEncoder() {
+        if (gamepad1.left_stick_x != 0|| gamepad1.left_stick_y != 0|| gamepad1.right_stick_x != 0|| gamepad1.right_stick_y != 0) {
+            for (DcMotorEx motor : motors){
+                motor.setMode(RunMode.RUN_WITHOUT_ENCODER);
+            }
+        }
+    }
+
     public void liftUp(boolean up) {
         isMoving = true;
         if (liftIncrement >=0 && liftIncrement <=2) {
@@ -448,12 +469,14 @@ public class teleopALna extends OpMode {
 
     public void moveForward(boolean forward) {
         if (forward == true) {
+            newPose = drive.getPoseEstimate();
             drive.followTrajectoryAsync(trajectoryForward);
         }
     }
 
     public void moveBackward(boolean backward) {
         if (backward == true) {
+            newPose = drive.getPoseEstimate();
             drive.followTrajectoryAsync(trajectoryBackward);
         }
     }
