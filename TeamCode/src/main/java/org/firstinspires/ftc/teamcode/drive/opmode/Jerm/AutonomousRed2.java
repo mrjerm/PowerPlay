@@ -189,19 +189,22 @@ public class AutonomousRed2 extends LinearOpMode {
         }
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
+                //prep to drop
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     servoTurret.setPosition(northeast);
                     setHigh();
                 })
-                .lineToConstantHeading(new Vector2d(35, -12)) //move to the (4, 3) junction
+                .lineToConstantHeading(new Vector2d(35, -34)) //move to the (4, 2) junction
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-
+                    openGrabber();
                 })
+                .UNSTABLE_addTemporalMarkerOffset()
+                .lineToConstantHeading(new Vector2d(35, -34)) //move to the starter stack
                 .lineToConstantHeading(new Vector2d(55, -12)) //move to the starter stack
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     //pick up cone 1 from starter stack
                 })
-                .lineToConstantHeading(new Vector2d(35, -12)) //move to the (4, 3) junction
+                .lineToConstantHeading(new Vector2d(12, -12)) //move to the (4, 3) junction
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     //score cone 1
                 })
@@ -209,7 +212,7 @@ public class AutonomousRed2 extends LinearOpMode {
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     //pick up cone 2
                 })
-                .lineToConstantHeading(new Vector2d(35, -12)) //move to the (4, 3) junction
+                .lineToConstantHeading(new Vector2d(12, -12)) //move to the (4, 3) junction
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     //score cone 2
                 })
@@ -217,7 +220,7 @@ public class AutonomousRed2 extends LinearOpMode {
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     //pick up cone 3
                 })
-                .lineToConstantHeading(new Vector2d(35, -12)) //move to the (4, 3) junction
+                .lineToConstantHeading(new Vector2d(12, -12)) //move to the (4, 3) junction
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     //score cone 3
                 })
@@ -225,7 +228,7 @@ public class AutonomousRed2 extends LinearOpMode {
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     //pick up cone 4
                 })
-                .lineToConstantHeading(new Vector2d(35, -12)) //move to the (4, 3) junction
+                .lineToConstantHeading(new Vector2d(12, -12)) //move to the (4, 3) junction
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     //score cone 4
                 })
@@ -233,7 +236,7 @@ public class AutonomousRed2 extends LinearOpMode {
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     //pick up cone 5
                 })
-                .lineToConstantHeading(new Vector2d(35, -12)) //move to the (4, 3) junction
+                .lineToConstantHeading(new Vector2d(12, -12)) //move to the (4, 3) junction
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     //score cone 5
                 })

@@ -15,17 +15,18 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 13)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(35, -62, Math.toRadians(90)))
+                                .lineToConstantHeading(new Vector2d(35, -34))
                                 .lineToConstantHeading(new Vector2d(35, -12))
                                 .lineToConstantHeading(new Vector2d(55, -12))
-                                .lineToConstantHeading(new Vector2d(35, -12))
+                                .lineToConstantHeading(new Vector2d(12, -12))
                                 .lineToConstantHeading(new Vector2d(55, -12))
-                                .lineToConstantHeading(new Vector2d(35, -12))
+                                .lineToConstantHeading(new Vector2d(12, -12))
                                 .lineToConstantHeading(new Vector2d(55, -12))
-                                .lineToConstantHeading(new Vector2d(35, -12))
+                                .lineToConstantHeading(new Vector2d(12, -12))
                                 .lineToConstantHeading(new Vector2d(55, -12))
-                                .lineToConstantHeading(new Vector2d(35, -12))
+                                .lineToConstantHeading(new Vector2d(12, -12))
                                 .lineToConstantHeading(new Vector2d(55, -12))
-                                .lineToConstantHeading(new Vector2d(35, -12))
+                                .lineToConstantHeading(new Vector2d(12, -12))
                                 .build()
                 );
 
