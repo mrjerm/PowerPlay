@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.drive.TimerTiming;
 
 
 @TeleOp
-@Disabled
+
 
 public class teleopALna extends OpMode {
 
@@ -38,11 +38,11 @@ public class teleopALna extends OpMode {
     private Servo fourBarServoRight;
     private Servo intakeServo;
 
-    private double fourBarRetractedPos = 0.18;
-    private double fourBarHighPos = 0.33;
+    private double fourBarRetractedPos = 0.13;
+    private double fourBarHighPos = 0.4;
     private double fourBarDiagonalPos = 0.5;
-    private double fourBarHorizontalPos = 0.65;
-    private double fourBarDownPos = 0.85;
+    private double fourBarHorizontalPos = 0.64;
+    private double fourBarDownPos = 0.86;
 
     public boolean fourBarHighCheck = false;
     public boolean fourBarRetractedCheck = false;
@@ -63,17 +63,17 @@ public class teleopALna extends OpMode {
     public static ArrayList<Integer> FinalDR4Barray = new ArrayList<Integer>(Arrays.<Integer>asList(0, 8, 47, 144));
     public int liftIncrement = 0;
 
-    private double northPos = 0.0;
-    private double northEastPos = 0.12;
-    private double eastPos = 0.23;
-    private double southEastPos = 0.36;
-    private double southPos = 0.49;
-    private double southWestPos = 0.62;
-    private double westPos = 0.75;
-    private double northWestPos = 0.87;
+    private double southPos = 0.01;
+    private double southWestPos = 0.12;
+    private double westPos = 0.23;
+    private double northWestPos = 0.36;
+    private double northPos = 0.48;
+    private double northEastPos = 0.62;
+    private double eastPos = 0.74;
+    private double southEastPos = 0.87;
     private double fullrotation = 0.98;
 
-    List<DcMotorEx> motors = new ArrayList<>();
+//    List<DcMotorEx> motors = new ArrayList<>();
 
     public boolean turretMoving = false;
 
@@ -87,17 +87,19 @@ public class teleopALna extends OpMode {
 
     public static double driveDistance = 0;
 
+//
+//    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+//
+//
+//    Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
+//            .forward(driveDistance)
+//            .build();
+//
+//    Trajectory trajectoryBackward = drive.trajectoryBuilder(new Pose2d())
+//            .back(driveDistance)
+//            .build();
 
-    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-
-    Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
-            .forward(driveDistance)
-            .build();
-
-    Trajectory trajectoryBackward = drive.trajectoryBuilder(new Pose2d())
-            .back(driveDistance)
-            .build();
 
 
     @Override
@@ -107,26 +109,28 @@ public class teleopALna extends OpMode {
         frontRight = hardwareMap.get(DcMotorEx.class, "Motor FR");
         backLeft = hardwareMap.get(DcMotorEx.class, "Motor BL");
         backRight = hardwareMap.get(DcMotorEx.class, "Motor BR");
-        frontLeft.setDirection(Direction.REVERSE);
-        backLeft.setDirection(Direction.REVERSE);
+        frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        backLeft.setDirection(DcMotorEx.Direction.REVERSE);
 
         liftMotor = hardwareMap.get(DcMotorEx.class, "Motor DR4B");
 
         //set zero power behavior
-        frontLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
-        liftMotor.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
-        motors.add(frontLeft);
-        motors.add(frontRight);
-        motors.add(backLeft);
-        motors.add(backRight);
+//        frontLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//        frontRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//        backLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//        backRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        liftMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//        motors.add(frontLeft);
+//        motors.add(frontRight);
+//        motors.add(backLeft);
+//        motors.add(backRight);
 
-        // Reset encoders
 
         //invert motors
-        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        // Reset encoders
+        liftMotor.setMode(RunMode.STOP_AND_RESET_ENCODER);
 
         //declare servos
         turretServo = hardwareMap.get(Servo.class, "Servo Turret");
@@ -135,27 +139,29 @@ public class teleopALna extends OpMode {
         fourBarServoRight = hardwareMap.get(Servo.class, "Servo V4BR");
         fourBarServoLeft.setDirection(Servo.Direction.REVERSE);
 
+        intakeServo.setPosition(intakeClose);
         fourBarServoLeft.setPosition(fourBarRetractedPos);
         fourBarServoRight.setPosition(fourBarRetractedPos);
     }
 
     @Override
     public void loop() {
+        driveCode();
         liftUp(gamepad2.dpad_up);
         liftDown(gamepad2.dpad_down);
         turretPositive(gamepad2.dpad_right);
         turretNegative(gamepad2.dpad_left);
-        movev4bPositive(gamepad2.dpad_right);
-        movev4BNegative(gamepad2.dpad_left);
+        movev4bPositive(gamepad2.right_bumper);
+        movev4BNegative(gamepad2.left_bumper);
         intakeOpen(gamepad1.left_bumper);
         intakeClose(gamepad1.right_bumper);
         highJunction(gamepad1.y);
         midJunction(gamepad1.x);
         lowJunction(gamepad1.b);
         groundJunction(gamepad1.a);
-        moveForward(gamepad1.dpad_up);
-        moveBackward(gamepad1.dpad_down);
-        drive.update();
+//        moveForward(gamepad1.dpad_up);
+//        moveBackward(gamepad1.dpad_down);
+//        drive.update();
     }
 
     public void driveCode() {
@@ -175,13 +181,17 @@ public class teleopALna extends OpMode {
         backRight.setPower(br);
     }
 
-    public void switchDriveWithEncoder() {
-        if (gamepad1.left_stick_x != 0|| gamepad1.left_stick_y != 0|| gamepad1.right_stick_x != 0|| gamepad1.right_stick_y != 0) {
-            for (DcMotorEx motor : motors){
-                motor.setMode(RunMode.RUN_WITHOUT_ENCODER);
-            }
-        }
-    }
+//    public void switchDriveWithEncoder() {
+//        if (gamepad1.left_stick_x != 0|| gamepad1.left_stick_y != 0|| gamepad1.right_stick_x != 0|| gamepad1.right_stick_y != 0) {
+//            frontLeft.setMode(RunMode.RUN_WITHOUT_ENCODER);
+//            frontRight.setMode(RunMode.RUN_WITHOUT_ENCODER);
+//            backLeft.setMode(RunMode.RUN_WITHOUT_ENCODER);
+//            backRight.setMode(RunMode.RUN_WITHOUT_ENCODER);
+////            for (DcMotorEx motor : motors){
+////                motor.setMode(RunMode.RUN_WITHOUT_ENCODER);
+////            }
+//        }
+//    }
 
     public void liftUp(boolean up) {
         isMoving = true;
@@ -467,19 +477,19 @@ public class teleopALna extends OpMode {
         }
     }
 
-    public void moveForward(boolean forward) {
-        if (forward == true) {
-            newPose = drive.getPoseEstimate();
-            drive.followTrajectoryAsync(trajectoryForward);
-        }
-    }
-
-    public void moveBackward(boolean backward) {
-        if (backward == true) {
-            newPose = drive.getPoseEstimate();
-            drive.followTrajectoryAsync(trajectoryBackward);
-        }
-    }
+//    public void moveForward(boolean forward) {
+//        if (forward == true) {
+//            newPose = drive.getPoseEstimate();
+//            drive.followTrajectoryAsync(trajectoryForward);
+//        }
+//    }
+//
+//    public void moveBackward(boolean backward) {
+//        if (backward == true) {
+//            newPose = drive.getPoseEstimate();
+//            drive.followTrajectoryAsync(trajectoryBackward);
+//        }
+//    }
 
 
 }
