@@ -149,7 +149,6 @@ public class TeleOp_Jeremy extends OpMode {
         motorDR4B = hardwareMap.get(DcMotorEx.class, "Motor DR4B");
         motorDR4B.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorDR4B.setDirection(DcMotorEx.Direction.REVERSE);
-        motorDR4B.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
@@ -171,7 +170,7 @@ public class TeleOp_Jeremy extends OpMode {
         setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
         liftControl();
         v4bControl();
-                low(gamepad2.a);
+        low(gamepad2.a);
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/

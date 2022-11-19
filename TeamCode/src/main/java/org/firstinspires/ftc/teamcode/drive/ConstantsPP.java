@@ -19,6 +19,13 @@ public class ConstantsPP {
     public static double V4B_LOWMID = 0.8;
     public static double V4B_SCALELEFT = 1.01162791;
 
+    //cone 1 is top cone, cone 5 is bottom cone
+    public static double V4B_CONE1 = 0.67;
+    public static double V4B_CONE2 = 0.69;
+    public static double V4B_CONE3 = 0.75;
+    public static double V4B_CONE4 = 0.78;
+    public static double V4B_CONE5 = 0.84;
+
     //drivetrain min/max speeds
     public static double min = 0.5;
     public static double max = 1;
