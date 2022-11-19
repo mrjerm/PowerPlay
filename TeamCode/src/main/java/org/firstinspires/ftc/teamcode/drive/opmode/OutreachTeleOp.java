@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
+package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import static org.firstinspires.ftc.teamcode.drive.ConstantsFF.*;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -28,52 +28,71 @@ public class OutreachTeleOp extends OpMode {
     public Servo clawServo;
 
 
+    public ColorSensor colorSensor;
+
     //init variables
-    boolean leftDuckOn = false;
-    boolean rightDuckOn = false;
     boolean slomo = true;
     double horizontalSlidePower = 0;
 
     boolean changeLiftModePrevious = false;
     boolean moveUpPrevious = false;
     boolean moveDownPrevious = false;
+    public double time = 0;
+    public boolean freightDetected = false;
+    public boolean readyToLift = false;
+    public boolean timeResetted = false;
+    public boolean freightInGrabber = false;
+    public double timer = 0;
 
-    public enum LiftMode{
+    public enum LiftMode {
         MACRO,
         MICRO;
-        public LiftMode flip(){
-            switch (this){
-                case MACRO: return MICRO;
-                case MICRO: return MACRO;
-                default: return MACRO;
+
+        public LiftMode flip() {
+            switch (this) {
+                case MACRO:
+                    return MICRO;
+                case MICRO:
+                    return MACRO;
+                default:
+                    return MACRO;
             }
         }
     }
 
     LiftMode liftMode = LiftMode.MACRO;
 
-    public enum LiftState{
+    public enum LiftState {
         REST,
         LOW,
         MID,
         HIGH,
         CAP;
-        public LiftState next(){
-            switch (this){
-                case REST: return LOW;
-                case LOW: return MID;
-                case MID: return HIGH;
+
+        public LiftState next() {
+            switch (this) {
+                case REST:
+                    return LOW;
+                case LOW:
+                    return MID;
+                case MID:
+                    return HIGH;
                 case HIGH:
                 case CAP:
                     return CAP;
-                default: return REST;
+                default:
+                    return REST;
             }
         }
-        public LiftState previous(){
-            switch (this){
-                case CAP: return HIGH;
-                case HIGH: return MID;
-                case MID: return LOW;
+
+        public LiftState previous() {
+            switch (this) {
+                case CAP:
+                    return HIGH;
+                case HIGH:
+                    return MID;
+                case MID:
+                    return LOW;
                 case REST:
                 case LOW:
                 default:
@@ -84,11 +103,13 @@ public class OutreachTeleOp extends OpMode {
 
     LiftState liftState = LiftState.REST;
 
-    public enum ClawState{
+    public enum ClawState {
         CLAW_OPEN,
         CLAW_ClOSE,
         CLAW_REST
-    };
+    }
+
+    ;
 
     ClawState clawState = ClawState.CLAW_REST;
 
@@ -113,20 +134,22 @@ public class OutreachTeleOp extends OpMode {
 
         intake = hardwareMap.get(DcMotorEx.class, "Motor Intake");
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
-//
+
         DR4BServo = hardwareMap.get(Servo.class, "Servo DR4B");
         DR4BServo.setDirection(Servo.Direction.FORWARD);
-//
+
         duckSpinnerLeft = hardwareMap.get(CRServo.class, "Servo Duck Spinner Left");
         duckSpinnerRight = hardwareMap.get(CRServo.class, "Servo Duck Spinner Right");
         duckSpinnerLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         duckSpinnerRight.setDirection(DcMotorSimple.Direction.REVERSE);
-//        /*TODO: Reverse one of these. */
-//
+        /*TODO: Reverse one of these. */
+
         clawServo = hardwareMap.get(Servo.class, "Servo Claw");
         clawServo.setDirection(Servo.Direction.FORWARD);
-//
 
+
+
+        colorSensor = hardwareMap.get(ColorSensor.class, "Color Sensor");
 
         telemetry.addData("Status", "Ready!");
         telemetry.update();
@@ -145,7 +168,17 @@ public class OutreachTeleOp extends OpMode {
         setSlomo(gamepad1.a, gamepad1.y);
         midPiece(gamepad1.x);
         switchLiftMode(gamepad1.b);
+        closey();
     }
+
+    public void closey(){
+        if (liftState == LiftState.LOW || liftState == LiftState.REST){
+            clawState = ClawState.CLAW_REST;
+        }
+    }
+
+
+
 
     public void midPiece(boolean keybind){
         if (keybind){
@@ -234,7 +267,35 @@ public class OutreachTeleOp extends OpMode {
     }
 
     public void intek(boolean forward, boolean reverse){
-        intake.setPower(forward ? 0.8 : reverse ? -0.8 : 0);
+        if (forward){
+            intake.setPower(0.8);
+            if (colorSensor.red() > 400){
+                freightDetected = true;
+            }
+            if (colorSensor.red() < 400){
+                freightDetected = false;
+            }
+            if (freightDetected){
+                intake.setPower(-0.8);
+                timer = getRuntime();
+                while (getRuntime() - timer <= 0.3){
+                    drive(slomo);
+                }
+                liftState = LiftState.HIGH;
+                clawState = ClawState.CLAW_ClOSE;
+            }
+        }
+
+        if (reverse){
+            intake.setPower(-0.8);
+        }
+        if (!forward && !reverse){
+            intake.setPower(0);
+        }
+
+        telemetry.addData("red value", colorSensor.red());
+        telemetry.addData("freight detected?", freightDetected);
+        telemetry.update();
     }
 
     public void setClawServo(double position) {
