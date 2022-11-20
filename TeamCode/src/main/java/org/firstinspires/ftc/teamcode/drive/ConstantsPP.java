@@ -1,5 +1,11 @@
 package org.firstinspires.ftc.teamcode.drive;
 
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ConstantsPP {
 
     //DR4B values
@@ -25,6 +31,8 @@ public class ConstantsPP {
     public static double V4B_CONE3 = 0.75;
     public static double V4B_CONE4 = 0.78;
     public static double V4B_CONE5 = 0.84;
+
+    public static List<Double> starterStack = Arrays.asList(V4B_CONE1, V4B_CONE2, V4B_CONE3, V4B_CONE4, V4B_CONE5);
 
     //drivetrain min/max speeds
     public static double min = 0.5;
