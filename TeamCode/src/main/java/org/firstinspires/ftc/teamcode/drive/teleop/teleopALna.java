@@ -147,14 +147,10 @@ public class teleopALna extends OpMode {
     @Override
     public void loop() {
         driveCode();
-        liftUp(gamepad2.dpad_up);
-        liftDown(gamepad2.dpad_down);
-        turretPositive(gamepad2.dpad_right);
-        turretNegative(gamepad2.dpad_left);
-        movev4bPositive(gamepad2.right_bumper);
-        movev4BNegative(gamepad2.left_bumper);
-        intakeOpen(gamepad1.left_bumper);
-        intakeClose(gamepad1.right_bumper);
+        liftmovement(gamepad2.dpad_up, gamepad2.dpad_down);
+        turretmovement(gamepad2.dpad_right, gamepad2.dpad_left);
+        v4bmovement(gamepad2.right_bumper, gamepad2.left_bumper);
+        intakemovement(gamepad1.left_bumper, gamepad1.right_bumper);
         highJunction(gamepad1.y);
         midJunction(gamepad1.x);
         lowJunction(gamepad1.b);
@@ -193,41 +189,41 @@ public class teleopALna extends OpMode {
 //        }
 //    }
 
-    public void liftUp(boolean up) {
-        isMoving = true;
-        if (liftIncrement >=0 && liftIncrement <=2) {
-            liftIncrement++;
-        } else {
-            liftIncrement = liftIncrement;
-        }
-        liftMotor.setTargetPosition(FinalDR4Barray.get(liftIncrement)); // an integer representing desired tick count
+    public void liftmovement(boolean up, boolean down) {
+        if (up) {
+            isMoving = true;
+            if (liftIncrement >=0 && liftIncrement <=2) {
+                liftIncrement++;
+            } else {
+                liftIncrement = liftIncrement;
+            }
+            liftMotor.setTargetPosition(FinalDR4Barray.get(liftIncrement)); // an integer representing desired tick count
 
-        if (Math.abs(liftMotor.getCurrentPosition() - liftMotor.getTargetPosition()) < 5){
-            liftMotor.setPower(0);
-        } else {
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setPower(1);
+            if (Math.abs(liftMotor.getCurrentPosition() - liftMotor.getTargetPosition()) < 5){
+                liftMotor.setPower(0);
+            } else {
+                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftMotor.setPower(1);
+            }
+        }
+        if (down) {
+            if (liftIncrement >=1 && liftIncrement <=3) {
+                liftIncrement--;
+            } else {
+                liftIncrement = liftIncrement;
+            }
+            liftMotor.setTargetPosition(FinalDR4Barray.get(liftIncrement)); // an integer representing desired tick count
+
+            if (Math.abs(liftMotor.getCurrentPosition() - liftMotor.getTargetPosition()) < 5){
+                liftMotor.setPower(0);
+            } else {
+                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                liftMotor.setPower(1);
+            }
         }
     }
-    
-    public void liftDown(boolean down) {
-        isMoving = true;
 
-        // set the target position
-        if (liftIncrement >=0 && liftIncrement <=2) {
-            liftIncrement++;
-        } else {
-            liftIncrement = liftIncrement;
-        }
-        liftMotor.setTargetPosition(FinalDR4Barray.get(liftIncrement)); // an integer representing desired tick count
 
-        if (Math.abs(liftMotor.getCurrentPosition() - liftMotor.getTargetPosition()) < 5){
-            liftMotor.setPower(0);
-        } else {
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setPower(1);
-        }
-    }
     public void liftRest () {
         isMoving = true;
         liftMotor.setTargetPosition(restPos);
@@ -272,45 +268,48 @@ public class teleopALna extends OpMode {
         }
     }
     
-    public void turretPositive(boolean moveturretpositive) {
+    public void turretmovement(boolean positiveturret, boolean negativeturret) {
         turretMoving = true;
-        if (fourBarDownCheck == true) {
-            fourBarHigh();
-            if (increment >=0 && increment <=6) {
-                increment++;
+
+        if (positiveturret) {
+            if (fourBarDownCheck == true) {
+                fourBarHigh();
+                if (increment >= 0 && increment <= 6) {
+                    increment++;
+                } else {
+                    increment = increment;
+                }
+                turretServo.setPosition(TurretDistanceArray.get(increment));
             } else {
-                increment = increment;
+                if (increment >= 0 && increment <= 6) {
+                    increment++;
+                } else {
+                    increment = increment;
+                }
+                turretServo.setPosition(TurretDistanceArray.get(increment));
             }
-            turretServo.setPosition(TurretDistanceArray.get(increment));
-        } else {
-            if (increment >= 0 && increment <= 6) {
-                increment++;
+        }
+
+        if (negativeturret) {
+            if (fourBarDownCheck == true) {
+                fourBarHigh();
+                if (increment >=1 && increment <=7) {
+                    increment--;
+                } else {
+                    increment = increment;
+                }
+                turretServo.setPosition(TurretDistanceArray.get(increment));
             } else {
-                increment = increment;
+                if (increment >= 1 && increment <= 7) {
+                    increment--;
+                } else {
+                    increment = increment;
+                }
+                turretServo.setPosition(TurretDistanceArray.get(increment));
             }
-            turretServo.setPosition(TurretDistanceArray.get(increment));
         }
     }
 
-    public void turretNegative(boolean moveturretnegative) {
-        turretMoving = true;
-        if (fourBarDownCheck == true) {
-            fourBarHigh();
-            if (increment >=1 && increment <=7) {
-                increment--;
-            } else {
-                increment = increment;
-            }
-            turretServo.setPosition(TurretDistanceArray.get(increment));
-        } else {
-            if (increment >= 1 && increment <= 7) {
-                increment--;
-            } else {
-                increment = increment;
-            }
-            turretServo.setPosition(TurretDistanceArray.get(increment));
-        }
-    }
 
     public void turretSetNorth() {
         turretMoving = true;
@@ -352,32 +351,37 @@ public class teleopALna extends OpMode {
         turretServo.setPosition(northWestPos);
     }
     
-    public void intakeOpen(boolean openintake) {
-        intakeServo.setPosition(intakeOpen);
-    }
-
-    public void intakeClose(boolean closeintake) {
-        intakeServo.setPosition(intakeClose);
-    }
-
-    public void movev4bPositive (boolean v4bup) {
-        if (v4BIncrement >= 0 && v4BIncrement <= 3) {
-            v4BIncrement++;
-        } else {
-            v4BIncrement = v4BIncrement;
+    public void intakemovement(boolean openintake, boolean closeintake) {
+        if (openintake) {
+            intakeServo.setPosition(intakeOpen);
         }
-        fourBarServoLeft.setPosition(Finalv4bArray.get(v4BIncrement));
-        fourBarServoRight.setPosition(Finalv4bArray.get(v4BIncrement));
+
+        if (closeintake) {
+            intakeServo.setPosition(intakeClose);
+        }
     }
 
-    public void movev4BNegative (boolean v4bdown) {
-        if (v4BIncrement >= 1 && v4BIncrement <= 4) {
-            v4BIncrement--;
-        } else {
-            v4BIncrement = v4BIncrement;
+    public void v4bmovement (boolean v4bup, boolean v4bdown) {
+
+        if (v4bup) {
+            if (v4BIncrement >= 0 && v4BIncrement <= 3) {
+                v4BIncrement++;
+            } else {
+                v4BIncrement = v4BIncrement;
+            }
+            fourBarServoLeft.setPosition(Finalv4bArray.get(v4BIncrement));
+            fourBarServoRight.setPosition(Finalv4bArray.get(v4BIncrement));
         }
-        fourBarServoLeft.setPosition(Finalv4bArray.get(v4BIncrement));
-        fourBarServoRight.setPosition(Finalv4bArray.get(v4BIncrement));
+
+        if (v4bdown) {
+            if (v4BIncrement >= 1 && v4BIncrement <= 4) {
+                v4BIncrement--;
+            } else {
+                v4BIncrement = v4BIncrement;
+            }
+            fourBarServoLeft.setPosition(Finalv4bArray.get(v4BIncrement));
+            fourBarServoRight.setPosition(Finalv4bArray.get(v4BIncrement));
+        }
     }
 
     public void fourBarRetracted() {
