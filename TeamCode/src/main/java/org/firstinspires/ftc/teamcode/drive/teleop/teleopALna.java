@@ -87,6 +87,8 @@ public class teleopALna extends OpMode {
 
     public static double driveDistance = 0;
 
+    private double ticksPerRotation = 0;
+
 //
 //    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 //
@@ -186,6 +188,12 @@ public class teleopALna extends OpMode {
 ////            for (DcMotorEx motor : motors){
 ////                motor.setMode(RunMode.RUN_WITHOUT_ENCODER);
 ////            }
+//        }
+//    }
+
+//    public void encoderDrive(boolean driveup, boolean drivedown, boolean driveleft, boolean driveright) {
+//        if (driveup) {
+//            float distance = (ticksPerRotation * driveDistance)/()
 //        }
 //    }
 
@@ -436,35 +444,35 @@ public class teleopALna extends OpMode {
     }
 
     public void highJunction(boolean junctionhigh) {
-        if (junctionhigh == true) {
+        if (junctionhigh) {
             liftHigh();
             fourBarDiagonal();
         }
     }
 
     public void midJunction (boolean junctionmid) {
-        if (junctionmid == true) {
+        if (junctionmid) {
             liftMid();
             fourBarHorizontal();
         }
     }
 
     public void lowJunction (boolean junctionlow) {
-        if (junctionlow == true) {
+        if (junctionlow) {
             liftLow();
             fourBarHorizontal();
         }
     }
 
     public void groundJunction (boolean junctionGround) {
-        if (junctionGround == true) {
+        if (junctionGround) {
             liftLow();
             fourBarDown();
         }
     }
 
     public void score (boolean scoring) {
-        if (scoring == true) {
+        if (scoring) {
             intakeServo.setPosition(intakeOpen);
 
             timer = new TimerTiming.Timer(200);
