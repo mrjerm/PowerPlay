@@ -37,6 +37,7 @@ public class teleopALna extends OpMode {
     private Servo fourBarServoLeft;
     private Servo fourBarServoRight;
     private Servo intakeServo;
+    private Servo deroakservo;
 
     private double fourBarRetractedPos = 0.13;
     private double fourBarHighPos = 0.4;
@@ -54,13 +55,13 @@ public class teleopALna extends OpMode {
     public int v4BIncrement = 0;
     public static ArrayList<Double> Finalv4bArray = new ArrayList<Double>(Arrays.<Double>asList(0.18, 0.33, 0.5, 0.65, 0.85));
 
-    private int highJunctionPos = 144;
-    private int midJunctionPos = 47;
-    private int lowJunctionPos = 8;
+    private int highJunctionPos = 365;
+    private int midJunctionPos = 365;
+    private int lowJunctionPos = 185;
     private int restPos = 0;
     private boolean fineTune = false;
     private boolean isMoving = false;
-    public static ArrayList<Integer> FinalDR4Barray = new ArrayList<Integer>(Arrays.<Integer>asList(0, 8, 47, 144));
+    public static ArrayList<Integer> FinalDR4Barray = new ArrayList<Integer>(Arrays.<Integer>asList(0, 185, 365));
     public int liftIncrement = 0;
 
     private double southPos = 0.01;
@@ -73,12 +74,19 @@ public class teleopALna extends OpMode {
     private double southEastPos = 0.87;
     private double fullrotation = 0.98;
 
+    public boolean leftPrevious = false;
+    public boolean rightPrevious = false;
+    public boolean upPrevious = false;
+    public boolean downPrevious = false;
+    public boolean extendPrevious = false;
+    public boolean retractPrevious = false;
+
 //    List<DcMotorEx> motors = new ArrayList<>();
 
     public boolean turretMoving = false;
 
     public int increment = 0;
-    public static ArrayList<Double> TurretDistanceArray = new ArrayList<Double>(Arrays.<Double>asList(0.0, 0.12, 0.23, 0.36, 0.49, 0.62, 0.75, 0.87, 0.98));
+    public static ArrayList<Double> TurretDistanceArray = new ArrayList<Double>(Arrays.<Double>asList(0.01, 0.12, 0.23, 0.36, 0.48, 0.62, 0.74, 0.87, 0.98));
 
     public double intakeOpen = 0.2;
     public double intakeClose = 0.38;
@@ -88,6 +96,8 @@ public class teleopALna extends OpMode {
     public static double driveDistance = 0;
 
     private double ticksPerRotation = 0;
+
+
 
 //
 //    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -141,6 +151,8 @@ public class teleopALna extends OpMode {
         fourBarServoRight = hardwareMap.get(Servo.class, "Servo V4BR");
         fourBarServoLeft.setDirection(Servo.Direction.REVERSE);
 
+        deroakservo = hardwareMap.get(Servo.class, "deroakservo");
+
         intakeServo.setPosition(intakeClose);
         fourBarServoLeft.setPosition(fourBarRetractedPos);
         fourBarServoRight.setPosition(fourBarRetractedPos);
@@ -148,6 +160,12 @@ public class teleopALna extends OpMode {
 
     @Override
     public void loop() {
+        if (increment > 2) {
+            increment = 2;
+        }
+        if (increment < 0) {
+            increment = 0;
+        }
         driveCode();
         liftmovement(gamepad2.dpad_up, gamepad2.dpad_down);
         turretmovement(gamepad2.dpad_right, gamepad2.dpad_left);
@@ -157,6 +175,8 @@ public class teleopALna extends OpMode {
         midJunction(gamepad1.x);
         lowJunction(gamepad1.b);
         groundJunction(gamepad1.a);
+        intaketest(gamepad2.y, gamepad2.x);
+
 //        moveForward(gamepad1.dpad_up);
 //        moveBackward(gamepad1.dpad_down);
 //        drive.update();
@@ -198,9 +218,10 @@ public class teleopALna extends OpMode {
 //    }
 
     public void liftmovement(boolean up, boolean down) {
-        if (up) {
+        boolean upCurrent = up;
+        if (upCurrent && !upPrevious) {
             isMoving = true;
-            if (liftIncrement >=0 && liftIncrement <=2) {
+            if (liftIncrement >=0 && liftIncrement <=1) {
                 liftIncrement++;
             } else {
                 liftIncrement = liftIncrement;
@@ -214,8 +235,11 @@ public class teleopALna extends OpMode {
                 liftMotor.setPower(1);
             }
         }
-        if (down) {
-            if (liftIncrement >=1 && liftIncrement <=3) {
+        upPrevious = upCurrent;
+
+        boolean downCurrent = down;
+        if (downCurrent && !downPrevious) {
+            if (liftIncrement >=1 && liftIncrement <=2) {
                 liftIncrement--;
             } else {
                 liftIncrement = liftIncrement;
@@ -229,6 +253,7 @@ public class teleopALna extends OpMode {
                 liftMotor.setPower(1);
             }
         }
+        downPrevious = downCurrent;
     }
 
 
@@ -276,20 +301,20 @@ public class teleopALna extends OpMode {
         }
     }
     
-    public void turretmovement(boolean positiveturret, boolean negativeturret) {
+    public void turretmovement(boolean left, boolean right) {
         turretMoving = true;
-
-        if (positiveturret) {
-            if (fourBarDownCheck == true) {
+        boolean leftCurrent = left;
+        if (leftCurrent && !leftPrevious) {
+            if (fourBarDownCheck) {
                 fourBarHigh();
-                if (increment >= 0 && increment <= 6) {
+                if (increment >= 0 && increment <= 7) {
                     increment++;
                 } else {
                     increment = increment;
                 }
                 turretServo.setPosition(TurretDistanceArray.get(increment));
             } else {
-                if (increment >= 0 && increment <= 6) {
+                if (increment >= 0 && increment <= 7) {
                     increment++;
                 } else {
                     increment = increment;
@@ -297,18 +322,20 @@ public class teleopALna extends OpMode {
                 turretServo.setPosition(TurretDistanceArray.get(increment));
             }
         }
+        leftPrevious = leftCurrent;
 
-        if (negativeturret) {
+        boolean rightCurrent = right;
+        if (rightCurrent && !rightPrevious) {
             if (fourBarDownCheck == true) {
                 fourBarHigh();
-                if (increment >=1 && increment <=7) {
+                if (increment >=1 && increment <=8) {
                     increment--;
                 } else {
                     increment = increment;
                 }
                 turretServo.setPosition(TurretDistanceArray.get(increment));
             } else {
-                if (increment >= 1 && increment <= 7) {
+                if (increment >= 1 && increment <= 8) {
                     increment--;
                 } else {
                     increment = increment;
@@ -316,6 +343,7 @@ public class teleopALna extends OpMode {
                 turretServo.setPosition(TurretDistanceArray.get(increment));
             }
         }
+        rightPrevious = rightCurrent;
     }
 
 
@@ -370,8 +398,8 @@ public class teleopALna extends OpMode {
     }
 
     public void v4bmovement (boolean v4bup, boolean v4bdown) {
-
-        if (v4bup) {
+        boolean extendCurrent = v4bup;
+        if (extendCurrent && !extendPrevious) {
             if (v4BIncrement >= 0 && v4BIncrement <= 3) {
                 v4BIncrement++;
             } else {
@@ -380,8 +408,10 @@ public class teleopALna extends OpMode {
             fourBarServoLeft.setPosition(Finalv4bArray.get(v4BIncrement));
             fourBarServoRight.setPosition(Finalv4bArray.get(v4BIncrement));
         }
+        extendPrevious = extendCurrent;
 
-        if (v4bdown) {
+        boolean retractCurrent = v4bdown;
+        if (retractCurrent && !retractPrevious) {
             if (v4BIncrement >= 1 && v4BIncrement <= 4) {
                 v4BIncrement--;
             } else {
@@ -389,6 +419,21 @@ public class teleopALna extends OpMode {
             }
             fourBarServoLeft.setPosition(Finalv4bArray.get(v4BIncrement));
             fourBarServoRight.setPosition(Finalv4bArray.get(v4BIncrement));
+        }
+        retractPrevious = retractCurrent;
+    }
+
+    public void v4bTest(boolean positivetest, boolean negativetest) {
+        if (positivetest) {
+            double x = fourBarServoLeft.getPosition();
+            fourBarServoLeft.setPosition(x+0.01);
+            fourBarServoRight.setPosition(x+0.01);
+        }
+
+        if (negativetest) {
+            double x = fourBarServoLeft.getPosition();
+            fourBarServoRight.setPosition(x-0.01);
+            fourBarServoLeft.setPosition(x-0.01);
         }
     }
 
@@ -468,6 +513,15 @@ public class teleopALna extends OpMode {
         if (junctionGround) {
             liftLow();
             fourBarDown();
+        }
+    }
+
+    public void intaketest (boolean intake1, boolean intake2) {
+        if (intake1) {
+            deroakservo.setPosition(0.05);
+        }
+        if (intake2) {
+            deroakservo.setPosition(0.13);
         }
     }
 
