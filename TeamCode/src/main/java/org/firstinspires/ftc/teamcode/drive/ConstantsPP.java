@@ -21,16 +21,16 @@ public class ConstantsPP {
     public static double V4B_HORIZONTAL = 0.64;
     public static double V4B_TURRETCLEARANCE = 0.72;
     public static double V4B_GROUNDJUNCTION = 0.72;
-    public static double V4B_FLOOR = 0.86;
+    public static double V4B_FLOOR = 0.83;
     public static double V4B_LOWMID = 0.8;
-    public static double V4B_SCALELEFT = 1.01162791;
+    public static double V4B_SCALELEFT = 0.975903614;
 
     //cone 1 is top cone, cone 5 is bottom cone
     public static double V4B_CONE1 = 0.67;
     public static double V4B_CONE2 = 0.69;
     public static double V4B_CONE3 = 0.75;
     public static double V4B_CONE4 = 0.78;
-    public static double V4B_CONE5 = 0.84;
+    public static double V4B_CONE5 = 0.83;
 
     public static List<Double> starterStack = Arrays.asList(V4B_CONE1, V4B_CONE2, V4B_CONE3, V4B_CONE4, V4B_CONE5);
 
@@ -45,5 +45,5 @@ public class ConstantsPP {
     public static double grabberOpen = 0.20;
 
     //turret positions
-    public static double south1 = 0.01 , southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.48, northeast = 0.62, east = 0.74, southeast = 0.87, south2 = 0.98;
+    public static double south1 = 0.01 , southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.74, southeast = 0.87, south2 = 0.98;
 }
