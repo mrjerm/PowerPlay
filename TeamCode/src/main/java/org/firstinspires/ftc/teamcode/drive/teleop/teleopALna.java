@@ -43,7 +43,7 @@ public class teleopALna extends OpMode {
     private double fourBarHighPos = 0.4;
     private double fourBarDiagonalPos = 0.5;
     private double fourBarHorizontalPos = 0.64;
-    private double fourBarDownPos = 0.86;
+    private double fourBarDownPos = 0.83;
 
     public boolean fourBarHighCheck = false;
     public boolean fourBarRetractedCheck = false;
@@ -68,7 +68,7 @@ public class teleopALna extends OpMode {
     private double southWestPos = 0.12;
     private double westPos = 0.23;
     private double northWestPos = 0.36;
-    private double northPos = 0.48;
+    private double northPos = 0.49;
     private double northEastPos = 0.62;
     private double eastPos = 0.74;
     private double southEastPos = 0.87;
@@ -87,7 +87,7 @@ public class teleopALna extends OpMode {
     public boolean turretMoving = false;
 
     public int increment = 0;
-    public static ArrayList<Double> TurretDistanceArray = new ArrayList<Double>(Arrays.<Double>asList(0.01, 0.12, 0.23, 0.36, 0.48, 0.62, 0.74, 0.87, 0.98));
+    public static ArrayList<Double> TurretDistanceArray = new ArrayList<Double>(Arrays.<Double>asList(0.01, 0.12, 0.23, 0.36, 0.49, 0.62, 0.74, 0.87, 0.98));
 
     public double intakeOpen = 0.2;
     public double intakeClose = 0.38;
