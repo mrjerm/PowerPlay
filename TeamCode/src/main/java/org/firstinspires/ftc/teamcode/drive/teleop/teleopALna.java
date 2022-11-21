@@ -53,7 +53,7 @@ public class teleopALna extends OpMode {
     public boolean fourBarMoving = false;
 
     public int v4BIncrement = 0;
-    public static ArrayList<Double> Finalv4bArray = new ArrayList<Double>(Arrays.<Double>asList(0.18, 0.33, 0.5, 0.65, 0.85));
+    public static ArrayList<Double> Finalv4bArray = new ArrayList<Double>(Arrays.<Double>asList(0.13, 0.40, 0.5, 0.64, 0.86));
 
     private int highJunctionPos = 365;
     private int midJunctionPos = 365;
@@ -80,6 +80,7 @@ public class teleopALna extends OpMode {
     public boolean downPrevious = false;
     public boolean extendPrevious = false;
     public boolean retractPrevious = false;
+    public boolean scoringPrevious = false;
 
 //    List<DcMotorEx> motors = new ArrayList<>();
 
@@ -160,22 +161,22 @@ public class teleopALna extends OpMode {
 
     @Override
     public void loop() {
-        if (increment > 2) {
-            increment = 2;
+        if (liftIncrement > 2) {
+            liftIncrement = 2;
         }
-        if (increment < 0) {
-            increment = 0;
+        if (liftIncrement < 0) {
+            liftIncrement = 0;
         }
         driveCode();
         liftmovement(gamepad2.dpad_up, gamepad2.dpad_down);
         turretmovement(gamepad2.dpad_right, gamepad2.dpad_left);
         v4bmovement(gamepad2.right_bumper, gamepad2.left_bumper);
-        intakemovement(gamepad1.left_bumper, gamepad1.right_bumper);
+        intakemovement(gamepad1.left_trigger<0.3, gamepad1.left_trigger>0.3);
         highJunction(gamepad1.y);
         midJunction(gamepad1.x);
         lowJunction(gamepad1.b);
         groundJunction(gamepad1.a);
-        intaketest(gamepad2.y, gamepad2.x);
+        score(gamepad1.right_trigger > 0.3);
 
 //        moveForward(gamepad1.dpad_up);
 //        moveBackward(gamepad1.dpad_down);
@@ -526,7 +527,9 @@ public class teleopALna extends OpMode {
     }
 
     public void score (boolean scoring) {
-        if (scoring) {
+
+        boolean scoringCurrent = scoring;
+        if (scoringCurrent && !scoringPrevious) {
             intakeServo.setPosition(intakeOpen);
 
             timer = new TimerTiming.Timer(200);
@@ -541,6 +544,7 @@ public class teleopALna extends OpMode {
             fourBarHigh();
             liftRest();
         }
+        scoringPrevious = scoringCurrent;
     }
 
 //    public void moveForward(boolean forward) {
