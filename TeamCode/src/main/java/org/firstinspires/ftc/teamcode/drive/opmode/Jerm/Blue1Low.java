@@ -216,15 +216,15 @@ public class Blue1Low extends LinearOpMode {
 
             if (tagOfInterest == null || tagOfInterest.id == LEFT) {
                 trajFinal = drive.trajectorySequenceBuilder(traj4.end())
-                        .lineToConstantHeading(new Vector2d(15, -11))
+                        .lineToConstantHeading(new Vector2d(15, 11))
                         .build();
             } else if (tagOfInterest.id == MIDDLE) {
                 trajFinal = drive.trajectorySequenceBuilder(traj4.end())
-                        .lineToConstantHeading(new Vector2d(38, -11))
+                        .lineToConstantHeading(new Vector2d(38, 11))
                         .build();
             } else {
                 trajFinal = drive.trajectorySequenceBuilder(traj4.end())
-                        .lineToConstantHeading(new Vector2d(62, -11))
+                        .lineToConstantHeading(new Vector2d(62, 11))
                         .build();
             }
         }
