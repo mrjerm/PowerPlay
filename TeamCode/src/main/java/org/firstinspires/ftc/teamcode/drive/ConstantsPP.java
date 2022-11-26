@@ -10,7 +10,7 @@ public class ConstantsPP {
 
     //DR4B values
     public static int DR4B_GROUNDFLOORTURRETCLEARANCE = 0;
-    public static int DR4B_LOWJUNCTION = 185;
+    public static int DR4B_LOWJUNCTION = 210;
     public static int DR4B_MIDHIGHJUNCTION = 365;
     public static double DR4B_LOWPOWER = 0.15;
 
@@ -26,9 +26,9 @@ public class ConstantsPP {
     public static double V4B_SCALELEFT = 0.975903614;
 
     //cone 1 is top cone, cone 5 is bottom cone
-    public static double V4B_CONE1 = 0.67;
-    public static double V4B_CONE2 = 0.69;
-    public static double V4B_CONE3 = 0.75;
+    public static double V4B_CONE1 = 0.64;
+    public static double V4B_CONE2 = 0.67;
+    public static double V4B_CONE3 = 0.73;
     public static double V4B_CONE4 = 0.78;
     public static double V4B_CONE5 = 0.83;
 
@@ -45,5 +45,5 @@ public class ConstantsPP {
     public static double grabberOpen = 0.20;
 
     //turret positions
-    public static double south1 = 0.01 , southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.74, southeast = 0.87, south2 = 0.98;
+    public static double south1 = 0.01 , southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.74, southeast = 0.87, south2 = 0.99;
 }

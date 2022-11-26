@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORTURRETCLEARANCE;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWPOWER;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MIDHIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
@@ -12,17 +13,15 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.east;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.north;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.northeast;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.northwest;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south1;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south2;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.southeast;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.southwest;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.starterStack;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.arcrobotics.ftclib.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -41,7 +40,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class AutonomousRed2 extends LinearOpMode {
+public class Red2Low extends LinearOpMode {
 
     static double timeStamp;
 
@@ -103,7 +102,7 @@ public class AutonomousRed2 extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(35, -62, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(38, -62, Math.toRadians(90));
 
         drive.setPoseEstimate(startPose);
 
@@ -128,166 +127,40 @@ public class AutonomousRed2 extends LinearOpMode {
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(35, -21, Math.toRadians(82))) //move to the (4, 2) junction
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                    servoTurret.setPosition(west); //prepare turret for dropping preload
+                })
+                .lineToLinearHeading(new Pose2d(38.5, -21, Math.toRadians(88)))
                 .build();
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
-                .lineToLinearHeading(new Pose2d(41, -12, Math.toRadians(86))) //move to the starter stack
+                .UNSTABLE_addDisplacementMarkerOffset(2, () -> {
+                    prepareStack(1); //prepare v4b + dr4b for starter stack cone 1
+                })
+                .lineToLinearHeading(new Pose2d(37, -12, Math.toRadians(90)))
                 .build();
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
-                .lineToLinearHeading(new Pose2d(55, -13, Math.toRadians(90))) //move to the starter stack
+                .lineToLinearHeading(new Pose2d(60, -14, Math.toRadians(84)))
                 .build();
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
-                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-                    servoTurret.setPosition(south2);
+                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
+                    servoTurret.setPosition(south2); //point turret towards (5, 2) junction
+                    setLow();
                 })
-                .lineToLinearHeading(new Pose2d(4, -12, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(51.5, -14, Math.toRadians(86)))
                 .build();
-//        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    setHigh();
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-//                    servoTurret.setPosition(southwest);
-//                })
-//                .lineToConstantHeading(new Vector2d(12, -12)) //move to the (3, 2) junction
-//                .waitSeconds(0.3)
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    setLift(DR4B_MIDHIGHJUNCTION - 100);
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-//                    openGrabber();
-//                    setV4B(V4B_VERTICAL);
-//                })
-//                .build();
-//        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    servoTurret.setPosition(east);
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-//                    prepareStack(2);
-//                })
-//                .lineToConstantHeading(new Vector2d(55, -12)) //move to the starter stack
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    //pick up cone 1 from starter stack
-//                    closeGrabber();
-//                })
-//                .build();
-//        TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    setHigh();
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-//                    servoTurret.setPosition(southwest);
-//                })
-//                .lineToConstantHeading(new Vector2d(12, -12)) //move to the (3, 2) junction
-//                .waitSeconds(0.3)
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    setLift(DR4B_MIDHIGHJUNCTION - 100);
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-//                    openGrabber();
-//                    setV4B(V4B_VERTICAL);
-//                })
-//                .build();
-//        TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end())
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    servoTurret.setPosition(east);
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-//                    prepareStack(3);
-//                })
-//                .lineToConstantHeading(new Vector2d(55, -12)) //move to the starter stack
-//
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    //pick up cone 1 from starter stack
-//                    closeGrabber();
-//                })
-//                .build();
-//        TrajectorySequence traj7 = drive.trajectorySequenceBuilder(traj6.end())
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    setHigh();
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-//                    servoTurret.setPosition(southwest);
-//                })
-//                .lineToConstantHeading(new Vector2d(12, -12)) //move to the (3, 2) junction
-//                .waitSeconds(0.3)
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    setLift(DR4B_MIDHIGHJUNCTION - 100);
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-//                    openGrabber();
-//                    setV4B(V4B_VERTICAL);
-//                })
-//                .build();
-//        TrajectorySequence traj8 = drive.trajectorySequenceBuilder(traj7.end())
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    servoTurret.setPosition(east);
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-//                    prepareStack(4);
-//                })
-//                .lineToConstantHeading(new Vector2d(55, -12)) //move to the starter stack
-//
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    //pick up cone 1 from starter stack
-//                    closeGrabber();
-//                })
-//                .build();
-//        TrajectorySequence traj9 = drive.trajectorySequenceBuilder(traj8.end())
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    setHigh();
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-//                    servoTurret.setPosition(southwest);
-//                })
-//                .lineToConstantHeading(new Vector2d(12, -12)) //move to the (3, 2) junction
-//                .waitSeconds(0.3)
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    setLift(DR4B_MIDHIGHJUNCTION - 100);
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-//                    openGrabber();
-//                    setV4B(V4B_VERTICAL);
-//                })
-//                .build();
-//        TrajectorySequence traj10 = drive.trajectorySequenceBuilder(traj9.end())
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    servoTurret.setPosition(east);
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
-//                    prepareStack(5);
-//                })
-//                .lineToConstantHeading(new Vector2d(55, -12)) //move to the starter stack
-//
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    //pick up cone 1 from starter stack
-//                    closeGrabber();
-//                })
-//                .build();
-//        TrajectorySequence traj11 = drive.trajectorySequenceBuilder(traj10.end())
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    setHigh();
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-//                    servoTurret.setPosition(southwest);
-//                })
-//                .lineToConstantHeading(new Vector2d(12, -12)) //move to the (3, 2) junction
-//                .waitSeconds(0.3)
-//                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                    setLift(DR4B_MIDHIGHJUNCTION - 100);
-//                })
-//                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-//                    openGrabber();
-//                    setV4B(V4B_VERTICAL);
-//                })
-//                .waitSeconds(0.5)
-//                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-//                    closeGrabber();
-//                    setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
-//                    servoTurret.setPosition(south1);
-//                })
-//                .build();
+        TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
+                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
+                    prepareStack(2); //prepare v4b + dr4b for starter stack cone 2
+                })
+                .lineToLinearHeading(new Pose2d(60, -14, Math.toRadians(84)))
+                .build();
+        TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end())
+                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
+                    servoTurret.setPosition(south2); //point turret towards (5, 2) junction
+                    setLow();
+                })
+                .lineToLinearHeading(new Pose2d(51.5, -14, Math.toRadians(86)))
+                .build();
 
         servoV4BL.setPosition(V4B_RETRACTED);
         servoV4BR.setPosition(V4B_RETRACTED);
@@ -344,71 +217,87 @@ public class AutonomousRed2 extends LinearOpMode {
             }
 
             if (tagOfInterest == null || tagOfInterest.id == LEFT) {
-//                 trajFinal = drive.trajectorySequenceBuilder(traj11.end())
-//                        .lineToConstantHeading(new Vector2d(12, -35))
-//                        .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                            prepareStack(5);
-//                        })
-//                        .build();
+                trajFinal = drive.trajectorySequenceBuilder(traj4.end())
+                        .lineToConstantHeading(new Vector2d(15, -11))
+                        .build();
             } else if (tagOfInterest.id == MIDDLE) {
-//                 trajFinal = drive.trajectorySequenceBuilder(traj11.end())
-//                        .lineToConstantHeading(new Vector2d(12, -35))
-//                        .lineToConstantHeading(new Vector2d(35, -35))
-//                        .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                            prepareStack(5);
-//                        })
-//                        .build();
+                trajFinal = drive.trajectorySequenceBuilder(traj4.end())
+                        .lineToConstantHeading(new Vector2d(38, -11))
+                        .build();
             } else {
-//                 trajFinal = drive.trajectorySequenceBuilder(traj11.end())
-//                        .lineToConstantHeading(new Vector2d(12, -35))
-//                        .lineToConstantHeading(new Vector2d(58, -35))
-//                        .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-//                            prepareStack(5);
-//                        })
-//                        .build();
+                trajFinal = drive.trajectorySequenceBuilder(traj4.end())
+                        .lineToConstantHeading(new Vector2d(62, -11))
+                        .build();
             }
         }
 
         if (opModeIsActive()){
-            servoTurret.setPosition(west);
+            //prepare to drop off preload
             setMid();
+            //move to (4, 2) junction
             drive.followTrajectorySequence(traj1);
-            pause(0.6);
+            //drop dr4b to align cone on junction
+            setLift(DR4B_MIDHIGHJUNCTION - 100);
+            pause(0.3);
+            //score preload cone
             openGrabber();
-            pause(0.5);
+
+            //retract v4b to prepare to move to starter stack
             setV4B(V4B_VERTICAL);
-            pause(0.5);
+            pause(0.3);
+            //point turret towards starter stack
             servoTurret.setPosition(east);
+            pause(0.2);
+
+            //move to starter stack
             drive.followTrajectorySequence(traj2);
-            prepareStack(1);
             drive.followTrajectorySequence(traj3);
+            //grab cone
             closeGrabber();
             pause(0.5);
-            setHigh();
+            //lift cone from stack to avoid interference
+            setLift(DR4B_MIDHIGHJUNCTION);
+            pause(0.3);
+
+            //move to (5, 2) junction
             drive.followTrajectorySequence(traj4);
-            pause(0.6);
+            //drop dr4b to align cone on junction
+            setLift(DR4B_LOWJUNCTION - 100);
+            pause(0.3);
+            //score starter stack cone 1
             openGrabber();
+            setV4B(V4B_VERTICAL);
+            pause(0.3);
+
+            servoTurret.setPosition(east); //point turret towards starter stack
             pause(0.5);
+            //move to starter stack to grab cone 2
+            drive.followTrajectorySequence(traj5);
+            //grab cone
+            closeGrabber();
+            pause(0.5);
+            //lift cone from stack to avoid interference
+            setLift(DR4B_MIDHIGHJUNCTION);
+            pause(0.3);
 
+            //move to (5, 2) junction
+            drive.followTrajectorySequence(traj6);
+            //drop dr4b to align cone on junction
+            setLift(DR4B_LOWJUNCTION - 100);
+            pause(0.3);
+            //score starter stack cone 1
+            openGrabber();
 
-//            drive.followTrajectorySequence(traj3);
-//
-//            drive.followTrajectorySequence(traj4);
-//
-//            drive.followTrajectorySequence(traj5);
-//
-//            drive.followTrajectorySequence(traj6);
-//
-//            drive.followTrajectorySequence(traj7);
-//
-//            drive.followTrajectorySequence(traj8);
-//
-//            drive.followTrajectorySequence(traj9);
-//
-//            drive.followTrajectorySequence(traj10);
-//
-//            drive.followTrajectorySequence(traj11);
-//            drive.followTrajectorySequence(trajFinal);
+            setV4B(V4B_RETRACTED);
+            pause(0.3);
+
+            //retract everything, prepare for parking and teleop
+            closeGrabber();
+            setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
+
+            drive.followTrajectorySequence(trajFinal);
+            servoTurret.setPosition(south1);
+            pause(1);
         }
     }
 
@@ -433,6 +322,11 @@ public class AutonomousRed2 extends LinearOpMode {
     public void setV4B(double position) {
         servoV4BL.setPosition(position * V4B_SCALELEFT);
         servoV4BR.setPosition(position);
+    }
+
+    public void setLow(){
+        setLift(DR4B_LOWJUNCTION);
+        setV4B(V4B_LOWMID);
     }
 
     public void setHigh(){
