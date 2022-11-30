@@ -29,6 +29,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.vision.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -130,7 +131,9 @@ public class Red2Low extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     servoTurret.setPosition(west); //prepare turret for dropping preload
                 })
-                .lineToLinearHeading(new Pose2d(38.5, -21, Math.toRadians(88)))
+                .lineToLinearHeading(new Pose2d(38.5, -21, Math.toRadians(88)),
+                        SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
                 .UNSTABLE_addDisplacementMarkerOffset(2, () -> {
@@ -139,27 +142,27 @@ public class Red2Low extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(37, -12, Math.toRadians(90)))
                 .build();
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
-                .lineToLinearHeading(new Pose2d(60, -14, Math.toRadians(84)))
+                .lineToLinearHeading(new Pose2d(59, -14, Math.toRadians(87)))
                 .build();
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     servoTurret.setPosition(south2); //point turret towards (5, 2) junction
                     setLow();
                 })
-                .lineToLinearHeading(new Pose2d(51.5, -14, Math.toRadians(86)))
+                .lineToLinearHeading(new Pose2d(50.5, -14, Math.toRadians(86)))
                 .build();
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     prepareStack(2); //prepare v4b + dr4b for starter stack cone 2
                 })
-                .lineToLinearHeading(new Pose2d(60, -14, Math.toRadians(84)))
+                .lineToLinearHeading(new Pose2d(59, -14, Math.toRadians(84)))
                 .build();
         TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     servoTurret.setPosition(south2); //point turret towards (5, 2) junction
                     setLow();
                 })
-                .lineToLinearHeading(new Pose2d(51.5, -14, Math.toRadians(86)))
+                .lineToLinearHeading(new Pose2d(50.5, -14, Math.toRadians(86)))
                 .build();
 
         servoV4BL.setPosition(V4B_RETRACTED);
@@ -218,15 +221,15 @@ public class Red2Low extends LinearOpMode {
 
             if (tagOfInterest == null || tagOfInterest.id == LEFT) {
                 trajFinal = drive.trajectorySequenceBuilder(traj4.end())
-                        .lineToConstantHeading(new Vector2d(15, -11))
+                        .lineToLinearHeading(new Pose2d(15, -11, Math.toRadians(86)))
                         .build();
             } else if (tagOfInterest.id == MIDDLE) {
                 trajFinal = drive.trajectorySequenceBuilder(traj4.end())
-                        .lineToConstantHeading(new Vector2d(38, -11))
+                        .lineToLinearHeading(new Pose2d(38, -11, Math.toRadians(86)))
                         .build();
             } else {
                 trajFinal = drive.trajectorySequenceBuilder(traj4.end())
-                        .lineToConstantHeading(new Vector2d(62, -11))
+                        .lineToLinearHeading(new Pose2d(62, -11, Math.toRadians(86)))
                         .build();
             }
         }
@@ -254,16 +257,17 @@ public class Red2Low extends LinearOpMode {
             drive.followTrajectorySequence(traj3);
             //grab cone
             closeGrabber();
-            pause(0.5);
+            pause(0.3);
             //lift cone from stack to avoid interference
-            setLift(DR4B_MIDHIGHJUNCTION);
+            setLift(DR4B_LOWJUNCTION);
             pause(0.3);
 
             //move to (5, 2) junction
             drive.followTrajectorySequence(traj4);
+            pause(0.1);
             //drop dr4b to align cone on junction
             setLift(DR4B_LOWJUNCTION - 100);
-            pause(0.3);
+            pause(0.2);
             //score starter stack cone 1
             openGrabber();
             setV4B(V4B_VERTICAL);
@@ -275,16 +279,17 @@ public class Red2Low extends LinearOpMode {
             drive.followTrajectorySequence(traj5);
             //grab cone
             closeGrabber();
-            pause(0.5);
+            pause(0.3);
             //lift cone from stack to avoid interference
-            setLift(DR4B_MIDHIGHJUNCTION);
+            setLift(DR4B_LOWJUNCTION);
             pause(0.3);
 
             //move to (5, 2) junction
             drive.followTrajectorySequence(traj6);
+            pause(0.1);
             //drop dr4b to align cone on junction
             setLift(DR4B_LOWJUNCTION - 100);
-            pause(0.3);
+            pause(0.2);
             //score starter stack cone 1
             openGrabber();
 

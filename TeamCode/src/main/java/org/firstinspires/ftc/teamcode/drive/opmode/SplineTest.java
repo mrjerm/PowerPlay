@@ -13,26 +13,25 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @Autonomous(group = "drive")
 public class SplineTest extends LinearOpMode {
+
+    Pose2d startPose = new Pose2d(38, -62, Math.toRadians(90));
+
+
     @Override
     public void runOpMode() throws InterruptedException {
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+        drive.setPoseEstimate(startPose);
 
         waitForStart();
 
         if (isStopRequested()) return;
 
-        Trajectory traj = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(30, 30), 0)
+        Trajectory traj = drive.trajectoryBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(38, -21, Math.toRadians(90))) //move to the (4, 2) junction
                 .build();
 
         drive.followTrajectory(traj);
-
-        sleep(2000);
-
-        drive.followTrajectory(
-                drive.trajectoryBuilder(traj.end(), true)
-                        .splineTo(new Vector2d(0, 0), Math.toRadians(180))
-                        .build()
-        );
     }
 }

@@ -128,7 +128,7 @@ public class Red1Low extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     servoTurret.setPosition(east); //prepare turret for dropping preload
                 })
-                .lineToLinearHeading(new Pose2d(-38.5, -21, Math.toRadians(92)))
+                .lineToLinearHeading(new Pose2d(-37, -22, Math.toRadians(90)))
                 .build();
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
                 .UNSTABLE_addDisplacementMarkerOffset(2, () -> {

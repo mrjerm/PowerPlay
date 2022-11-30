@@ -127,7 +127,7 @@ public class Red2Mid extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     servoTurret.setPosition(west);
                 })
-                .lineToLinearHeading(new Pose2d(38, -21.5, Math.toRadians(88))) //move to the (4, 2) junction
+                .lineToLinearHeading(new Pose2d(38, -21, Math.toRadians(88))) //move to the (4, 2) junction
                 .build();
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
                 .UNSTABLE_addDisplacementMarkerOffset(2, () -> {
