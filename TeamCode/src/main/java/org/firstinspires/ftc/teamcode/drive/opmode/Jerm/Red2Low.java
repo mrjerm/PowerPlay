@@ -132,37 +132,39 @@ public class Red2Low extends LinearOpMode {
                     servoTurret.setPosition(west); //prepare turret for dropping preload
                 })
                 .lineToLinearHeading(new Pose2d(38.5, -21, Math.toRadians(88)),
-                        SampleMecanumDrive.getVelocityConstraint(55, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
                 .UNSTABLE_addDisplacementMarkerOffset(2, () -> {
                     prepareStack(1); //prepare v4b + dr4b for starter stack cone 1
                 })
-                .lineToLinearHeading(new Pose2d(37, -12, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(38.5, -12, Math.toRadians(88)),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
-                .lineToLinearHeading(new Pose2d(59, -14, Math.toRadians(87)))
+                .lineToLinearHeading(new Pose2d(60, -14, Math.toRadians(87)))
                 .build();
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     servoTurret.setPosition(south2); //point turret towards (5, 2) junction
                     setLow();
                 })
-                .lineToLinearHeading(new Pose2d(50.5, -14, Math.toRadians(86)))
+                .lineToLinearHeading(new Pose2d(51.5, -14, Math.toRadians(86)))
                 .build();
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     prepareStack(2); //prepare v4b + dr4b for starter stack cone 2
                 })
-                .lineToLinearHeading(new Pose2d(59, -14, Math.toRadians(84)))
+                .lineToLinearHeading(new Pose2d(60, -14, Math.toRadians(84)))
                 .build();
         TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     servoTurret.setPosition(south2); //point turret towards (5, 2) junction
                     setLow();
                 })
-                .lineToLinearHeading(new Pose2d(50.5, -14, Math.toRadians(86)))
+                .lineToLinearHeading(new Pose2d(51.5, -14, Math.toRadians(86)))
                 .build();
 
         servoV4BL.setPosition(V4B_RETRACTED);
