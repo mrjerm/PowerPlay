@@ -186,11 +186,11 @@ public class TeleOp_AlanSinglePlayer extends OpMode {
         drive();
         spinny(gamepad1.left_bumper, gamepad1.right_bumper);
         grippers(gamepad1.left_trigger > 0.3, gamepad1.left_trigger < 0.3);
-        setRobotState(gamepad1.dpad_up, gamepad1.dpad_down);
+        setRobotState(gamepad1.y, gamepad1.a);
         liftControl();
         v4bControl();
         low(gamepad1.right_trigger >0.3);
-        high(gamepad1.y);
+        high(gamepad1.b);
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
