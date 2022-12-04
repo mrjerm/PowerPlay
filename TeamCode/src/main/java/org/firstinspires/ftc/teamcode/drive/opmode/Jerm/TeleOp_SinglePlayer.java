@@ -56,7 +56,7 @@ public class TeleOp_SinglePlayer extends OpMode {
     public boolean downPrevious = false;
     public double dr4bPower = 1;
 
-    public enum TurretState{
+    private enum TurretState{
         SOUTH1,
         WEST,
         NORTH,
@@ -83,9 +83,9 @@ public class TeleOp_SinglePlayer extends OpMode {
             }
         }
     }
-    TurretState turretState = TurretState.NORTH;
+    TurretState turretState = TurretState.SOUTH1;
 
-    public enum DR4BState{
+    private enum DR4BState{
         REST,
         LOW,
         MID,
@@ -112,7 +112,7 @@ public class TeleOp_SinglePlayer extends OpMode {
 
     DR4BState dr4BState = DR4BState.REST;
 
-    public enum V4BState{
+    private enum V4BState{
         RETRACTED,
         HIGH,
         MID,
@@ -126,7 +126,7 @@ public class TeleOp_SinglePlayer extends OpMode {
 
     V4BState v4BState = V4BState.RETRACTED;
 
-    public enum RobotState{
+    private enum RobotState{
         PICKING_UP,
         GROUND_JUNCTION,
         LOW_JUNCTION,
@@ -157,7 +157,7 @@ public class TeleOp_SinglePlayer extends OpMode {
         }
     }
 
-    RobotState robotState = RobotState.RETRACT;
+    RobotState robotState = RobotState.PICKING_UP;
 
     @Override
     public void init() {
@@ -171,17 +171,13 @@ public class TeleOp_SinglePlayer extends OpMode {
         motorDR4B = hardwareMap.get(DcMotorEx.class, "Motor DR4B");
         motorDR4B.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorDR4B.setDirection(DcMotorEx.Direction.REVERSE);
-        motorDR4B.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
-        servoGrabber.setPosition(grabberClose);
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
-        servoV4BL.setPosition(V4B_RETRACTED);
-        servoV4BR.setPosition(V4B_RETRACTED);
     }
 
     @Override

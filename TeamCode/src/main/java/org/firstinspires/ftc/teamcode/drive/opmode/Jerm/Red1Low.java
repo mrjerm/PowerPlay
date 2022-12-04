@@ -27,6 +27,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.vision.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -128,36 +129,39 @@ public class Red1Low extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     servoTurret.setPosition(east); //prepare turret for dropping preload
                 })
-                .lineToLinearHeading(new Pose2d(-37, -22, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-36.8, -22, Math.toRadians(88)),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
                 .UNSTABLE_addDisplacementMarkerOffset(2, () -> {
                     prepareStack(1); //prepare v4b + dr4b for starter stack cone 1
                 })
-                .lineToLinearHeading(new Pose2d(-37, -12, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-38.5, -12, Math.toRadians(92)),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
-        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
-                .lineToLinearHeading(new Pose2d(-60, -14, Math.toRadians(96)))
+        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(90))))
+                .lineToLinearHeading(new Pose2d(-54, -6, Math.toRadians(174)),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                    servoTurret.setPosition(south1); //point turret towards (5, 2) junction
+                    servoTurret.setPosition(west); //point turret towards (1, 2) junction
                     setLow();
                 })
-                .lineToLinearHeading(new Pose2d(-51.5, -14, Math.toRadians(94)))
+                .lineToLinearHeading(new Pose2d(-47, -10, Math.toRadians(174)))
                 .build();
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
-                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                    prepareStack(2); //prepare v4b + dr4b for starter stack cone 2
-                })
-                .lineToLinearHeading(new Pose2d(-60, -14, Math.toRadians(96)))
+                .lineToLinearHeading(new Pose2d(-54, -6, Math.toRadians(174)))
                 .build();
         TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                    servoTurret.setPosition(south1); //point turret towards (5, 2) junction
+                    servoTurret.setPosition(west); //point turret towards (1, 2) junction
                     setLow();
                 })
-                .lineToLinearHeading(new Pose2d(-51.5, -14, Math.toRadians(94)))
+                .lineToLinearHeading(new Pose2d(-47, -10, Math.toRadians(174)))
                 .build();
 
         servoV4BL.setPosition(V4B_RETRACTED);
@@ -215,16 +219,26 @@ public class Red1Low extends LinearOpMode {
             }
 
             if (tagOfInterest == null || tagOfInterest.id == LEFT) {
-                trajFinal = drive.trajectorySequenceBuilder(traj4.end())
-                        .lineToConstantHeading(new Vector2d(-15, -11))
+                trajFinal = drive.trajectorySequenceBuilder(traj6.end())
+                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
+                            servoTurret.setPosition(south1);
+                        })
+                        .lineToLinearHeading(new Pose2d(-55, -9, Math.toRadians(174)))
                         .build();
+
             } else if (tagOfInterest.id == MIDDLE) {
-                trajFinal = drive.trajectorySequenceBuilder(traj4.end())
-                        .lineToConstantHeading(new Vector2d(-38, -11))
+                trajFinal = drive.trajectorySequenceBuilder(traj6.end())
+                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
+                            servoTurret.setPosition(south1);
+                        })
+                        .lineToLinearHeading(new Pose2d(-35, -11, Math.toRadians(174)))
                         .build();
             } else {
-                trajFinal = drive.trajectorySequenceBuilder(traj4.end())
-                        .lineToConstantHeading(new Vector2d(-62, -11))
+                trajFinal = drive.trajectorySequenceBuilder(traj6.end())
+                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
+                            servoTurret.setPosition(south1);
+                        })
+                        .lineToLinearHeading(new Pose2d(-12, -11, Math.toRadians(174)))
                         .build();
             }
         }
@@ -244,45 +258,48 @@ public class Red1Low extends LinearOpMode {
             setV4B(V4B_VERTICAL);
             pause(0.3);
             //point turret towards starter stack
-            servoTurret.setPosition(west);
+            servoTurret.setPosition(north);
             pause(0.2);
 
             //move to starter stack
             drive.followTrajectorySequence(traj2);
+            drive.turn(Math.toRadians(90));
             drive.followTrajectorySequence(traj3);
             //grab cone
             closeGrabber();
-            pause(0.5);
+            pause(0.3);
             //lift cone from stack to avoid interference
-            setLift(DR4B_MIDHIGHJUNCTION);
+            setLift(DR4B_LOWJUNCTION);
             pause(0.3);
 
             //move to (5, 2) junction
             drive.followTrajectorySequence(traj4);
             //drop dr4b to align cone on junction
             setLift(DR4B_LOWJUNCTION - 100);
-            pause(0.3);
+            pause(0.2);
             //score starter stack cone 1
             openGrabber();
             setV4B(V4B_VERTICAL);
             pause(0.3);
 
-            servoTurret.setPosition(west); //point turret towards starter stack
+            servoTurret.setPosition(north); //point turret towards starter stack
+            pause(0.5);
+            prepareStack(2); //prepare v4b + dr4b for starter stack cone 2
             pause(0.5);
             //move to starter stack to grab cone 2
             drive.followTrajectorySequence(traj5);
             //grab cone
             closeGrabber();
-            pause(0.5);
+            pause(0.3);
             //lift cone from stack to avoid interference
-            setLift(DR4B_MIDHIGHJUNCTION);
+            setLift(DR4B_LOWJUNCTION);
             pause(0.3);
 
             //move to (5, 2) junction
             drive.followTrajectorySequence(traj6);
             //drop dr4b to align cone on junction
             setLift(DR4B_LOWJUNCTION - 100);
-            pause(0.3);
+            pause(0.2);
             //score starter stack cone 1
             openGrabber();
 
@@ -294,8 +311,7 @@ public class Red1Low extends LinearOpMode {
             setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
 
             drive.followTrajectorySequence(trajFinal);
-            servoTurret.setPosition(south1);
-            pause(1);
+            drive.turn(Math.toRadians(-90));
         }
     }
 

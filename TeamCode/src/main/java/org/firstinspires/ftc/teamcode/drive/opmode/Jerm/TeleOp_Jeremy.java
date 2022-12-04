@@ -1,6 +1,28 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.*;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORTURRETCLEARANCE;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWPOWER;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MIDHIGHJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_FLOOR;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_GROUNDJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.east;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.max;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.min;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.north;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south1;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south2;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -152,13 +174,10 @@ public class TeleOp_Jeremy extends OpMode {
 
         servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
-        servoGrabber.setPosition(grabberClose);
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
-        servoV4BL.setPosition(V4B_RETRACTED);
-        servoV4BR.setPosition(V4B_RETRACTED);
     }
 
     @Override
@@ -166,21 +185,30 @@ public class TeleOp_Jeremy extends OpMode {
         turtle(gamepad1.y, gamepad1.a);
         drive();
         spinny(gamepad2.left_bumper, gamepad2.right_bumper);
-        grippers(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
+        grippers(gamepad2.left_trigger > 0.3, gamepad2.left_trigger < 0.3);
         setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
         liftControl();
         v4bControl();
-        low(gamepad2.a);
+        low(gamepad1.x);
+        high(gamepad1.b);
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
     }
 
-        public void low(boolean keybind){
+    public void high(boolean keybind){
+        if (keybind){
+            robotState = RobotState.HIGH_JUNCTION;
+            dr4bPower = 1;
+            turretState = TurretState.WEST;
+        }
+    }
+
+    public void low(boolean keybind){
         if (keybind) {
             robotState = RobotState.PICKING_UP;
             dr4bPower = DR4B_LOWPOWER;
-
+            turretState = TurretState.SOUTH1;
         }
     }
 

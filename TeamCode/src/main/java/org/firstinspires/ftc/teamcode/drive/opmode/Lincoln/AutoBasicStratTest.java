@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.drive.opmode.Jerm.TeleOp_Jeremy;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 public class AutoBasicStratTest extends LinearOpMode {

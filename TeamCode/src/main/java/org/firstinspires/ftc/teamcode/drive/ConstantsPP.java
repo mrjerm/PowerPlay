@@ -26,7 +26,7 @@ public class ConstantsPP {
     public static double V4B_SCALELEFT = 0.975903614;
 
     //cone 1 is top cone, cone 5 is bottom cone
-    public static double V4B_CONE1 = 0.64;
+    public static double V4B_CONE1 = 0.63;
     public static double V4B_CONE2 = 0.67;
     public static double V4B_CONE3 = 0.73;
     public static double V4B_CONE4 = 0.78;

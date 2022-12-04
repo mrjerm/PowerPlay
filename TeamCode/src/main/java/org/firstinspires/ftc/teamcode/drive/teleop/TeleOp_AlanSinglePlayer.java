@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.UCFSDScrimmage;
+package org.firstinspires.ftc.teamcode.drive.teleop;
 
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORTURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
@@ -9,7 +9,6 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_GROUNDJUNCTIO
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
@@ -24,7 +23,6 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south2;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -32,8 +30,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-@Disabled
-public class TeleOp_UCFSDScrimmage extends OpMode {
+public class TeleOp_AlanSinglePlayer extends OpMode {
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
@@ -57,6 +54,7 @@ public class TeleOp_UCFSDScrimmage extends OpMode {
     public boolean upPrevious = false;
     public boolean downPrevious = false;
     public double dr4bPower = 1;
+    public boolean toggle2 = false;
 
     public enum TurretState{
         SOUTH1,
@@ -85,7 +83,7 @@ public class TeleOp_UCFSDScrimmage extends OpMode {
             }
         }
     }
-    TurretState turretState = TurretState.NORTH;
+    TurretState turretState = TurretState.SOUTH1;
 
     public enum DR4BState{
         REST,
@@ -159,7 +157,7 @@ public class TeleOp_UCFSDScrimmage extends OpMode {
         }
     }
 
-    RobotState robotState = RobotState.RETRACT;
+    RobotState robotState = RobotState.PICKING_UP;
 
     @Override
     public void init() {
@@ -173,39 +171,44 @@ public class TeleOp_UCFSDScrimmage extends OpMode {
         motorDR4B = hardwareMap.get(DcMotorEx.class, "Motor DR4B");
         motorDR4B.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorDR4B.setDirection(DcMotorEx.Direction.REVERSE);
-        motorDR4B.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
-        servoGrabber.setPosition(grabberClose);
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
-        servoV4BL.setPosition(V4B_RETRACTED);
-        servoV4BR.setPosition(V4B_RETRACTED);
     }
 
     @Override
     public void loop() {
-        turtle(gamepad1.y, gamepad1.a);
+        turtle(gamepad1.x);
         drive();
-        spinny(gamepad2.left_bumper, gamepad2.right_bumper);
-        grippers(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
-        setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
+        spinny(gamepad1.left_bumper, gamepad1.right_bumper);
+        grippers(gamepad1.left_trigger > 0.3, gamepad1.left_trigger < 0.3);
+        setRobotState(gamepad1.y, gamepad1.a);
         liftControl();
         v4bControl();
-        low(gamepad2.a);
+        low(gamepad1.right_trigger >0.3);
+        high(gamepad1.b);
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
     }
 
-        public void low(boolean keybind){
+    public void high(boolean keybind){
+        if (keybind){
+            robotState = RobotState.HIGH_JUNCTION;
+            dr4bPower = 1;
+            turretState = TurretState.WEST;
+        }
+    }
+
+    public void low(boolean keybind){
         if (keybind) {
             robotState = RobotState.PICKING_UP;
             dr4bPower = DR4B_LOWPOWER;
-
+            turretState = TurretState.SOUTH1;
         }
     }
 
@@ -322,13 +325,15 @@ public class TeleOp_UCFSDScrimmage extends OpMode {
         }
     }
 
-    public void turtle(boolean fast, boolean slow){
-        if (fast){
+    public void turtle(boolean toggle){
+        if (toggle && !toggle2){
             speedLimit = max;
         }
-        else if (slow){
+        toggle2 = true;
+        if (toggle && toggle2){
             speedLimit = min;
         }
+        toggle2 = false;
     }
 
     public void drive() {
