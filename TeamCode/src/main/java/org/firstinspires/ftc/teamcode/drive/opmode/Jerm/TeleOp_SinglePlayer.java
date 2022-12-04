@@ -56,7 +56,7 @@ public class TeleOp_SinglePlayer extends OpMode {
     public boolean downPrevious = false;
     public double dr4bPower = 1;
 
-    public enum TurretState{
+    private enum TurretState{
         SOUTH1,
         WEST,
         NORTH,
@@ -85,7 +85,7 @@ public class TeleOp_SinglePlayer extends OpMode {
     }
     TurretState turretState = TurretState.SOUTH1;
 
-    public enum DR4BState{
+    private enum DR4BState{
         REST,
         LOW,
         MID,
@@ -112,7 +112,7 @@ public class TeleOp_SinglePlayer extends OpMode {
 
     DR4BState dr4BState = DR4BState.REST;
 
-    public enum V4BState{
+    private enum V4BState{
         RETRACTED,
         HIGH,
         MID,
@@ -126,7 +126,7 @@ public class TeleOp_SinglePlayer extends OpMode {
 
     V4BState v4BState = V4BState.RETRACTED;
 
-    public enum RobotState{
+    private enum RobotState{
         PICKING_UP,
         GROUND_JUNCTION,
         LOW_JUNCTION,

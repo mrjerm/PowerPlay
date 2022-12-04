@@ -24,6 +24,7 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south2;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -31,6 +32,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
+@Disabled
 public class TeleOp_UCFSDScrimmage extends OpMode {
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
 

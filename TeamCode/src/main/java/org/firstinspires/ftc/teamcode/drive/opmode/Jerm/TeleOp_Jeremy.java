@@ -189,17 +189,26 @@ public class TeleOp_Jeremy extends OpMode {
         setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
         liftControl();
         v4bControl();
-        low(gamepad2.a);
+        low(gamepad1.x);
+        high(gamepad1.b);
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
+    }
+
+    public void high(boolean keybind){
+        if (keybind){
+            robotState = RobotState.HIGH_JUNCTION;
+            dr4bPower = 1;
+            turretState = TurretState.WEST;
+        }
     }
 
     public void low(boolean keybind){
         if (keybind) {
             robotState = RobotState.PICKING_UP;
             dr4bPower = DR4B_LOWPOWER;
-
+            turretState = TurretState.SOUTH1;
         }
     }
 
