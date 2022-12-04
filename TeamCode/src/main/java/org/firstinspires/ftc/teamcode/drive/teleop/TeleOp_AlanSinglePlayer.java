@@ -54,6 +54,7 @@ public class TeleOp_AlanSinglePlayer extends OpMode {
     public boolean upPrevious = false;
     public boolean downPrevious = false;
     public double dr4bPower = 1;
+    public boolean toggle2 = false;
 
     public enum TurretState{
         SOUTH1,
@@ -181,7 +182,7 @@ public class TeleOp_AlanSinglePlayer extends OpMode {
 
     @Override
     public void loop() {
-        turtle(gamepad1.x, gamepad1.b);
+        turtle(gamepad1.x);
         drive();
         spinny(gamepad1.left_bumper, gamepad1.right_bumper);
         grippers(gamepad1.left_trigger > 0.3, gamepad1.left_trigger < 0.3);
@@ -324,13 +325,15 @@ public class TeleOp_AlanSinglePlayer extends OpMode {
         }
     }
 
-    public void turtle(boolean fast, boolean slow){
-        if (fast){
+    public void turtle(boolean toggle){
+        if (toggle && !toggle2){
             speedLimit = max;
         }
-        else if (slow){
+        toggle2 = true;
+        if (toggle && toggle2){
             speedLimit = min;
         }
+        toggle2 = false;
     }
 
     public void drive() {
