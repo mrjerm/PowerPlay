@@ -39,7 +39,6 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-@Disabled
 public class Red2LowStrafe extends LinearOpMode {
 
     static double timeStamp;
@@ -300,8 +299,6 @@ public class Red2LowStrafe extends LinearOpMode {
             setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
 
             drive.followTrajectorySequence(trajFinal);
-            servoTurret.setPosition(south1);
-            pause(1);
         }
     }
 

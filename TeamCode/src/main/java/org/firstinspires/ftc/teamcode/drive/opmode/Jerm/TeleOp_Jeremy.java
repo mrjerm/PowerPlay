@@ -30,6 +30,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.drive.UCFSDScrimmage.TeleOp_UCFSDScrimmage;
+
 @TeleOp
 public class TeleOp_Jeremy extends OpMode {
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
@@ -185,30 +187,22 @@ public class TeleOp_Jeremy extends OpMode {
         turtle(gamepad1.y, gamepad1.a);
         drive();
         spinny(gamepad2.left_bumper, gamepad2.right_bumper);
-        grippers(gamepad2.left_trigger > 0.3, gamepad2.left_trigger < 0.3);
+        grippers(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
         setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
         liftControl();
         v4bControl();
-        low(gamepad1.x);
-        high(gamepad1.b);
+        low(gamepad2.a);
+
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
     }
 
-    public void high(boolean keybind){
-        if (keybind){
-            robotState = RobotState.HIGH_JUNCTION;
-            dr4bPower = 1;
-            turretState = TurretState.WEST;
-        }
-    }
-
-    public void low(boolean keybind){
+    public void low(boolean keybind) {
         if (keybind) {
             robotState = RobotState.PICKING_UP;
             dr4bPower = DR4B_LOWPOWER;
-            turretState = TurretState.SOUTH1;
+
         }
     }
 

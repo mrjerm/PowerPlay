@@ -103,7 +103,7 @@ public class Red2LowSpeedy extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(35.6,-71.2, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(35.6,-62, Math.toRadians(90));
 
         drive.setPoseEstimate(startPose);
 
@@ -141,7 +141,7 @@ public class Red2LowSpeedy extends LinearOpMode {
             }
         };
 
-        TrajectorySequence traj = drive.trajectorySequenceBuilder(new Pose2d(35.6,-71.2, Math.toRadians(90))).setTangent(Math.toRadians(90))
+        TrajectorySequence traj = drive.trajectorySequenceBuilder(new Pose2d(35.6,-62, Math.toRadians(90))).setTangent(Math.toRadians(90))
                 //preload
                 .splineToSplineHeading(new Pose2d(36,-42.4, Math.toRadians(92)), Math.toRadians(92))
 
@@ -154,9 +154,9 @@ public class Red2LowSpeedy extends LinearOpMode {
 
                 //score 1st of stack on high junction
                 .splineToSplineHeading(new Pose2d(56,-12.8, Math.toRadians(0)), Math.toRadians(-180), slowVel, defaultAccel)
-                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
-                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
-                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(0)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(0)), Math.toRadians(177))
+                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(0)), Math.toRadians(-180))
 
                 //back to starter stack
                 .splineToSplineHeading(new Pose2d(30.8,-12.8, Math.toRadians(0)), Math.toRadians(0))
@@ -167,9 +167,9 @@ public class Red2LowSpeedy extends LinearOpMode {
 
                 //2nd of stack
                 .splineToSplineHeading(new Pose2d(56,-12.8, Math.toRadians(0)), Math.toRadians(-180), slowVel, defaultAccel)
-                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
-                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
-                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(0)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(0)), Math.toRadians(177))
+                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(0)), Math.toRadians(-180))
 
                 //back to starter stack
                 .splineToSplineHeading(new Pose2d(30.8,-12.8, Math.toRadians(0)), Math.toRadians(0))
@@ -180,8 +180,9 @@ public class Red2LowSpeedy extends LinearOpMode {
 
                 //3rd of stack
                 .splineToSplineHeading(new Pose2d(56,-12.8, Math.toRadians(0)), Math.toRadians(-180), slowVel, defaultAccel)
-                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
-                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(0)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(0)), Math.toRadians(177))
+                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(0)), Math.toRadians(-180))
 
                 //back to starter stack
                 .splineToSplineHeading(new Pose2d(30.8,-12.8, Math.toRadians(0)), Math.toRadians(0))
@@ -192,8 +193,9 @@ public class Red2LowSpeedy extends LinearOpMode {
 
                 //4th of stack
                 .splineToSplineHeading(new Pose2d(56,-12.8, Math.toRadians(0)), Math.toRadians(-180), slowVel, defaultAccel)
-                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
-                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(0)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(0)), Math.toRadians(177))
+                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(0)), Math.toRadians(-180))
 
                 //back to starter stack
                 .splineToSplineHeading(new Pose2d(30.8,-12.8, Math.toRadians(0)), Math.toRadians(0))
@@ -204,8 +206,9 @@ public class Red2LowSpeedy extends LinearOpMode {
 
                 //5th of stack
                 .splineToSplineHeading(new Pose2d(56,-12.8, Math.toRadians(0)), Math.toRadians(-180), slowVel, defaultAccel)
-                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
-                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(0)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(0)), Math.toRadians(177))
+                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(0)), Math.toRadians(-180))
                 .build();
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
@@ -318,74 +321,7 @@ public class Red2LowSpeedy extends LinearOpMode {
         }
 
         if (opModeIsActive()){
-            //prepare to drop off preload
-            setMid();
-            //move to (4, 2) junction
-            drive.followTrajectorySequence(traj1);
-            //drop dr4b to align cone on junction
-            setLift(DR4B_MIDHIGHJUNCTION - 100);
-            pause(0.3);
-            //score preload cone
-            openGrabber();
-
-            //retract v4b to prepare to move to starter stack
-            setV4B(V4B_VERTICAL);
-            pause(0.3);
-            //point turret towards starter stack
-            servoTurret.setPosition(east);
-            pause(0.2);
-
-            //move to starter stack
-            drive.followTrajectorySequence(traj2);
-            drive.followTrajectorySequence(traj3);
-            //grab cone
-            closeGrabber();
-            pause(0.3);
-            //lift cone from stack to avoid interference
-            setLift(DR4B_LOWJUNCTION);
-            pause(0.3);
-
-            //move to (5, 2) junction
-            drive.followTrajectorySequence(traj4);
-            pause(0.1);
-            //drop dr4b to align cone on junction
-            setLift(DR4B_LOWJUNCTION - 100);
-            pause(0.2);
-            //score starter stack cone 1
-            openGrabber();
-            setV4B(V4B_VERTICAL);
-            pause(0.3);
-
-            servoTurret.setPosition(east); //point turret towards starter stack
-            pause(0.5);
-            //move to starter stack to grab cone 2
-            drive.followTrajectorySequence(traj5);
-            //grab cone
-            closeGrabber();
-            pause(0.3);
-            //lift cone from stack to avoid interference
-            setLift(DR4B_LOWJUNCTION);
-            pause(0.3);
-
-            //move to (5, 2) junction
-            drive.followTrajectorySequence(traj6);
-            pause(0.1);
-            //drop dr4b to align cone on junction
-            setLift(DR4B_LOWJUNCTION - 100);
-            pause(0.2);
-            //score starter stack cone 1
-            openGrabber();
-
-            setV4B(V4B_RETRACTED);
-            pause(0.3);
-
-            //retract everything, prepare for parking and teleop
-            closeGrabber();
-            setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
-
-            drive.followTrajectorySequence(trajFinal);
-            servoTurret.setPosition(south1);
-            pause(1);
+            drive.followTrajectorySequence(traj);
         }
     }
 

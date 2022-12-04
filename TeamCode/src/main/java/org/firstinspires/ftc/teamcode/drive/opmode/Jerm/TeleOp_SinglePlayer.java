@@ -9,7 +9,6 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_GROUNDJUNCTIO
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
@@ -182,21 +181,30 @@ public class TeleOp_SinglePlayer extends OpMode {
 
     @Override
     public void loop() {
-        turtle(gamepad1.y, gamepad1.a);
+//        turtle(gamepad1.y, gamepad1.a);
         drive();
         spinny(gamepad1.left_bumper, gamepad1.right_bumper);
         grippers(gamepad1.left_trigger > 0.3, gamepad1.right_trigger > 0.3);
         setRobotState(gamepad1.dpad_up, gamepad1.dpad_down);
         liftControl();
         v4bControl();
-        low(gamepad1.x);
-        high(gamepad1.b);
+        low(gamepad1.a);
+        highLeft(gamepad1.x);
+        highRight(gamepad1.b);
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
     }
 
-    public void high(boolean keybind){
+    public void highLeft(boolean keybind){
+        if (keybind){
+            robotState = RobotState.HIGH_JUNCTION;
+            dr4bPower = 1;
+            turretState = TurretState.WEST;
+        }
+    }
+
+    public void highRight(boolean keybind){
         if (keybind){
             robotState = RobotState.HIGH_JUNCTION;
             dr4bPower = 1;

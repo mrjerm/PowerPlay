@@ -218,23 +218,17 @@ public class Blue2Low extends LinearOpMode {
 
             if (tagOfInterest == null || tagOfInterest.id == LEFT) {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
-                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
-                            servoTurret.setPosition(south1);
-                        })
+
                         .lineToLinearHeading(new Pose2d(-15, 9, Math.toRadians(-186)))
                         .build();
             } else if (tagOfInterest.id == MIDDLE) {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
-                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
-                            servoTurret.setPosition(south1);
-                        })
+
                         .lineToLinearHeading(new Pose2d(-38, 9, Math.toRadians(-186)))
                         .build();
             } else {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
-                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
-                            servoTurret.setPosition(south1);
-                        })
+
                         .lineToLinearHeading(new Pose2d(-59, 9, Math.toRadians(-186)))
                         .build();
             }

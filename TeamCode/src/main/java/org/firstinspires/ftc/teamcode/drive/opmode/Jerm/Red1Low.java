@@ -220,24 +220,18 @@ public class Red1Low extends LinearOpMode {
 
             if (tagOfInterest == null || tagOfInterest.id == LEFT) {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
-                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
-                            servoTurret.setPosition(south1);
-                        })
+
                         .lineToLinearHeading(new Pose2d(-55, -9, Math.toRadians(174)))
                         .build();
 
             } else if (tagOfInterest.id == MIDDLE) {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
-                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
-                            servoTurret.setPosition(south1);
-                        })
+
                         .lineToLinearHeading(new Pose2d(-35, -11, Math.toRadians(174)))
                         .build();
             } else {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
-                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
-                            servoTurret.setPosition(south1);
-                        })
+
                         .lineToLinearHeading(new Pose2d(-12, -11, Math.toRadians(174)))
                         .build();
             }

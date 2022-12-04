@@ -201,7 +201,7 @@ public class TeleOp_UCFSDScrimmage extends OpMode {
         stick(gamepad2.y, gamepad2.a);*/
     }
 
-        public void low(boolean keybind){
+    public void low(boolean keybind){
         if (keybind) {
             robotState = RobotState.PICKING_UP;
             dr4bPower = DR4B_LOWPOWER;

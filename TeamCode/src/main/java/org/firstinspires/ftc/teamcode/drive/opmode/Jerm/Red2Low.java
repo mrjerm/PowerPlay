@@ -216,23 +216,16 @@ public class Red2Low extends LinearOpMode {
 
             if (tagOfInterest == null || tagOfInterest.id == LEFT) {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
-                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
-                            servoTurret.setPosition(north);
-                        })
                         .lineToLinearHeading(new Pose2d(15, -11, Math.toRadians(-6)))
                         .build();
             } else if (tagOfInterest.id == MIDDLE) {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
-                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
-                            servoTurret.setPosition(north);
-                        })
+
                         .lineToLinearHeading(new Pose2d(38, -11, Math.toRadians(-6)))
                         .build();
             } else {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
-                        .UNSTABLE_addDisplacementMarkerOffset(3, () -> {
-                            servoTurret.setPosition(north);
-                        })
+
                         .lineToLinearHeading(new Pose2d(62, -11, Math.toRadians(-6)))
                         .build();
             }
