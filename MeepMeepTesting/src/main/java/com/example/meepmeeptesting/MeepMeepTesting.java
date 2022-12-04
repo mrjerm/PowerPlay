@@ -46,9 +46,9 @@ public class MeepMeepTesting {
 
                                 //score 1st of stack on high junction
                                 .splineToSplineHeading(new Pose2d(56,-12.8, Math.toRadians(0)), Math.toRadians(-180), slowVel, defaultAccel)
-                                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
-                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
-                                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(0)), Math.toRadians(-180))
+                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(0)), Math.toRadians(177))
+                                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(0)), Math.toRadians(-180))
 
                                 //back to starter stack
                                 .splineToSplineHeading(new Pose2d(30.8,-12.8, Math.toRadians(0)), Math.toRadians(0))
@@ -59,9 +59,9 @@ public class MeepMeepTesting {
 
                                 //2nd of stack
                                 .splineToSplineHeading(new Pose2d(56,-12.8, Math.toRadians(0)), Math.toRadians(-180), slowVel, defaultAccel)
-                                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
-                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
-                                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(0)), Math.toRadians(-180))
+                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(0)), Math.toRadians(177))
+                                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(0)), Math.toRadians(-180))
 
                                 //back to starter stack
                                 .splineToSplineHeading(new Pose2d(30.8,-12.8, Math.toRadians(0)), Math.toRadians(0))
@@ -72,8 +72,9 @@ public class MeepMeepTesting {
 
                                 //3rd of stack
                                 .splineToSplineHeading(new Pose2d(56,-12.8, Math.toRadians(0)), Math.toRadians(-180), slowVel, defaultAccel)
-                                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
-                                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(0)), Math.toRadians(-180))
+                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
+                                .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(0)), Math.toRadians(-180))
 
                                 //back to starter stack
                                 .splineToSplineHeading(new Pose2d(30.8,-12.8, Math.toRadians(0)), Math.toRadians(0))
@@ -84,7 +85,8 @@ public class MeepMeepTesting {
 
                                 //4th of stack
                                 .splineToSplineHeading(new Pose2d(56,-12.8, Math.toRadians(0)), Math.toRadians(-180), slowVel, defaultAccel)
-                                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
+                                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
                                 .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
 
                                 //back to starter stack
@@ -96,7 +98,8 @@ public class MeepMeepTesting {
 
                                 //5th of stack
                                 .splineToSplineHeading(new Pose2d(56,-12.8, Math.toRadians(0)), Math.toRadians(-180), slowVel, defaultAccel)
-                                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
+                                .splineToSplineHeading(new Pose2d(42,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                                .splineToSplineHeading(new Pose2d(34,-12.8, Math.toRadians(177)), Math.toRadians(177))
                                 .splineToSplineHeading(new Pose2d(23.6,-12.8, Math.toRadians(-180)), Math.toRadians(-180))
 
                                 //park
