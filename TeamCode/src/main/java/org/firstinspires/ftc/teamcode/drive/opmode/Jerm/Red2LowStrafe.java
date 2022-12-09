@@ -39,6 +39,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
+//@Disabled
 public class Red2LowStrafe extends LinearOpMode {
 
     static double timeStamp;
@@ -130,7 +131,7 @@ public class Red2LowStrafe extends LinearOpMode {
                     servoTurret.setPosition(west); //prepare turret for dropping preload
                 })
                 .lineToLinearHeading(new Pose2d(38.5, -21, Math.toRadians(88)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
@@ -138,7 +139,7 @@ public class Red2LowStrafe extends LinearOpMode {
                     prepareStack(1); //prepare v4b + dr4b for starter stack cone 1
                 })
                 .lineToLinearHeading(new Pose2d(38.5, -12, Math.toRadians(88)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
@@ -299,6 +300,8 @@ public class Red2LowStrafe extends LinearOpMode {
             setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
 
             drive.followTrajectorySequence(trajFinal);
+            servoTurret.setPosition(south1);
+            pause(1);
         }
     }
 

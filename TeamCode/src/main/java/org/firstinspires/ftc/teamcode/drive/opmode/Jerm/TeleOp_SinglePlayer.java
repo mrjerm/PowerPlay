@@ -208,15 +208,40 @@ public class TeleOp_SinglePlayer extends OpMode {
         if (keybind){
             robotState = RobotState.HIGH_JUNCTION;
             dr4bPower = 1;
-            turretState = TurretState.WEST;
+            turretState = TurretState.EAST;
         }
     }
 
     public void low(boolean keybind){
         if (keybind) {
+            if (turretState == TurretState.EAST){
+                turretState = TurretState.SOUTH2;
+            } else if (turretState == TurretState.WEST){
+                turretState = TurretState.SOUTH1;
+            }
+            switch (turretState) {
+                case SOUTH1:
+                    servoTurret.setPosition(south1);
+                    break;
+                case SOUTH2:
+                    servoTurret.setPosition(south2);
+                    break;
+                case EAST:
+                    servoTurret.setPosition(east);
+                    break;
+                case NORTH:
+                    servoTurret.setPosition(north);
+                    break;
+                case WEST:
+                    servoTurret.setPosition(west);
+                    break;
+                default:
+                    telemetry.addData("turret status", "we messed up 💀");
+                    telemetry.update();
+            }
             robotState = RobotState.PICKING_UP;
             dr4bPower = DR4B_LOWPOWER;
-            turretState = TurretState.SOUTH1;
+
         }
     }
 
