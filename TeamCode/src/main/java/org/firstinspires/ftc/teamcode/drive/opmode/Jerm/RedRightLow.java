@@ -13,7 +13,6 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.east;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.north;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south1;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.starterStack;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
@@ -37,7 +36,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class Red2Low extends LinearOpMode {
+public class RedRightLow extends LinearOpMode {
 
     static double timeStamp;
 
@@ -226,7 +225,7 @@ public class Red2Low extends LinearOpMode {
             } else {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
 
-                        .lineToLinearHeading(new Pose2d(62, -11, Math.toRadians(-6)))
+                        .lineToLinearHeading(new Pose2d(59, -11, Math.toRadians(-6)))
                         .build();
             }
         }
