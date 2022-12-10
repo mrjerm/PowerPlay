@@ -89,7 +89,7 @@ public class TeleOp_SinglePlayerStarter extends OpMode {
             }
         }
     }
-    TurretState turretState = TurretState.SOUTH1;
+    TurretState turretState = TurretState.NORTH;
 
 
 
@@ -250,6 +250,7 @@ public class TeleOp_SinglePlayerStarter extends OpMode {
                 scoringStack = true;
             }
         }
+        stackPrevious = stackCurrent;
     }
 
     public void highLeft(boolean keybind){
