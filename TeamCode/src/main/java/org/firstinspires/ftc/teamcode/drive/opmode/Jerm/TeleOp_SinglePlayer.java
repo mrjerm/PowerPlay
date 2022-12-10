@@ -82,7 +82,8 @@ public class TeleOp_SinglePlayer extends OpMode {
             }
         }
     }
-    TurretState turretState = TurretState.SOUTH1;
+    TurretState turretState;
+
 
     private enum DR4BState{
         REST,
@@ -156,7 +157,7 @@ public class TeleOp_SinglePlayer extends OpMode {
         }
     }
 
-    RobotState robotState = RobotState.PICKING_UP;
+    RobotState robotState = RobotState.LOW_JUNCTION;
 
     @Override
     public void init() {
@@ -171,11 +172,19 @@ public class TeleOp_SinglePlayer extends OpMode {
         motorDR4B.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorDR4B.setDirection(DcMotorEx.Direction.REVERSE);
 
+
         servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
+
+        if (servoTurret.getPosition() > 0.5){
+            turretState = TurretState.SOUTH2;
+        } else if (servoTurret.getPosition() < 0.5){
+            turretState = TurretState.SOUTH1;
+
+        }
 
     }
 
