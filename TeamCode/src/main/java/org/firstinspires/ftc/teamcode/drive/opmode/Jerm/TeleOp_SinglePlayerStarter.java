@@ -222,8 +222,8 @@ public class TeleOp_SinglePlayerStarter extends OpMode {
 
     @Override
     public void loop(){
-        stackControl(gamepad1.y);
-//        turtle(gamepad1.y, gamepad1.a);
+//        stackControl(gamepad1.y);
+        turtle(gamepad1.dpad_right, gamepad1.dpad_left);
         drive();
         spinny(gamepad1.left_bumper, gamepad1.right_bumper);
         grippers(gamepad1.left_trigger > 0.3, gamepad1.right_trigger > 0.3);
@@ -362,21 +362,27 @@ public class TeleOp_SinglePlayerStarter extends OpMode {
             switch (robotState){
                 case STACK1:
                     dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
                     break;
                 case STACK2:
                     dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
                     break;
                 case STACK3:
                     dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
                     break;
                 case STACK4:
                     dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
                     break;
                 case STACK5:
                     dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
                     break;
                 default:
                     dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
                     break;
             }
         }
