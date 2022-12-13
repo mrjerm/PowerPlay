@@ -235,18 +235,16 @@ public class RedRightLowNoSleep extends LinearOpMode {
             setMid();
             //move to (4, 2) junction
             drive.followTrajectorySequence(traj1);
-            //drop dr4b to align cone on junction
-            setLift(DR4B_MIDHIGHJUNCTION - 100);
-            pause(0.3);
+//            pause(0.3);
             //score preload cone
             openGrabber();
 
             //retract v4b to prepare to move to starter stack
             setV4B(V4B_VERTICAL);
-            pause(0.3);
+            pause(0.1);
             //point turret towards starter stack
             servoTurret.setPosition(north);
-            pause(0.2);
+//            pause(0.2);
 
             //move to starter stack
             drive.followTrajectorySequence(traj2);
@@ -254,20 +252,18 @@ public class RedRightLowNoSleep extends LinearOpMode {
             drive.followTrajectorySequence(traj3);
             //grab cone
             closeGrabber();
-            pause(0.3);
+            pause(0.1);
             //lift cone from stack to avoid interference
             setLift(DR4B_LOWJUNCTION);
-            pause(0.3);
+            pause(0.2);
 
             //move to (5, 2) junction
             drive.followTrajectorySequence(traj4);
-            //drop dr4b to align cone on junction
-            setLift(DR4B_LOWJUNCTION - 100);
-            pause(0.2);
+//            pause(0.2);
             //score starter stack cone 1
             openGrabber();
             setV4B(V4B_VERTICAL);
-            pause(0.3);
+            pause(0.1);
 
             servoTurret.setPosition(north); //point turret towards starter stack
             pause(0.5);
@@ -277,21 +273,19 @@ public class RedRightLowNoSleep extends LinearOpMode {
             drive.followTrajectorySequence(traj5);
             //grab cone
             closeGrabber();
-            pause(0.3);
+            pause(0.1);
             //lift cone from stack to avoid interference
             setLift(DR4B_LOWJUNCTION);
-            pause(0.3);
+            pause(0.2);
 
             //move to (5, 2) junction
             drive.followTrajectorySequence(traj6);
-            //drop dr4b to align cone on junction
-            setLift(DR4B_LOWJUNCTION - 100);
-            pause(0.2);
+//            pause(0.2);
             //score starter stack cone 1
             openGrabber();
 
             setV4B(V4B_RETRACTED);
-            pause(0.3);
+            pause(0.1);
 
             //retract everything, prepare for parking and teleop
             closeGrabber();
