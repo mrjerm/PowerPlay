@@ -19,6 +19,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 
 @TeleOp
+@Disabled
 
 public class SignalDetection extends LinearOpMode
 {

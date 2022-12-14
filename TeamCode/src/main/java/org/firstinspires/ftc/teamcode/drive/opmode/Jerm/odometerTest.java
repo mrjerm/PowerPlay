@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp
+@Disabled
 public class odometerTest extends OpMode {
     public DcMotorEx odometerX;
     public DcMotorEx odometerYL;
