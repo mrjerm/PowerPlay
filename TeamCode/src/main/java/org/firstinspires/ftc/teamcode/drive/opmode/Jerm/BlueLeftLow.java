@@ -126,7 +126,7 @@ public class BlueLeftLow extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     servoTurret.setPosition(east); //prepare turret for dropping preload
                 })
-                .lineToLinearHeading(new Pose2d(37.5, 22, Math.toRadians(-92)),
+                .lineToLinearHeading(new Pose2d(37.5, 22.5, Math.toRadians(-92)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
@@ -139,7 +139,7 @@ public class BlueLeftLow extends LinearOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(90))))
-                .lineToLinearHeading(new Pose2d(55, 8, Math.toRadians(-6)))
+                .lineToLinearHeading(new Pose2d(54.5, 8, Math.toRadians(-6)))
                 .build();
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
@@ -149,7 +149,7 @@ public class BlueLeftLow extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(48, 9, Math.toRadians(-6)))
                 .build();
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
-                .lineToLinearHeading(new Pose2d(55, 9, Math.toRadians(-4)))
+                .lineToLinearHeading(new Pose2d(54.5, 9, Math.toRadians(-4)))
                 .build();
         TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
