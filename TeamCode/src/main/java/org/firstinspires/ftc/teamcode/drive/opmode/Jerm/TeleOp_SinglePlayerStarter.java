@@ -61,6 +61,8 @@ public class TeleOp_SinglePlayerStarter extends OpMode {
     public boolean stackPrevious = false;
     public boolean scoringStack = false;
     public double dr4bPower = 1;
+    public boolean pizza = true;
+    public boolean flashing = false;
 
     private enum TurretState{
         SOUTH1,
@@ -222,6 +224,18 @@ public class TeleOp_SinglePlayerStarter extends OpMode {
 
     @Override
     public void loop(){
+        if (pizza) {
+            resetRuntime();
+        }
+        pizza = false;
+        if (getRuntime() > 75){
+            flashing = true;
+        }
+        if (flashing && getRuntime() % 2 == 1){
+
+        } else if (flashing){
+
+        }
 //        stackControl(gamepad1.y);
         turtle(gamepad1.dpad_right, gamepad1.dpad_left);
         drive();
