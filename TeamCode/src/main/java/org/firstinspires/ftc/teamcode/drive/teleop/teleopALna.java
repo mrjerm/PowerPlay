@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.drive.TimerTiming;
 
 @TeleOp
 
+@Disabled
 
 public class teleopALna extends OpMode {
 

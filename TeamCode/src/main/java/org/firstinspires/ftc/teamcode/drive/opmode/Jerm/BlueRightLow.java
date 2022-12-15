@@ -226,7 +226,7 @@ public class BlueRightLow extends LinearOpMode {
             } else {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
 
-                        .lineToLinearHeading(new Pose2d(-59, 9, Math.toRadians(-186)))
+                        .lineToLinearHeading(new Pose2d(-57, 9, Math.toRadians(-186)))
                         .build();
             }
         }

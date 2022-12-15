@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
+package org.firstinspires.ftc.teamcode.drive.RedAndBlack;
 
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORTURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
@@ -28,7 +28,6 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south2;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -36,8 +35,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-@Disabled
-public class TeleOp_SinglePlayerStarter extends OpMode {
+public class TeleOp_SinglePlayer extends OpMode {
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
