@@ -226,7 +226,7 @@ public class BlueRightLow extends LinearOpMode {
             } else {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
 
-                        .lineToLinearHeading(new Pose2d(-57, 9, Math.toRadians(-186)))
+                        .lineToLinearHeading(new Pose2d(-58, 9, Math.toRadians(-186)))
                         .build();
             }
         }
@@ -257,7 +257,7 @@ public class BlueRightLow extends LinearOpMode {
             closeGrabber();
             pause(0.3);
             //lift cone from stack to avoid interference
-            setLift(DR4B_LOWJUNCTION);
+            setLift(DR4B_MIDHIGHJUNCTION);
             pause(0.3);
 
             //move to (5, 2) junction
@@ -280,7 +280,7 @@ public class BlueRightLow extends LinearOpMode {
             closeGrabber();
             pause(0.3);
             //lift cone from stack to avoid interference
-            setLift(DR4B_LOWJUNCTION);
+            setLift(DR4B_MIDHIGHJUNCTION);
             pause(0.3);
 
             //move to (5, 2) junction
@@ -297,9 +297,9 @@ public class BlueRightLow extends LinearOpMode {
             //retract everything, prepare for parking and teleop
             closeGrabber();
             setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
-
             drive.followTrajectorySequence(trajFinal);
             drive.turn(Math.toRadians(90));
+
         }
     }
 

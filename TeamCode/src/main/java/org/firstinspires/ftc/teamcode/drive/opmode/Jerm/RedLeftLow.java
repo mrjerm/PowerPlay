@@ -260,7 +260,7 @@ public class RedLeftLow extends LinearOpMode {
             closeGrabber();
             pause(0.3);
             //lift cone from stack to avoid interference
-            setLift(DR4B_LOWJUNCTION);
+            setLift(DR4B_MIDHIGHJUNCTION);
             pause(0.3);
 
             //move to (5, 2) junction
@@ -283,7 +283,7 @@ public class RedLeftLow extends LinearOpMode {
             closeGrabber();
             pause(0.3);
             //lift cone from stack to avoid interference
-            setLift(DR4B_LOWJUNCTION);
+            setLift(DR4B_MIDHIGHJUNCTION);
             pause(0.3);
 
             //move to (5, 2) junction
@@ -303,6 +303,7 @@ public class RedLeftLow extends LinearOpMode {
 
             drive.followTrajectorySequence(trajFinal);
             drive.turn(Math.toRadians(-90));
+
         }
     }
 
