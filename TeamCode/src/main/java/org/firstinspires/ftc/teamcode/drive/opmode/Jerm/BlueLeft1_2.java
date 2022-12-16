@@ -36,7 +36,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class BlueRightLow extends LinearOpMode {
+public class BlueLeft1_2 extends LinearOpMode {
 
     static double timeStamp;
 
@@ -98,7 +98,7 @@ public class BlueRightLow extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(-38, 62, Math.toRadians(-90));
+        Pose2d startPose = new Pose2d(38, 62, Math.toRadians(-90));
 
         drive.setPoseEstimate(startPose);
 
@@ -124,9 +124,9 @@ public class BlueRightLow extends LinearOpMode {
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    servoTurret.setPosition(west); //prepare turret for dropping preload
+                    servoTurret.setPosition(east); //prepare turret for dropping preload
                 })
-                .lineToLinearHeading(new Pose2d(-38.5, 21, Math.toRadians(-92)),
+                .lineToLinearHeading(new Pose2d(37.5, 22.5, Math.toRadians(-92)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
@@ -134,29 +134,29 @@ public class BlueRightLow extends LinearOpMode {
                 .UNSTABLE_addDisplacementMarkerOffset(2, () -> {
                     prepareStack(1); //prepare v4b + dr4b for starter stack cone 1
                 })
-                .lineToLinearHeading(new Pose2d(-38.5, 12, Math.toRadians(-92)),
+                .lineToLinearHeading(new Pose2d(38.5, 12, Math.toRadians(-92)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
-        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(-90))))
-                .lineToLinearHeading(new Pose2d(-57, 11, Math.toRadians(-186)))
+        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(90))))
+                .lineToLinearHeading(new Pose2d(54.5, 8, Math.toRadians(-6)))
                 .build();
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                    servoTurret.setPosition(east); //point turret towards (1, 2) junction
+                    servoTurret.setPosition(west); //point turret towards (1, 2) junction
                     setLow();
                 })
-                .lineToLinearHeading(new Pose2d(-48, 11, Math.toRadians(-186)))
+                .lineToLinearHeading(new Pose2d(48, 9, Math.toRadians(-6)))
                 .build();
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
-                .lineToLinearHeading(new Pose2d(-57, 11, Math.toRadians(-184)))
+                .lineToLinearHeading(new Pose2d(54.5, 9, Math.toRadians(-4)))
                 .build();
         TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end())
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                    servoTurret.setPosition(east); //point turret towards (1, 2) junction
+                    servoTurret.setPosition(west); //point turret towards (1, 2) junction
                     setLow();
                 })
-                .lineToLinearHeading(new Pose2d(-48, 11, Math.toRadians(-184)))
+                .lineToLinearHeading(new Pose2d(48, 9, Math.toRadians(-4)))
                 .build();
 
         servoV4BL.setPosition(V4B_RETRACTED);
@@ -216,17 +216,18 @@ public class BlueRightLow extends LinearOpMode {
             if (tagOfInterest == null || tagOfInterest.id == LEFT) {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
 
-                        .lineToLinearHeading(new Pose2d(-15, 9, Math.toRadians(-186)))
+                        .lineToLinearHeading(new Pose2d(56, 9, Math.toRadians(-6)))
+
                         .build();
             } else if (tagOfInterest.id == MIDDLE) {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
 
-                        .lineToLinearHeading(new Pose2d(-38, 9, Math.toRadians(-186)))
+                        .lineToLinearHeading(new Pose2d(36, 9, Math.toRadians(-6)))
                         .build();
             } else {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
+                        .lineToLinearHeading(new Pose2d(13, 9, Math.toRadians(-6)))
 
-                        .lineToLinearHeading(new Pose2d(-58, 9, Math.toRadians(-186)))
                         .build();
             }
         }
@@ -251,7 +252,7 @@ public class BlueRightLow extends LinearOpMode {
 
             //move to starter stack
             drive.followTrajectorySequence(traj2);
-            drive.turn(Math.toRadians(-90));
+            drive.turn(Math.toRadians(90));
             drive.followTrajectorySequence(traj3);
             //grab cone
             closeGrabber();
@@ -298,7 +299,7 @@ public class BlueRightLow extends LinearOpMode {
             closeGrabber();
             setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
             drive.followTrajectorySequence(trajFinal);
-            drive.turn(Math.toRadians(90));
+            drive.turn(Math.toRadians(-90));
 
         }
     }

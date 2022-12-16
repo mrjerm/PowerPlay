@@ -36,7 +36,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class RedLeftLow extends LinearOpMode {
+public class RedLeft1_2 extends LinearOpMode {
 
     static double timeStamp;
 
