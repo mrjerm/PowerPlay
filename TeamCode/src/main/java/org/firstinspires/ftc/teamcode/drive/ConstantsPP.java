@@ -12,7 +12,7 @@ public class ConstantsPP {
     public static int DR4B_GROUNDFLOORTURRETCLEARANCE = 0;
     public static int DR4B_LOWJUNCTION = 190;
     public static int DR4B_MIDHIGHJUNCTION = 365;
-    public static double DR4B_LOWPOWER = 0.2;
+    public static double DR4B_LOWPOWER = 0.15;
 
     //V4B values
     public static double V4B_RETRACTED = 0.13;
@@ -28,7 +28,7 @@ public class ConstantsPP {
     //cone 1 is top cone, cone 5 is bottom cone
     public static double V4B_CONE1 = 0.63;
     public static double V4B_CONE2 = 0.67;
-    public static double V4B_CONE3 = 0.73;
+    public static double V4B_CONE3 = 0.71;
     public static double V4B_CONE4 = 0.75;
     public static double V4B_CONE5 = 0.83;
 

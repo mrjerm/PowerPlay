@@ -36,7 +36,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class BlueLeft1_2 extends LinearOpMode {
+public class Blue_Left_2 extends LinearOpMode {
 
     static double timeStamp;
 
@@ -146,7 +146,9 @@ public class BlueLeft1_2 extends LinearOpMode {
                     servoTurret.setPosition(west); //point turret towards (1, 2) junction
                     setLow();
                 })
-                .lineToLinearHeading(new Pose2d(48, 9, Math.toRadians(-6)))
+                .lineToLinearHeading(new Pose2d(48, 9, Math.toRadians(-6)),
+                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
                 .lineToLinearHeading(new Pose2d(54.5, 9, Math.toRadians(-4)))
@@ -156,7 +158,9 @@ public class BlueLeft1_2 extends LinearOpMode {
                     servoTurret.setPosition(west); //point turret towards (1, 2) junction
                     setLow();
                 })
-                .lineToLinearHeading(new Pose2d(48, 9, Math.toRadians(-4)))
+                .lineToLinearHeading(new Pose2d(48, 9, Math.toRadians(-4)),
+                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
         servoV4BL.setPosition(V4B_RETRACTED);
