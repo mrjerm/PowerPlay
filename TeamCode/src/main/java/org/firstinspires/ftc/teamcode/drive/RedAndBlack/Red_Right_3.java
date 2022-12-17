@@ -135,7 +135,7 @@ public class Red_Right_3 extends LinearOpMode {
                     prepareStack(1); //prepare v4b + dr4b for starter stack cone 1
                 })
                 .lineToLinearHeading(new Pose2d(38, -12, Math.toRadians(88)),
-                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(-90))))
@@ -149,7 +149,7 @@ public class Red_Right_3 extends LinearOpMode {
                     setLow();
                 })
                 .lineToLinearHeading(new Pose2d(50, -12, Math.toRadians(-6)),
-                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
@@ -163,7 +163,7 @@ public class Red_Right_3 extends LinearOpMode {
                     setLow();
                 })
                 .lineToLinearHeading(new Pose2d(50, -12, Math.toRadians(-4)),
-                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj7 = drive.trajectorySequenceBuilder(traj6.end())
