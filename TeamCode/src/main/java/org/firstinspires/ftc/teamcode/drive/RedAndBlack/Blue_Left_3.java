@@ -310,7 +310,7 @@ public class Blue_Left_3 extends LinearOpMode {
             //score starter stack cone 1
             openGrabber();
 
-            setV4B(V4B_RETRACTED);
+            setV4B(V4B_VERTICAL);
             pause(0.1);
 
             servoTurret.setPosition(north); //point turret towards starter stack
@@ -331,7 +331,7 @@ public class Blue_Left_3 extends LinearOpMode {
             //score starter stack cone 1
             openGrabber();
 
-            setV4B(V4B_RETRACTED);
+            setV4B(V4B_VERTICAL);
             pause(0.1);
 
             //retract everything, prepare for parking and teleop
@@ -339,6 +339,7 @@ public class Blue_Left_3 extends LinearOpMode {
             setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
 
             drive.followTrajectorySequence(trajFinal);
+            setV4B(V4B_RETRACTED);
             drive.turn(Math.toRadians(-90));
 
         }

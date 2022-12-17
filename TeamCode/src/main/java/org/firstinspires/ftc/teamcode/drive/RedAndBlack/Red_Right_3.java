@@ -135,7 +135,7 @@ public class Red_Right_3 extends LinearOpMode {
                     prepareStack(1); //prepare v4b + dr4b for starter stack cone 1
                 })
                 .lineToLinearHeading(new Pose2d(38, -12, Math.toRadians(88)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(-90))))
@@ -177,7 +177,7 @@ public class Red_Right_3 extends LinearOpMode {
                     setLow();
                 })
                 .lineToLinearHeading(new Pose2d(50, -12, Math.toRadians(-4)),
-                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
@@ -310,7 +310,7 @@ public class Red_Right_3 extends LinearOpMode {
             //score starter stack cone 2
             openGrabber();
 
-            setV4B(V4B_RETRACTED);
+            setV4B(V4B_VERTICAL);
             pause(0.1);
 
             servoTurret.setPosition(north); //point turret towards starter stack
@@ -331,7 +331,7 @@ public class Red_Right_3 extends LinearOpMode {
             //score starter stack cone 3
             openGrabber();
 
-            setV4B(V4B_RETRACTED);
+            setV4B(V4B_VERTICAL);
             pause(0.1);
 
             //retract everything, prepare for parking and teleop
@@ -339,6 +339,7 @@ public class Red_Right_3 extends LinearOpMode {
             setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
 
             drive.followTrajectorySequence(trajFinal);
+            setV4B(V4B_RETRACTED);
             drive.turn(Math.toRadians(90));
 
         }
