@@ -141,7 +141,7 @@ public class Red_Right_3 extends LinearOpMode {
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(-90))))
                 .lineToLinearHeading(new Pose2d(58, -12, Math.toRadians(-6)))
                 .build();
-        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
+        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end()) //movement to drop off stack cone 1
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     servoTurret.setPosition(east); //point turret towards (5, 2) junction
                 })
@@ -155,7 +155,7 @@ public class Red_Right_3 extends LinearOpMode {
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
                 .lineToLinearHeading(new Pose2d(58, -12, Math.toRadians(-4)))
                 .build();
-        TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end())
+        TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end()) //movement to drop off stack cone 2
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     servoTurret.setPosition(east); //point turret towards (5, 2) junction
                 })
@@ -169,7 +169,7 @@ public class Red_Right_3 extends LinearOpMode {
         TrajectorySequence traj7 = drive.trajectorySequenceBuilder(traj6.end())
                 .lineToLinearHeading(new Pose2d(58, -12, Math.toRadians(-4)))
                 .build();
-        TrajectorySequence traj8 = drive.trajectorySequenceBuilder(traj7.end())
+        TrajectorySequence traj8 = drive.trajectorySequenceBuilder(traj7.end()) //movement to drop off stack cone 3
                 .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
                     servoTurret.setPosition(east); //point turret towards (5, 2) junction
                 })
