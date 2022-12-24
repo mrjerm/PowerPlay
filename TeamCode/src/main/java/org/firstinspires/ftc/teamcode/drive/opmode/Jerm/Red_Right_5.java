@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWPOWER;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MIDHIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
@@ -140,7 +141,7 @@ public class Red_Right_5 extends LinearOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(-90))))
-                .lineToLinearHeading(new Pose2d(57.5, -12, Math.toRadians(-6)))
+                .lineToLinearHeading(new Pose2d(57, -12, Math.toRadians(-6)))
                 .build();
 
         servoV4BL.setPosition(V4B_RETRACTED);
@@ -239,80 +240,86 @@ public class Red_Right_5 extends LinearOpMode {
             //grab cone
             closeGrabber();
             pause(0.3);
-            setLow();
+            setLift(DR4B_LOWJUNCTION);
             pause(0.1);
+            setV4B(V4B_HORIZONTAL);
             servoTurret.setPosition(southeast);
-            pause(1);
+            pause(5);
             setLift(motorDR4B.getCurrentPosition() - 100);
             pause(0.1);
             openGrabber();
             setV4B(V4B_VERTICAL);
             pause(0.1);
             servoTurret.setPosition(north);
-            pause(1);
+            pause(5);
             prepareStack(2);
             pause(0.1);
 
             closeGrabber();
             pause(0.3);
-            setLow();
+            setLift(DR4B_LOWJUNCTION);
             pause(0.1);
+            setV4B(V4B_HORIZONTAL);
             servoTurret.setPosition(southeast);
-            pause(1);
+            pause(5);
             setLift(motorDR4B.getCurrentPosition() - 100);
             pause(0.1);
             openGrabber();
             setV4B(V4B_VERTICAL);
             pause(0.1);
             servoTurret.setPosition(north);
-            pause(1);
+            pause(5);
             prepareStack(3);
             pause(0.1);
 
             closeGrabber();
             pause(0.3);
-            setLow();
+            setLift(DR4B_LOWJUNCTION);
             pause(0.1);
+            setV4B(V4B_HORIZONTAL);
             servoTurret.setPosition(southeast);
-            pause(1);
+            pause(5);
             setLift(motorDR4B.getCurrentPosition() - 100);
             pause(0.1);
             openGrabber();
             setV4B(V4B_VERTICAL);
             pause(0.1);
             servoTurret.setPosition(north);
-            pause(1);
+            pause(5);
             prepareStack(4);
             pause(0.1);
 
             closeGrabber();
             pause(0.3);
-            setLow();
+            setLift(DR4B_LOWJUNCTION);
             pause(0.1);
+            setV4B(V4B_HORIZONTAL);
             servoTurret.setPosition(southeast);
-            pause(1);
+            pause(5);
             setLift(motorDR4B.getCurrentPosition() - 100);
             pause(0.1);
             openGrabber();
             setV4B(V4B_VERTICAL);
             pause(0.1);
             servoTurret.setPosition(north);
-            pause(1);
+            pause(5);
             prepareStack(5);
             pause(0.1);
 
             closeGrabber();
             pause(0.3);
-            setLow();
+            setLift(DR4B_LOWJUNCTION);
             pause(0.1);
+            setV4B(V4B_HORIZONTAL);
             servoTurret.setPosition(southeast);
             pause(1);
             setLift(motorDR4B.getCurrentPosition() - 100);
             pause(0.1);
             openGrabber();
-            setV4B(V4B_VERTICAL);
             pause(0.1);
+            closeGrabber();
             setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
+            setV4B(V4B_VERTICAL);
 
 
 
