@@ -4,18 +4,23 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORT
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWPOWER;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MIDHIGHJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.NORTH;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.SOUTH1;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.SOUTHEAST;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.WEST;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.east;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.north;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.southeast;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.starterStack;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretPower;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -44,7 +49,8 @@ public class Red_Right_5 extends LinearOpMode {
 
     public DcMotorEx motorDR4B;
 
-    public Servo servoTurret;
+    public DcMotorEx motorTurret;
+
     public Servo servoGrabber;
     public Servo servoV4BL, servoV4BR;
 
@@ -117,7 +123,8 @@ public class Red_Right_5 extends LinearOpMode {
         motorDR4B.setDirection(DcMotorEx.Direction.REVERSE);
         motorDR4B.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
+        motorTurret = hardwareMap.get(DcMotorEx.class, "Motor Turret");
+
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
         servoGrabber.setPosition(grabberClose);
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
@@ -126,7 +133,7 @@ public class Red_Right_5 extends LinearOpMode {
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    servoTurret.setPosition(west); //prepare turret for dropping preload
+                    setTurretPosition(WEST);
                 })
                 .lineToLinearHeading(new Pose2d(38, -21, Math.toRadians(88)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -146,7 +153,7 @@ public class Red_Right_5 extends LinearOpMode {
 
         servoV4BL.setPosition(V4B_RETRACTED);
         servoV4BR.setPosition(V4B_RETRACTED);
-        servoTurret.setPosition(north);
+        setTurretPosition(NORTH);
 
         while (!isStarted() && !isStopRequested()) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
@@ -221,7 +228,7 @@ public class Red_Right_5 extends LinearOpMode {
             //move to (4, 2) junction
             drive.followTrajectorySequence(traj1);
             //drop dr4b to align cone on junction
-            setLift(DR4B_MIDHIGHJUNCTION - 100);
+            setLift(DR4B_MIDHIGHJUNCTION - 30);
             pause(0.3);
             //score preload cone
             openGrabber();
@@ -230,7 +237,7 @@ public class Red_Right_5 extends LinearOpMode {
             setV4B(V4B_VERTICAL);
             pause(0.3);
             //point turret towards starter stack
-            servoTurret.setPosition(north);
+            setTurretPosition(NORTH);
             pause(0.2);
 
             //move to starter stack
@@ -243,15 +250,15 @@ public class Red_Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             pause(0.1);
             setV4B(V4B_HORIZONTAL);
-            servoTurret.setPosition(southeast);
-            pause(5);
-            setLift(motorDR4B.getCurrentPosition() - 100);
+            setTurretPosition(SOUTHEAST);
+            pause(2);
+            setLift(motorDR4B.getCurrentPosition() - 30);
             pause(0.1);
             openGrabber();
             setV4B(V4B_VERTICAL);
             pause(0.1);
-            servoTurret.setPosition(north);
-            pause(5);
+            setTurretPosition(NORTH);
+            pause(2);
             prepareStack(2);
             pause(0.1);
 
@@ -260,15 +267,15 @@ public class Red_Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             pause(0.1);
             setV4B(V4B_HORIZONTAL);
-            servoTurret.setPosition(southeast);
-            pause(5);
-            setLift(motorDR4B.getCurrentPosition() - 100);
+            setTurretPosition(SOUTHEAST);
+            pause(2);
+            setLift(motorDR4B.getCurrentPosition() - 30);
             pause(0.1);
             openGrabber();
             setV4B(V4B_VERTICAL);
             pause(0.1);
-            servoTurret.setPosition(north);
-            pause(5);
+            setTurretPosition(NORTH);
+            pause(2);
             prepareStack(3);
             pause(0.1);
 
@@ -277,15 +284,15 @@ public class Red_Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             pause(0.1);
             setV4B(V4B_HORIZONTAL);
-            servoTurret.setPosition(southeast);
-            pause(5);
-            setLift(motorDR4B.getCurrentPosition() - 100);
+            setTurretPosition(SOUTHEAST);
+            pause(2);
+            setLift(motorDR4B.getCurrentPosition() - 30);
             pause(0.1);
             openGrabber();
             setV4B(V4B_VERTICAL);
             pause(0.1);
-            servoTurret.setPosition(north);
-            pause(5);
+            setTurretPosition(NORTH);
+            pause(2);
             prepareStack(4);
             pause(0.1);
 
@@ -294,15 +301,15 @@ public class Red_Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             pause(0.1);
             setV4B(V4B_HORIZONTAL);
-            servoTurret.setPosition(southeast);
-            pause(5);
-            setLift(motorDR4B.getCurrentPosition() - 100);
+            setTurretPosition(SOUTHEAST);
+            pause(2);
+            setLift(motorDR4B.getCurrentPosition() - 30);
             pause(0.1);
             openGrabber();
             setV4B(V4B_VERTICAL);
             pause(0.1);
-            servoTurret.setPosition(north);
-            pause(5);
+            setTurretPosition(NORTH);
+            pause(2);
             prepareStack(5);
             pause(0.1);
 
@@ -311,9 +318,9 @@ public class Red_Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             pause(0.1);
             setV4B(V4B_HORIZONTAL);
-            servoTurret.setPosition(southeast);
+            setTurretPosition(SOUTHEAST);
             pause(1);
-            setLift(motorDR4B.getCurrentPosition() - 100);
+            setLift(motorDR4B.getCurrentPosition() - 30);
             pause(0.1);
             openGrabber();
             pause(0.1);
@@ -327,6 +334,12 @@ public class Red_Right_5 extends LinearOpMode {
             drive.turn(Math.toRadians(90));
 
         }
+    }
+
+    public void setTurretPosition(int position){
+        motorTurret.setTargetPosition(position);
+        motorTurret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorTurret.setPower(turretPower);
     }
 
     void openGrabber() {

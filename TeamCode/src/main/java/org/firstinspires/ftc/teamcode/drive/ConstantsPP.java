@@ -44,6 +44,10 @@ public class ConstantsPP {
     public static double grabberClose = 0.37;
     public static double grabberOpen = 0.20;
 
-    //turret positions
+    //servo turret positions
     public static double south1 = 0.01 , southwest = 0.12, west = 0.23, northwest = 0.36, north = 0.49, northeast = 0.62, east = 0.74, southeast = 0.87, south2 = 0.99;
+
+    //motor turret positions
+    public static int SOUTH1 = 0, SOUTHWEST = 292, WEST = 583, NORTHWEST = 874, NORTH = 1166, NORTHEAST = 1456, EAST = 1749, SOUTHEAST = 2038, SOUTH2 = 2332;
+    public static double turretPower = 0.5;
 }
