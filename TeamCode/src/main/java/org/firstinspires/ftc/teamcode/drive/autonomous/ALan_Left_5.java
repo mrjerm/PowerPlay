@@ -133,6 +133,7 @@ public class ALan_Left_5 extends LinearOpMode {
         TrajectorySequence traj1a = drive.trajectorySequenceBuilder(traj1.end()) // go to line of starter stack
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     servoTurret.setPosition(north); //prepare turret for getting cone
+                    setV4B(V4B_VERTICAL);
                 })
                 .lineToLinearHeading(new Pose2d(36, 12, Math.toRadians(-90)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -260,22 +261,15 @@ public class ALan_Left_5 extends LinearOpMode {
             //move to (4, 2) junction
             drive.followTrajectorySequence(traj1);
             //drop dr4b to align cone on junction
-            setLift(DR4B_MIDHIGHJUNCTION - 50);
+            setLift(DR4B_MIDHIGHJUNCTION - 100);
             pause(0.3);
             //score preload cone
             openGrabber();
 
-            //retract v4b to prepare to move to starter stack
-            setV4B(V4B_VERTICAL);
-            pause(0.3);
-            //point turret towards starter stack
-            servoTurret.setPosition(north);
-            pause(0.2);
-
             //move to starter stack
+            drive.followTrajectorySequence(traj1a);
+//            drive.turn(Math.toRadians(-90));
             drive.followTrajectorySequence(traj2);
-            drive.turn(Math.toRadians(-90));
-            drive.followTrajectorySequence(traj3);
             //grab cone
             closeGrabber();
             pause(0.3);
@@ -284,47 +278,45 @@ public class ALan_Left_5 extends LinearOpMode {
             pause(0.3);
 
             //move to (5, 2) junction
-            drive.followTrajectorySequence(traj4);
+            drive.followTrajectorySequence(traj3);
             pause(0.3);
 
             //drop dr4b to align cone on junction
-            setLift(DR4B_LOWJUNCTION - 100);
+            setLift(DR4B_MIDHIGHJUNCTION - 100);
             pause(0.2);
             //score starter stack cone 1
             openGrabber();
             setV4B(V4B_VERTICAL);
             pause(0.3);
 
-            servoTurret.setPosition(north); //point turret towards starter stack
-            pause(0.5);
-            prepareStack(2); //prepare v4b + dr4b for starter stack cone 2
-            pause(0.5);
-            //move to starter stack to grab cone 2
-            drive.followTrajectorySequence(traj5);
-            //grab cone
-            closeGrabber();
-            pause(0.3);
-            //lift cone from stack to avoid interference
-            setLift(DR4B_MIDHIGHJUNCTION);
-            pause(0.3);
-
-            //move to (5, 2) junction
-            drive.followTrajectorySequence(traj6);
-            pause(0.3);
-            //drop dr4b to align cone on junction
-            setLift(DR4B_LOWJUNCTION - 100);
-            pause(0.2);
-            //score starter stack cone 1
-            openGrabber();
-
-            setV4B(V4B_RETRACTED);
-            pause(0.3);
-
-            //retract everything, prepare for parking and teleop
-            closeGrabber();
-            setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
-            drive.followTrajectorySequence(trajFinal);
-            drive.turn(Math.toRadians(90));
+//            prepareStack(2); //prepare v4b + dr4b for starter stack cone 2
+//            pause(0.5);
+//            //move to starter stack to grab cone 2
+//            drive.followTrajectorySequence(traj4);
+//            //grab cone
+//            closeGrabber();
+//            pause(0.3);
+//            //lift cone from stack to avoid interference
+//            setLift(DR4B_MIDHIGHJUNCTION);
+//            pause(0.3);
+//
+//            //move to (5, 2) junction
+//            drive.followTrajectorySequence(traj5);
+//            pause(0.3);
+//            //drop dr4b to align cone on junction
+//            setLift(DR4B_MIDHIGHJUNCTION - 100);
+//            pause(0.2);
+//            //score starter stack cone 1
+//            openGrabber();
+//
+//            setV4B(V4B_RETRACTED);
+//            pause(0.3);
+//
+//            //retract everything, prepare for parking and teleop
+//            closeGrabber();
+//            setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
+//            drive.followTrajectorySequence(trajFinal);
+//            drive.turn(Math.toRadians(90));
 
         }
     }
