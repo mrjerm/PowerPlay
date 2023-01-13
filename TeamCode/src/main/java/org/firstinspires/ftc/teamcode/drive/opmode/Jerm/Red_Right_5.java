@@ -124,6 +124,7 @@ public class Red_Right_5 extends LinearOpMode {
         motorDR4B.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         motorTurret = hardwareMap.get(DcMotorEx.class, "Motor Turret");
+        motorTurret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
         servoGrabber.setPosition(grabberClose);

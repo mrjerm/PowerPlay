@@ -17,17 +17,12 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.WEST;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.east;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.max;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.min;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.north;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south1;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south2;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretPower;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -40,7 +35,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp
 
-public class TeleOp_Single_Reversed_Motor extends OpMode {
+public class TeleOp_Double extends OpMode {
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
@@ -223,15 +218,14 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
         } else if (flashing){
             underglow.setPower(0);
         }
+        turtle(gamepad1.y, gamepad1.a);
         drive();
-        spinny(gamepad1.left_bumper, gamepad1.right_bumper);
-        grippers(gamepad1.left_trigger > 0.3, gamepad1.right_trigger > 0.3);
-        setRobotState(gamepad1.dpad_up, gamepad1.dpad_down);
+        spinny(gamepad2.left_bumper, gamepad2.right_bumper);
+        grippers(gamepad2.left_trigger > 0.3, gamepad2.right_trigger > 0.3);
+        setRobotState(gamepad2.dpad_up, gamepad2.dpad_down);
         liftControl();
         v4bControl();
-        low(gamepad1.a);
-        highLeft(gamepad1.b);
-        highRight(gamepad1.x);
+        low(gamepad2.a);
         junctionFinder();
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
@@ -251,7 +245,7 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
         if (keybind){
             robotState = RobotState.HIGH_JUNCTION;
             dr4bPower = 1;
-            turretState = TurretState.EAST;
+            turretState = TurretState.WEST;
         }
     }
 
@@ -259,7 +253,7 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
         if (keybind){
             robotState = RobotState.HIGH_JUNCTION;
             dr4bPower = 1;
-            turretState = TurretState.WEST;
+            turretState = TurretState.EAST;
         }
     }
 
