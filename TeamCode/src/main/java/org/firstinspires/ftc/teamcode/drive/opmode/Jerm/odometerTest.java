@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp
-@Disabled
 public class odometerTest extends OpMode {
     public DcMotorEx odometerX;
     public DcMotorEx odometerYL;

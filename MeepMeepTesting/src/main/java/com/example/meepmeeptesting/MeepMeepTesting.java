@@ -28,24 +28,71 @@ public class MeepMeepTesting {
             }
         };
 
+//        RoadRunnerBotEntity speed = new DefaultBotBuilder(meepMeep)
+//                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+//                .setConstraints(45, 52.48291908330528, Math.toRadians(273.36816), Math.toRadians(273.36816), 11.58)
+//                .setDimensions(14.1, 14.1)
+//                .followTrajectorySequence(drive ->
+//                        drive.trajectorySequenceBuilder(new Pose2d(-36,62, Math.toRadians(-90))).setTangent(Math.toRadians(-90))
+//                                //preload
+//                                .lineToLinearHeading(new Pose2d(-36,23, Math.toRadians(-90)))
+//
+//                                //curve to starter stackn
+//                                .splineToSplineHeading(new Pose2d(-45.6,12, Math.toRadians(-180)), Math.toRadians(-180))
+//                                .splineToSplineHeading(new Pose2d(-56,12.8, Math.toRadians(-180)), Math.toRadians(-180))
+//                                .splineToSplineHeading(new Pose2d(-58,12.8, Math.toRadians(-180)), Math.toRadians(-180))
+//
+//
+//
+//                .build());
+
         RoadRunnerBotEntity speed = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(45, 52.48291908330528, Math.toRadians(273.36816), Math.toRadians(273.36816), 11.58)
                 .setDimensions(14.1, 14.1)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-36,62, Math.toRadians(-90))).setTangent(Math.toRadians(-90))
+                        drive.trajectorySequenceBuilder(new Pose2d(36,62, Math.toRadians(-90)))
                                 //preload
-                                .lineToLinearHeading(new Pose2d(-36,23, Math.toRadians(-90)))
+                                .lineToLinearHeading(new Pose2d(36,23, Math.toRadians(-90)))
+                                .lineToLinearHeading(new Pose2d(36,12,Math.toRadians(-90)))
 
                                 //curve to starter stackn
-                                .splineToSplineHeading(new Pose2d(-45.6,12, Math.toRadians(-180)), Math.toRadians(-180))
-                                .splineToSplineHeading(new Pose2d(-56,12.8, Math.toRadians(-180)), Math.toRadians(-180))
-                                .splineToSplineHeading(new Pose2d(-58,12.8, Math.toRadians(-180)), Math.toRadians(-180))
+                                .lineToLinearHeading(new Pose2d(58,12,Math.toRadians(0)))
+
+                                //GO TO HIGH
+                                .lineToLinearHeading(new Pose2d(22.5,12,Math.toRadians(0)))
+
+                                //GO BACK
+                                .lineToLinearHeading(new Pose2d(58,12,Math.toRadians(0)))
+
+                                //GO TO HIGH
+                                .lineToLinearHeading(new Pose2d(22.5,12,Math.toRadians(0)))
+
+                                //GO BACK
+                                .lineToLinearHeading(new Pose2d(58,12,Math.toRadians(0)))
+
+                                //GO TO HIGH
+                                .lineToLinearHeading(new Pose2d(22.5,12,Math.toRadians(0)))
+
+                                //GO BACK
+                                .lineToLinearHeading(new Pose2d(58,12,Math.toRadians(0)))
+
+                                //GO TO HIGH
+                                .lineToLinearHeading(new Pose2d(22.5,12,Math.toRadians(0)))
+
+                                //GO BACK
+                                .lineToLinearHeading(new Pose2d(58,12,Math.toRadians(0)))
+
+                                //GO TO HIGH
+                                .lineToLinearHeading(new Pose2d(22.5,12,Math.toRadians(0)))
 
 
 
-                .build());
 
+
+
+
+                                .build());
 
 
 
