@@ -4,10 +4,6 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORT
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWPOWER;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MIDHIGHJUNCTION;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.EAST;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.NORTH;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.SOUTH1;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.SOUTH2;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_FLOOR;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_GROUNDJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
@@ -16,7 +12,6 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.WEST;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.east;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
@@ -26,34 +21,27 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.north;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south1;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south2;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretPower;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 @TeleOp
+@Disabled
 
-public class TeleOp_Single_Reversed_Motor extends OpMode {
+public class TeleOp_Single_Servo extends OpMode {
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
     public DcMotorEx motorDR4B;
-    public DcMotorEx motorTurret;
 
-    public DcMotorEx underglow;
-    public DcMotorEx grabberLight;
-
+    public Servo servoTurret;
     public Servo servoGrabber;
     public Servo servoV4BL, servoV4BR;
-
-    public DistanceSensor distanceSensor;
 
 //    public CRServo servoIntake;
 //    public Servo servoV4B;
@@ -69,10 +57,6 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
     public boolean upPrevious = false;
     public boolean downPrevious = false;
     public double dr4bPower = 1;
-    public boolean pizza = true;
-    public boolean flashing = false;
-
-
 
     private enum TurretState{
         SOUTH1,
@@ -101,7 +85,7 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
             }
         }
     }
-    TurretState turretState = TurretState.NORTH;
+    TurretState turretState;
 
 
     private enum DR4BState{
@@ -186,43 +170,30 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
         motorBR = hardwareMap.get(DcMotorEx.class, "Motor BR");
         motorFL.setDirection(DcMotorEx.Direction.REVERSE);
         motorBL.setDirection(DcMotorEx.Direction.REVERSE);
-        motorFL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        motorBL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        motorFR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        motorBR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         motorDR4B = hardwareMap.get(DcMotorEx.class, "Motor DR4B");
         motorDR4B.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorDR4B.setDirection(DcMotorEx.Direction.REVERSE);
 
-        motorTurret = hardwareMap.get(DcMotorEx.class, "Motor Turret");
 
-        underglow = hardwareMap.get(DcMotorEx.class, "Underglow");
-        grabberLight = hardwareMap.get(DcMotorEx.class, "Grabber Light");
-
+        servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
-        distanceSensor = hardwareMap.get(DistanceSensor.class, "Distance Sensor");
+        if (servoTurret.getPosition() > 0.5){
+            turretState = TurretState.SOUTH2;
+        } else if (servoTurret.getPosition() < 0.5){
+            turretState = TurretState.SOUTH1;
+
+        }
+
     }
 
     @Override
     public void loop() {
 //        turtle(gamepad1.y, gamepad1.a);
-        if (pizza) {
-            resetRuntime();
-        }
-        pizza = false;
-        if (getRuntime() > 75){
-            flashing = true;
-        }
-        if (flashing && Math.round(getRuntime()*8)/8f % 0.25 == 0){
-            underglow.setPower(1);
-        } else if (flashing){
-            underglow.setPower(0);
-        }
         drive();
         spinny(gamepad1.left_bumper, gamepad1.right_bumper);
         grippers(gamepad1.left_trigger > 0.3, gamepad1.right_trigger > 0.3);
@@ -230,32 +201,14 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
         liftControl();
         v4bControl();
         low(gamepad1.a);
-        highLeft(gamepad1.b);
-        highRight(gamepad1.x);
-        junctionFinder();
+        highLeft(gamepad1.x);
+        highRight(gamepad1.b);
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
     }
 
-    public void junctionFinder(){
-        if (distanceSensor.getDistance(DistanceUnit.MM) < 400){
-            grabberLight.setPower(1);
-        }
-        else {
-            grabberLight.setPower(0);
-        }
-    }
-
     public void highLeft(boolean keybind){
-        if (keybind){
-            robotState = RobotState.HIGH_JUNCTION;
-            dr4bPower = 1;
-            turretState = TurretState.EAST;
-        }
-    }
-
-    public void highRight(boolean keybind){
         if (keybind){
             robotState = RobotState.HIGH_JUNCTION;
             dr4bPower = 1;
@@ -263,28 +216,36 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
         }
     }
 
+    public void highRight(boolean keybind){
+        if (keybind){
+            robotState = RobotState.HIGH_JUNCTION;
+            dr4bPower = 1;
+            turretState = TurretState.EAST;
+        }
+    }
+
     public void low(boolean keybind){
         if (keybind) {
             if (turretState == TurretState.EAST){
-                turretState = TurretState.NORTH;
+                turretState = TurretState.SOUTH2;
             } else if (turretState == TurretState.WEST){
-                turretState = TurretState.NORTH;
+                turretState = TurretState.SOUTH1;
             }
             switch (turretState) {
                 case SOUTH1:
-                    setTurretPosition(SOUTH1);
+                    servoTurret.setPosition(south1);
                     break;
                 case SOUTH2:
-                    setTurretPosition(SOUTH2);
+                    servoTurret.setPosition(south2);
                     break;
                 case EAST:
-                    setTurretPosition(EAST);
+                    servoTurret.setPosition(east);
                     break;
                 case NORTH:
-                    setTurretPosition(NORTH);
+                    servoTurret.setPosition(north);
                     break;
                 case WEST:
-                    setTurretPosition(WEST);
+                    servoTurret.setPosition(west);
                     break;
                 default:
                     telemetry.addData("turret status", "we messed up 💀");
@@ -419,8 +380,8 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
     }
 
     public void drive() {
-        float x1 = -gamepad1.left_stick_x;
-        float y1 =  gamepad1.left_stick_y;
+        float x1 = gamepad1.left_stick_x;
+        float y1 = -gamepad1.left_stick_y;
         float x2 = gamepad1.right_stick_x;
 
         double fl = x1 + y1 + x2;
@@ -450,19 +411,19 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
 
             switch (turretState) {
                 case SOUTH1:
-                    setTurretPosition(SOUTH1);
+                    servoTurret.setPosition(south1);
                     break;
                 case SOUTH2:
-                    setTurretPosition(SOUTH2);
+                    servoTurret.setPosition(south2);
                     break;
                 case EAST:
-                    setTurretPosition(EAST);
+                    servoTurret.setPosition(east);
                     break;
                 case NORTH:
-                    setTurretPosition(NORTH);
+                    servoTurret.setPosition(north);
                     break;
                 case WEST:
-                    setTurretPosition(WEST);
+                    servoTurret.setPosition(west);
                     break;
                 default:
                     telemetry.addData("turret status", "we messed up 💀");
@@ -471,12 +432,6 @@ public class TeleOp_Single_Reversed_Motor extends OpMode {
         }
         telemetry.addData("turret state", turretState);
         telemetry.update();
-    }
-
-    public void setTurretPosition(int position){
-        motorTurret.setTargetPosition(position);
-        motorTurret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorTurret.setPower(turretPower);
     }
 
     public void grippers(boolean open, boolean close){

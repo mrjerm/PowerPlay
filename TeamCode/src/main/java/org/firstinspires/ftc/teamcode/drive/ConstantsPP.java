@@ -15,7 +15,7 @@ public class ConstantsPP {
     public static double DR4B_LOWPOWER = 0.15;
 
     //V4B values
-    public static double V4B_RETRACTED = 0.13;
+    public static double V4B_RETRACTED = 0.20;
     public static double V4B_VERTICAL = 0.33;
     public static double V4B_HIGHJUNCTION = 0.5;
     public static double V4B_HORIZONTAL = 0.64;
@@ -49,5 +49,6 @@ public class ConstantsPP {
 
     //motor turret positions
     public static int SOUTH1 = -1166, SOUTHWEST = -874, WEST = -583, NORTHWEST = -292, NORTH = 0, NORTHEAST = 1456, EAST = 583, SOUTHEAST = 874, SOUTH2 = 1166;
-    public static double turretPower = 0.5;
+    public static int autoSouthEast = 770;
+    public static double turretPower = 0.7;
 }
