@@ -214,7 +214,7 @@ public class TeleOp_Double extends OpMode {
             flashing = true;
         }
         if (flashing && Math.round(getRuntime()*8)/8f % 0.25 == 0){
-            underglow.setPower(1);
+            underglow.setPower(-1);
         } else if (flashing){
             underglow.setPower(0);
         }
@@ -234,7 +234,7 @@ public class TeleOp_Double extends OpMode {
 
     public void junctionFinder(){
         if (distanceSensor.getDistance(DistanceUnit.MM) < 400){
-            grabberLight.setPower(1);
+            grabberLight.setPower(-1);
         }
         else {
             grabberLight.setPower(0);
