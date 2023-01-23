@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.drive;
 
-import org.checkerframework.checker.units.qual.A;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +15,7 @@ public class ConstantsPP {
     public static double V4B_RETRACTED = 0.20;
     public static double V4B_VERTICAL = 0.33;
     public static double V4B_HIGHJUNCTION = 0.5;
-    public static double V4B_HORIZONTAL = 0.64;
+    public static double V4B_HORIZONTAL = 0.7;
     public static double V4B_TURRETCLEARANCE = 0.72;
     public static double V4B_GROUNDJUNCTION = 0.72;
     public static double V4B_FLOOR = 0.83;
@@ -49,6 +46,8 @@ public class ConstantsPP {
 
     //motor turret positions
     public static int SOUTH1 = -1166, SOUTHWEST = -874, WEST = -583, NORTHWEST = -292, NORTH = 0, NORTHEAST = 1456, EAST = 583, SOUTHEAST = 874, SOUTH2 = 1166;
-    public static int autoSouthEast = 770;
-    public static double turretPower = 0.7;
+    public static int autoSouthEast = 740;
+    public static double turretMinPower = 0.1;
+    public static double turretDefaultPower = 0.7;
+    public static double turretMaxPower = 1;
 }

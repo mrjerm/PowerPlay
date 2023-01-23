@@ -155,6 +155,10 @@ public class ALan_Left_5 extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(22.5, 12, Math.toRadians(0)))
                 .build();
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end()) //go to starter stack
+                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
+                    servoTurret.setPosition(north); //point towards high junction
+                    setLow();
+                })
                 .lineToLinearHeading(new Pose2d(58, 12, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))

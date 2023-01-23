@@ -28,25 +28,23 @@ public class MeepMeepTesting {
             }
         };
 
-//        RoadRunnerBotEntity speed = new DefaultBotBuilder(meepMeep)
-//                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-//                .setConstraints(45, 52.48291908330528, Math.toRadians(273.36816), Math.toRadians(273.36816), 11.58)
-//                .setDimensions(14.1, 14.1)
-//                .followTrajectorySequence(drive ->
-//                        drive.trajectorySequenceBuilder(new Pose2d(-36,62, Math.toRadians(-90))).setTangent(Math.toRadians(-90))
-//                                //preload
-//                                .lineToLinearHeading(new Pose2d(-36,23, Math.toRadians(-90)))
-//
-//                                //curve to starter stackn
-//                                .splineToSplineHeading(new Pose2d(-45.6,12, Math.toRadians(-180)), Math.toRadians(-180))
-//                                .splineToSplineHeading(new Pose2d(-56,12.8, Math.toRadians(-180)), Math.toRadians(-180))
-//                                .splineToSplineHeading(new Pose2d(-58,12.8, Math.toRadians(-180)), Math.toRadians(-180))
-//
-//
-//
-//                .build());
-
         RoadRunnerBotEntity speed = new DefaultBotBuilder(meepMeep)
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+                .setConstraints(45, 52.48291908330528, Math.toRadians(273.36816), Math.toRadians(273.36816), 11.58)
+                .setDimensions(14.1, 14.1)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(38,-62, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(39, -21, Math.toRadians(88)))
+
+                                        //curve to starter stackn
+                                .splineToSplineHeading(new Pose2d(45.6,-12, Math.toRadians(0)), Math.toRadians(0))
+                                .splineToSplineHeading(new Pose2d(56,-12, Math.toRadians(0)), Math.toRadians(0))
+
+
+
+                .build());
+
+        RoadRunnerBotEntity bot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(45, 52.48291908330528, Math.toRadians(273.36816), Math.toRadians(273.36816), 11.58)
                 .setDimensions(14.1, 14.1)

@@ -22,7 +22,7 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.max;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.min;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretPower;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretDefaultPower;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -498,7 +498,7 @@ public class TeleOp_Single extends OpMode {
     public void setTurretPosition(int position){
         motorTurret.setTargetPosition(position);
         motorTurret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorTurret.setPower(turretPower);
+        motorTurret.setPower(turretDefaultPower);
     }
 
     public void grippers(boolean open, boolean close){
