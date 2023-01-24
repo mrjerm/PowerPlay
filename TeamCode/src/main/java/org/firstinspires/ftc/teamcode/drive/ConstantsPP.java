@@ -48,7 +48,7 @@ public class ConstantsPP {
     public static int SOUTH1 = -1166, SOUTHWEST = -874, WEST = -583, NORTHWEST = -292, NORTH = 0, NORTHEAST = 1456, EAST = 583, SOUTHEAST = 874, SOUTH2 = 1166;
     public static int autoSouthEast = 740;
     public static int autoSouthWest = -740;
-    public static double turretMinPower = 0.3;
+    public static double turretMinPower = 0.1;
     public static double turretDefaultPower = 0.7;
-    public static double turretMaxPower = 1;
+    public static double turretMaxPower = 0.8;
 }

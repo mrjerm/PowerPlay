@@ -337,11 +337,10 @@ public class Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION - 100);
             waitForLift();
             openGrabber();
-            sleep(200);
+            setV4B(V4B_VERTICAL);
+            sleep(300);
             closeGrabber();
             setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
-            setV4B(V4B_VERTICAL);
-            sleep(500);
             setTurretPosition(NORTH);
 
 
