@@ -361,7 +361,8 @@ public class Red_Right_5 extends LinearOpMode {
     public void waitForTurret(double lowConst, double highConst){
         int distance = Math.abs(motorTurret.getCurrentPosition() - motorTurret.getTargetPosition());
         while (Math.abs(motorTurret.getCurrentPosition() - motorTurret.getTargetPosition()) > 10){
-
+            double power = Range.clip((-4 * Math.pow(((Math.abs(motorTurret.getCurrentPosition() - motorTurret.getTargetPosition()) - (distance / 2)) / distance), 2) + 1), lowConst, highConst);
+            motorTurret.setPower(power);
         }
     }
 
