@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode.drive.opmode.Jerm;
 
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORTURRETCLEARANCE;
@@ -13,6 +14,7 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.WEST;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.autoSouthEast;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.autoSouthWest;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.starterStack;
@@ -20,14 +22,13 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretDefaultPowe
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretMaxPower;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretMinPower;
 
-import com.qualcomm.robotcore.util.Range;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
@@ -42,7 +43,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class Red_Right_5 extends LinearOpMode {
+public class Left_5 extends LinearOpMode {
 
     static double timeStamp;
 
@@ -105,7 +106,7 @@ public class Red_Right_5 extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(38, -62, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-38, -62, Math.toRadians(90));
 
         drive.setPoseEstimate(startPose);
 
@@ -135,7 +136,7 @@ public class Red_Right_5 extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     setTurretPosition(WEST);
                 })
-                .lineToLinearHeading(new Pose2d(39, -21, Math.toRadians(88)),
+                .lineToLinearHeading(new Pose2d(-39, -21, Math.toRadians(92)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
@@ -143,12 +144,12 @@ public class Red_Right_5 extends LinearOpMode {
                 .UNSTABLE_addDisplacementMarkerOffset(2, () -> {
                     prepareStack(1); //prepare v4b + dr4b for starter stack cone 1
                 })
-                .lineToLinearHeading(new Pose2d(39, -12, Math.toRadians(88)),
+                .lineToLinearHeading(new Pose2d(-39, -12, Math.toRadians(92)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(-90))))
-                .lineToLinearHeading(new Pose2d(56, -12, Math.toRadians(-6)))
+                .lineToLinearHeading(new Pose2d(-56, -12, Math.toRadians(-186)))
                 .build();
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
                 .forward(0.4)
@@ -258,7 +259,7 @@ public class Red_Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL);
-            setTurretPosition(autoSouthEast);
+            setTurretPosition(autoSouthWest);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 100);
             waitForLift();
@@ -275,7 +276,7 @@ public class Red_Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL);
-            setTurretPosition(autoSouthEast);
+            setTurretPosition(autoSouthWest);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 100);
             waitForLift();
@@ -294,7 +295,7 @@ public class Red_Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL);
-            setTurretPosition(autoSouthEast + 20);
+            setTurretPosition(autoSouthWest + 20);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 100);
             waitForLift();
@@ -313,7 +314,7 @@ public class Red_Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL);
-            setTurretPosition(autoSouthEast + 40);
+            setTurretPosition(autoSouthWest + 40);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 100);
             waitForLift();
@@ -332,7 +333,7 @@ public class Red_Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL);
-            setTurretPosition(autoSouthEast + 80);
+            setTurretPosition(autoSouthWest + 80);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 100);
             waitForLift();
