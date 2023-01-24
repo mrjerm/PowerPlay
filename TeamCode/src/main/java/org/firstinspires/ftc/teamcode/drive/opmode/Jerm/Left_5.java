@@ -295,7 +295,7 @@ public class Left_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL);
-            setTurretPosition(autoSouthWest + 20);
+            setTurretPosition(autoSouthWest - 20);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 100);
             waitForLift();
@@ -314,7 +314,7 @@ public class Left_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL);
-            setTurretPosition(autoSouthWest + 40);
+            setTurretPosition(autoSouthWest - 40);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 100);
             waitForLift();
@@ -333,7 +333,7 @@ public class Left_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL);
-            setTurretPosition(autoSouthWest + 80);
+            setTurretPosition(autoSouthWest - 80);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 100);
             waitForLift();
