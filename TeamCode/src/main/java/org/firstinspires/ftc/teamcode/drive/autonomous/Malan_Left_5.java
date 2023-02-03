@@ -4,16 +4,24 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_GROUNDFLOORT
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_LOWPOWER;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.DR4B_MIDHIGHJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.NORTH;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.WEST;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.autoSouthEast;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.east;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.north;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south1;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.south2;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.starterStack;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretMaxPower;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretMinPower;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.west;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -36,13 +44,14 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class ALan_Left_5 extends LinearOpMode {
+public class Malan_Left_5 extends LinearOpMode {
 
     static double timeStamp;
 
     public DcMotorEx motorDR4B;
 
-    public Servo servoTurret;
+    public DcMotorEx motorTurret;
+
     public Servo servoGrabber;
     public Servo servoV4BL, servoV4BR;
 
@@ -115,81 +124,36 @@ public class ALan_Left_5 extends LinearOpMode {
         motorDR4B.setDirection(DcMotorEx.Direction.REVERSE);
         motorDR4B.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        servoTurret = hardwareMap.get(Servo.class, "Servo Turret");
+        motorTurret = hardwareMap.get(DcMotorEx.class, "Motor Turret");
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
-        servoGrabber.setPosition(grabberClose);
+//        servoGrabber.setPosition(grabberClose);
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
-        TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose) // go to preload
-                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    servoTurret.setPosition(west); //prepare turret for dropping preload
-                })
-                .lineToLinearHeading(new Pose2d(36, 23, Math.toRadians(-90)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .build();
-        TrajectorySequence traj1a = drive.trajectorySequenceBuilder(traj1.end()) // go to line of starter stack
-                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    servoTurret.setPosition(north); //prepare turret for getting cone
-                    setV4B(V4B_VERTICAL);
-                })
-                .lineToLinearHeading(new Pose2d(36, 12, Math.toRadians(-90)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .build();
-        TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1a.end()) // go starter stack
-                .UNSTABLE_addDisplacementMarkerOffset(2, () -> {
-                    prepareStack(1); //prepare v4b + dr4b for starter stack cone 1
-                })
-                .lineToLinearHeading(new Pose2d(58, 12, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .build();
-        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(0)))) // go to high junction
-                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                    servoTurret.setPosition(east); //point towards high junction
-                    setLow();
-                })
-                .lineToLinearHeading(new Pose2d(22.5, 12, Math.toRadians(0)))
-                .build();
-        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end()) //go to starter stack
-                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                    servoTurret.setPosition(north); //point towards high junction
-                    setLow();
-                })
-                .lineToLinearHeading(new Pose2d(58, 12, Math.toRadians(0)),
+        TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(38.5, -21, Math.toRadians(88)),
                         SampleMecanumDrive.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
-        TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end()) // go to high junction
-                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                    servoTurret.setPosition(east); //point towards high junction
-                    setHigh();
-                })
-                .lineToLinearHeading(new Pose2d(22.5, 12, Math.toRadians(0)))
-                .build();
-        TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end()) // go to starter stack
-                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                    servoTurret.setPosition(north); //point towards high junction
-                    setLow();
-                })
-                .lineToLinearHeading(new Pose2d(58, 12, Math.toRadians(0)),
+        TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
+                .lineToLinearHeading(new Pose2d(38.5, -12, Math.toRadians(88)),
                         SampleMecanumDrive.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
-        TrajectorySequence traj7 = drive.trajectorySequenceBuilder(traj6.end()) // go to high junction
-                .UNSTABLE_addDisplacementMarkerOffset(0, () -> {
-                    servoTurret.setPosition(east); //point towards high junction
-                    setHigh();
-                })
-                .lineToLinearHeading(new Pose2d(22.5, 12, Math.toRadians(0)))
+        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end())
+                .lineToLinearHeading(new Pose2d(60, -14, Math.toRadians(87)))
+                .build();
+        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
+                .lineToLinearHeading(new Pose2d(51.5, -14, Math.toRadians(86)))
+                .build();
+        TrajectorySequence traj5 = drive.trajectorySequenceBuilder(traj4.end())
+                .lineToLinearHeading(new Pose2d(60, -14, Math.toRadians(84)))
+                .build();
+        TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end())
+                .lineToLinearHeading(new Pose2d(51.5, -14, Math.toRadians(86)))
                 .build();
 
-        servoV4BL.setPosition(V4B_RETRACTED);
-        servoV4BR.setPosition(V4B_RETRACTED);
-        servoTurret.setPosition(north);
 
         while (!isStarted() && !isStopRequested()) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
@@ -261,113 +225,52 @@ public class ALan_Left_5 extends LinearOpMode {
 
         if (opModeIsActive()){
             //prepare to drop off preload
-            setMid();
             //move to (4, 2) junction
             drive.followTrajectorySequence(traj1);
             //drop dr4b to align cone on junction
-            setLift(DR4B_MIDHIGHJUNCTION - 100);
             pause(0.3);
             //score preload cone
-            openGrabber();
+
+            //retract v4b to prepare to move to starter stack
+            pause(0.3);
+            //point turret towards starter stack
+            pause(0.2);
 
             //move to starter stack
-            drive.followTrajectorySequence(traj1a);
-//            drive.turn(Math.toRadians(-90));
             drive.followTrajectorySequence(traj2);
+            drive.followTrajectorySequence(traj3);
             //grab cone
-            closeGrabber();
             pause(0.3);
             //lift cone from stack to avoid interference
-            setLift(DR4B_MIDHIGHJUNCTION);
             pause(0.3);
 
             //move to (5, 2) junction
-            drive.followTrajectorySequence(traj3);
-            pause(0.3);
-
+            drive.followTrajectorySequence(traj4);
             //drop dr4b to align cone on junction
-            setLift(DR4B_MIDHIGHJUNCTION - 100);
             pause(0.2);
             //score starter stack cone 1
-            openGrabber();
-            setV4B(V4B_VERTICAL);
             pause(0.3);
 
-//            prepareStack(2); //prepare v4b + dr4b for starter stack cone 2
-//            pause(0.5);
-//            //move to starter stack to grab cone 2
-//            drive.followTrajectorySequence(traj4);
-//            //grab cone
-//            closeGrabber();
-//            pause(0.3);
-//            //lift cone from stack to avoid interference
-//            setLift(DR4B_MIDHIGHJUNCTION);
-//            pause(0.3);
-//
-//            //move to (5, 2) junction
-//            drive.followTrajectorySequence(traj5);
-//            pause(0.3);
-//            //drop dr4b to align cone on junction
-//            setLift(DR4B_MIDHIGHJUNCTION - 100);
-//            pause(0.2);
-//            //score starter stack cone 1
-//            openGrabber();
-//
-//            setV4B(V4B_RETRACTED);
-//            pause(0.3);
-//
-//            //retract everything, prepare for parking and teleop
-//            closeGrabber();
-//            setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
-//            drive.followTrajectorySequence(trajFinal);
-//            drive.turn(Math.toRadians(90));
+            pause(0.5);
+            //move to starter stack to grab cone 2
+            drive.followTrajectorySequence(traj5);
+            //grab cone
+            pause(0.3);
+            //lift cone from stack to avoid interference
+            pause(0.3);
 
+            //move to (5, 2) junction
+            drive.followTrajectorySequence(traj6);
+            //drop dr4b to align cone on junction
+            pause(0.2);
+            pause(0.3);
+
+
+            drive.followTrajectorySequence(trajFinal);
+            pause(1);
         }
     }
 
-    void openGrabber() {
-        servoGrabber.setPosition(grabberOpen);
-    }
-
-    void closeGrabber() {
-        servoGrabber.setPosition(grabberClose);
-    }
-
-    void setLift(int position) {
-        motorDR4B.setTargetPosition(position);
-        motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (motorDR4B.getCurrentPosition() > motorDR4B.getTargetPosition()) {
-            motorDR4B.setPower(DR4B_LOWPOWER);
-        } else {
-            motorDR4B.setPower(1);
-        }
-    }
-
-    public void setV4B(double position) {
-        servoV4BL.setPosition(position * V4B_SCALELEFT);
-        servoV4BR.setPosition(position);
-    }
-
-    public void setLow(){
-        setLift(DR4B_LOWJUNCTION);
-        setV4B(V4B_LOWMID);
-    }
-
-    public void setHigh(){
-        setLift(DR4B_MIDHIGHJUNCTION);
-        setV4B(V4B_HIGHJUNCTION);
-    }
-
-    public void setMid(){
-        setLift(DR4B_MIDHIGHJUNCTION);
-        setV4B(V4B_LOWMID);
-    }
-
-    public void prepareStack(int coneNumber){
-        setLift(DR4B_GROUNDFLOORTURRETCLEARANCE);
-        setV4B(starterStack.get(coneNumber - 1));
-        openGrabber();
-    }
 
     public void updateTimeStamp() {
         timeStamp = getRuntime();
