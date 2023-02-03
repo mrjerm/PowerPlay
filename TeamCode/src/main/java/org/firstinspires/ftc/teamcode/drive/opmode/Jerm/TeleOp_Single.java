@@ -243,7 +243,7 @@ public class TeleOp_Single extends OpMode {
         if (keybindLeft){
             motorTurret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             motorTurret.setPower(-0.7);
-            while (magLimSwitch.isPressed()){
+            while (!magLimSwitch.isPressed()){
 
             }
             motorTurret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -252,7 +252,7 @@ public class TeleOp_Single extends OpMode {
         if (keybindRight){
             motorTurret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             motorTurret.setPower(0.7);
-            while (magLimSwitch.isPressed()){
+            while (!magLimSwitch.isPressed()){
 
             }
             motorTurret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

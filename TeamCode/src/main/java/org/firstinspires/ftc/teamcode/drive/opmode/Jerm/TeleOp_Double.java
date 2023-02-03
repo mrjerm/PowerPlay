@@ -30,6 +30,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -49,6 +50,9 @@ public class TeleOp_Double extends OpMode {
     public Servo servoV4BL, servoV4BR;
 
     public DistanceSensor distanceSensor;
+
+    public TouchSensor magLimSwitch;
+
 
 //    public CRServo servoIntake;
 //    public Servo servoV4B;
@@ -201,6 +205,9 @@ public class TeleOp_Double extends OpMode {
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
         distanceSensor = hardwareMap.get(DistanceSensor.class, "Distance Sensor");
+
+        magLimSwitch = hardwareMap.get(TouchSensor.class, "Magnetic Limit Switch");
+
     }
 
     @Override
@@ -228,9 +235,33 @@ public class TeleOp_Double extends OpMode {
         low(gamepad2.a);
         junctionFinder();
 
+        resetTurret(gamepad1.dpad_left, gamepad1.dpad_right);
+
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
     }
+
+    public void resetTurret(boolean keybindLeft, boolean keybindRight){
+        if (keybindLeft){
+            motorTurret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motorTurret.setPower(-0.7);
+            while (!magLimSwitch.isPressed()){
+
+            }
+            motorTurret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motorTurret.setPower(0);
+        }
+        if (keybindRight){
+            motorTurret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motorTurret.setPower(0.7);
+            while (!magLimSwitch.isPressed()){
+
+            }
+            motorTurret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motorTurret.setPower(0);
+        }
+    }
+
 
     public void junctionFinder(){
         if (distanceSensor.getDistance(DistanceUnit.MM) < 400){
