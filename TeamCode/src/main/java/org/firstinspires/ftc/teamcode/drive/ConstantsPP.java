@@ -9,7 +9,7 @@ public class ConstantsPP {
     public static int DR4B_GROUNDFLOORTURRETCLEARANCE = 0;
     public static int DR4B_LOWJUNCTION = 190;
     public static int DR4B_MIDHIGHJUNCTION = 365;
-    public static double DR4B_LOWPOWER = 0.3;
+    public static double DR4B_LOWPOWER = 0.4;
 
     //V4B values
     public static double V4B_RETRACTED = 0.20;
@@ -48,7 +48,7 @@ public class ConstantsPP {
     public static int SOUTH1 = -1166, SOUTHWEST = -874, WEST = -583, NORTHWEST = -292, NORTH = 0, NORTHEAST = 1456, EAST = 583, SOUTHEAST = 874, SOUTH2 = 1166;
     public static int autoSouthEast = 740;
     public static int autoSouthWest = -740;
-    public static double turretMinPower = 0.1;
+    public static double turretMinPower = 0.25;
     public static double turretDefaultPower = 0.7;
-    public static double turretMaxPower = 0.8;
+    public static double turretMaxPower = 1;
 }

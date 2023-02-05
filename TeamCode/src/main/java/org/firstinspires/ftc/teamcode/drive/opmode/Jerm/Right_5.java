@@ -143,12 +143,14 @@ public class Right_5 extends LinearOpMode {
                 .UNSTABLE_addDisplacementMarkerOffset(2, () -> {
                     prepareStack(1); //prepare v4b + dr4b for starter stack cone 1
                 })
-                .lineToLinearHeading(new Pose2d(39, -12, Math.toRadians(88)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(39, -11.5, Math.toRadians(88))
+//                        ,
+//                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)
+                )
                 .build();
-        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(-90))))
-                .lineToLinearHeading(new Pose2d(56, -12, Math.toRadians(-6)))
+        TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(-96))))
+                .lineToLinearHeading(new Pose2d(57, -11.5, Math.toRadians(-10)))
                 .build();
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
                 .forward(0.4)
@@ -157,7 +159,7 @@ public class Right_5 extends LinearOpMode {
                 .forward(0.4)
                 .build();
         TrajectorySequence traj6 = drive.trajectorySequenceBuilder(traj5.end())
-                .forward(1)
+                .forward(0.7)
                 .build();
 
         servoV4BL.setPosition(V4B_RETRACTED);
@@ -246,21 +248,19 @@ public class Right_5 extends LinearOpMode {
             pause(0.1);
             //point turret towards starter stack
             setTurretPosition(NORTH);
-            pause(0.1);
-
             //move to starter stack
             drive.followTrajectorySequence(traj2);
-            drive.turn(Math.toRadians(-90));
+            drive.turn(Math.toRadians(-96));
             drive.followTrajectorySequence(traj3);
-            //grab cone
+            //grab Cone 1
             closeGrabber();
             sleep(200);
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
-            setV4B(V4B_HORIZONTAL);
+            setV4B(V4B_HORIZONTAL + 0.04);
             setTurretPosition(autoSouthEast);
             waitForTurret(turretMinPower, turretMaxPower);
-            setLift(DR4B_LOWJUNCTION - 100);
+            setLift(DR4B_LOWJUNCTION - 75);
             waitForLift();
             openGrabber();
             setV4B(V4B_VERTICAL);
@@ -270,14 +270,15 @@ public class Right_5 extends LinearOpMode {
             prepareStack(2);
             waitForLift();
 
+            //grab Cone 2
             closeGrabber();
             sleep(200);
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
-            setV4B(V4B_HORIZONTAL);
+            setV4B(V4B_HORIZONTAL + 0.04);
             setTurretPosition(autoSouthEast);
             waitForTurret(turretMinPower, turretMaxPower);
-            setLift(DR4B_LOWJUNCTION - 100);
+            setLift(DR4B_LOWJUNCTION - 75);
             waitForLift();
             openGrabber();
             setV4B(V4B_VERTICAL);
@@ -289,14 +290,15 @@ public class Right_5 extends LinearOpMode {
             drive.followTrajectorySequence(traj4);
             waitForLift();
 
+            //grab Cone 3
             closeGrabber();
             sleep(200);
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
-            setV4B(V4B_HORIZONTAL);
+            setV4B(V4B_HORIZONTAL + 0.04);
             setTurretPosition(autoSouthEast + 20);
             waitForTurret(turretMinPower, turretMaxPower);
-            setLift(DR4B_LOWJUNCTION - 100);
+            setLift(DR4B_LOWJUNCTION - 75);
             waitForLift();
             openGrabber();
             setV4B(V4B_VERTICAL);
@@ -308,14 +310,15 @@ public class Right_5 extends LinearOpMode {
             drive.followTrajectorySequence(traj5);
             waitForLift();
 
+            //grab Cone 4
             closeGrabber();
             sleep(200);
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL);
-            setTurretPosition(autoSouthEast + 40);
+            setTurretPosition(autoSouthEast + 35);
             waitForTurret(turretMinPower, turretMaxPower);
-            setLift(DR4B_LOWJUNCTION - 100);
+            setLift(DR4B_LOWJUNCTION - 75);
             waitForLift();
             openGrabber();
             setV4B(V4B_VERTICAL);
@@ -327,6 +330,7 @@ public class Right_5 extends LinearOpMode {
             drive.followTrajectorySequence(traj6);
             waitForLift();
 
+            //grab Cone 5
             closeGrabber();
             sleep(200);
             setLift(DR4B_LOWJUNCTION);
@@ -334,7 +338,7 @@ public class Right_5 extends LinearOpMode {
             setV4B(V4B_HORIZONTAL);
             setTurretPosition(autoSouthEast + 80);
             waitForTurret(turretMinPower, turretMaxPower);
-            setLift(DR4B_LOWJUNCTION - 100);
+            setLift(DR4B_LOWJUNCTION - 75);
             waitForLift();
             openGrabber();
             setV4B(V4B_VERTICAL);
@@ -359,14 +363,14 @@ public class Right_5 extends LinearOpMode {
 
     public void waitForTurret(double lowConst, double highConst){
         int distance = Math.abs(motorTurret.getCurrentPosition() - motorTurret.getTargetPosition());
-        while (Math.abs(motorTurret.getCurrentPosition() - motorTurret.getTargetPosition()) > 10){
-            double power = Range.clip((-4 * Math.pow(((Math.abs(motorTurret.getCurrentPosition() - motorTurret.getTargetPosition()) - (distance / 2)) / distance), 2) + 1), lowConst, highConst);
+        while (Math.abs(motorTurret.getCurrentPosition() - motorTurret.getTargetPosition()) > 3){
+            double power = Range.clip((-1 * (Math.pow(((Math.abs(motorTurret.getTargetPosition() - motorTurret.getCurrentPosition()) / (distance / 2)) - 1), 14)) + 1), turretMinPower, turretMaxPower);
             motorTurret.setPower(power);
         }
     }
 
     public void waitForLift(){
-        while (Math.abs(motorDR4B.getCurrentPosition() - motorDR4B.getTargetPosition()) > 10){
+        while (Math.abs(motorDR4B.getCurrentPosition() - motorDR4B.getTargetPosition()) > 3){
 
         }
     }
