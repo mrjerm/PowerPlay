@@ -8,6 +8,11 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.EAST;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.NORTH;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.SOUTH1;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.SOUTH2;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_CONE1;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_CONE2;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_CONE3;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_CONE4;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_CONE5;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_FLOOR;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_GROUNDJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
@@ -42,6 +47,8 @@ public class JudgeTeleOp extends OpMode {
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
     public DcMotorEx motorDR4B;
     public DcMotorEx motorTurret;
+    public DcMotor lightLeft, lightRight;
+
 
     public DcMotorEx underglow;
     public DcMotorEx grabberLight;
@@ -69,6 +76,9 @@ public class JudgeTeleOp extends OpMode {
     public double dr4bPower = 1;
     public boolean pizza = true;
     public boolean flashing = false;
+    public boolean stackPrevious = false;
+    public boolean scoringStack = false;
+
 
 
 
@@ -137,8 +147,12 @@ public class JudgeTeleOp extends OpMode {
         GROUND,
         FLOOR,
         TURRETCLEARANCE,
-        HORIZONTAL;
-
+        HORIZONTAL,
+        STACK1,
+        STACK2,
+        STACK3,
+        STACK4,
+        STACK5;
     }
 
     V4BState v4BState = V4BState.RETRACTED;
@@ -149,7 +163,12 @@ public class JudgeTeleOp extends OpMode {
         LOW_JUNCTION,
         MEDIUM_JUNCTION,
         HIGH_JUNCTION,
-        RETRACT;
+        RETRACT,
+        STACK1,
+        STACK2,
+        STACK3,
+        STACK4,
+        STACK5;
         public RobotState next(){
             switch (this){
                 case RETRACT: return PICKING_UP;
@@ -172,9 +191,32 @@ public class JudgeTeleOp extends OpMode {
                 default: return RETRACT;
             }
         }
+
+        public RobotState stackUp(){
+            switch (this){
+                case STACK5: return STACK4;
+                case STACK4: return STACK3;
+                case STACK3: return STACK2;
+                case STACK2: return STACK1;
+                case STACK1: return STACK1;
+                default: return STACK1;
+            }
+        }
+        public RobotState stackDown(){
+            switch (this){
+                case STACK1: return STACK2;
+                case STACK2: return STACK3;
+                case STACK3: return STACK4;
+                case STACK4: return STACK5;
+                case STACK5: return STACK5;
+                default: return STACK1;
+            }
+        }
     }
 
     RobotState robotState = RobotState.LOW_JUNCTION;
+
+    RobotState previousRobotState;
 
     @Override
     public void init() {
@@ -203,6 +245,9 @@ public class JudgeTeleOp extends OpMode {
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
+        lightLeft = hardwareMap.get(DcMotor.class, "Light Left");
+        lightRight = hardwareMap.get(DcMotor.class, "Light Right");
+
         distanceSensor = hardwareMap.get(DistanceSensor.class, "Distance Sensor");
 
         magLimSwitch = hardwareMap.get(TouchSensor.class, "Magnetic Limit Switch");
@@ -211,6 +256,21 @@ public class JudgeTeleOp extends OpMode {
     @Override
     public void loop() {
 //        turtle(gamepad1.y, gamepad1.a);
+        if (pizza) {
+            resetRuntime();
+        }
+        pizza = false;
+        /*TODO: time this to the Turret slide, only for 5s*/
+        if (getRuntime() > 75){
+            flashing = true;
+        }
+        if (flashing && Math.round(getRuntime()*8)/8f % 0.25 == 0){
+            lightLeft.setPower(1);
+            lightRight.setPower(1);
+        } else if (flashing){
+            lightLeft.setPower(0);
+            lightRight.setPower(0);
+        }
         spinny(gamepad1.left_bumper, gamepad1.right_bumper);
         grippers(gamepad1.left_trigger > 0.3, gamepad1.right_trigger > 0.3);
         setRobotState(gamepad1.dpad_up, gamepad1.dpad_down);
@@ -224,6 +284,21 @@ public class JudgeTeleOp extends OpMode {
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
+    }
+
+     public void stackControl(boolean keybind){
+        boolean stackCurrent = keybind;
+        if (stackCurrent && !stackPrevious){
+            if (scoringStack){
+                robotState = previousRobotState;
+                scoringStack = false;
+            } else {
+                previousRobotState = robotState;
+                robotState = RobotState.STACK1;
+                scoringStack = true;
+            }
+        }
+        stackPrevious = stackCurrent;
     }
 
     public void resetTurret(boolean keybindLeft, boolean keybindRight){
@@ -305,44 +380,91 @@ public class JudgeTeleOp extends OpMode {
         }
     }
 
-    public void setRobotState(boolean up, boolean down){
-        boolean upCurrent = up;
-        if (upCurrent && !upPrevious){
-            robotState = robotState.next();
-            dr4bPower = 1;
-        }
-        upPrevious = upCurrent;
 
-        boolean downCurrent = down;
-        if (downCurrent && !downPrevious){
-            robotState = robotState.previous();
-            dr4bPower = DR4B_LOWPOWER;
+    public void setRobotState(boolean up, boolean down){
+        if (!scoringStack) {
+            boolean upCurrent = up;
+            if (upCurrent && !upPrevious) {
+                robotState = robotState.next();
+                dr4bPower = 1;
+            }
+            upPrevious = upCurrent;
+
+            boolean downCurrent = down;
+            if (downCurrent && !downPrevious) {
+                robotState = robotState.previous();
+                dr4bPower = DR4B_LOWPOWER;
+            }
+            downPrevious = downCurrent;
+        } else {
+            boolean upCurrent = up;
+            if (upCurrent && !upPrevious) {
+                robotState = robotState.stackUp();
+                dr4bPower = 1;
+            }
+            upPrevious = upCurrent;
+
+            boolean downCurrent = down;
+            if (downCurrent && !downPrevious) {
+                robotState = robotState.stackDown();
+                dr4bPower = DR4B_LOWPOWER;
+            }
+            downPrevious = downCurrent;
         }
-        downPrevious = downCurrent;
     }
 
+
     public void liftControl(){
-        switch (robotState){
-            case PICKING_UP:
-                dr4BState = DR4BState.REST;
-                break;
-            case GROUND_JUNCTION:
-                dr4BState = DR4BState.REST;
-                break;
-            case LOW_JUNCTION:
-                dr4BState = DR4BState.LOW;
-                break;
-            case MEDIUM_JUNCTION:
-                dr4BState = DR4BState.MID;
-                break;
-            case HIGH_JUNCTION:
-                dr4BState = DR4BState.HIGH;
-                break;
-            case RETRACT:
-                dr4BState = DR4BState.REST;
-                break;
-            default:
-                dr4BState = DR4BState.REST;
+        if (!scoringStack) {
+            switch (robotState) {
+                case PICKING_UP:
+                    dr4BState = DR4BState.REST;
+                    break;
+                case GROUND_JUNCTION:
+                    dr4BState = DR4BState.REST;
+                    break;
+                case LOW_JUNCTION:
+                    dr4BState = DR4BState.LOW;
+                    break;
+                case MEDIUM_JUNCTION:
+                    dr4BState = DR4BState.MID;
+                    break;
+                case HIGH_JUNCTION:
+                    dr4BState = DR4BState.HIGH;
+                    break;
+                case RETRACT:
+                    dr4BState = DR4BState.REST;
+                    break;
+                default:
+                    dr4BState = DR4BState.REST;
+            }
+        } else {
+            switch (robotState){
+                case STACK1:
+                    dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
+                    break;
+                case STACK2:
+                    dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
+                    break;
+                case STACK3:
+                    dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
+                    break;
+                case STACK4:
+                    dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
+                    break;
+                case STACK5:
+                    dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
+                    break;
+                default:
+                    dr4BState = DR4BState.REST;
+                    dr4bPower = DR4B_LOWPOWER;
+                    break;
+            }
         }
 
         switch (dr4BState){
@@ -364,27 +486,50 @@ public class JudgeTeleOp extends OpMode {
     }
 
     public void v4bControl(){
-        switch (robotState){
-            case PICKING_UP:
-                v4BState = V4BState.FLOOR;
-                break;
-            case GROUND_JUNCTION:
-                v4BState = V4BState.GROUND;
-                break;
-            case LOW_JUNCTION:
-                v4BState = V4BState.LOW;
-                break;
-            case MEDIUM_JUNCTION:
-                v4BState = V4BState.MID;
-                break;
-            case HIGH_JUNCTION:
-                v4BState = V4BState.HIGH;
-                break;
-            case RETRACT:
-                v4BState = V4BState.RETRACTED;
-                break;
-            default:
-                v4BState = V4BState.RETRACTED;
+        if (!scoringStack) {
+            switch (robotState) {
+                case PICKING_UP:
+                    v4BState = V4BState.FLOOR;
+                    break;
+                case GROUND_JUNCTION:
+                    v4BState = V4BState.GROUND;
+                    break;
+                case LOW_JUNCTION:
+                    v4BState = V4BState.LOW;
+                    break;
+                case MEDIUM_JUNCTION:
+                    v4BState = V4BState.MID;
+                    break;
+                case HIGH_JUNCTION:
+                    v4BState = V4BState.HIGH;
+                    break;
+                case RETRACT:
+                    v4BState = V4BState.RETRACTED;
+                    break;
+                default:
+                    v4BState = V4BState.RETRACTED;
+            }
+        } else {
+            switch (robotState) {
+                case STACK1:
+                    v4BState = V4BState.STACK1;
+                    break;
+                case STACK2:
+                    v4BState = V4BState.STACK2;
+                    break;
+                case STACK3:
+                    v4BState = V4BState.STACK3;
+                    break;
+                case STACK4:
+                    v4BState = V4BState.STACK4;
+                    break;
+                case STACK5:
+                    v4BState = V4BState.STACK5;
+                    break;
+                default:
+                    v4BState = V4BState.STACK1;
+                    break;
+            }
         }
 
         switch (v4BState){
@@ -412,6 +557,21 @@ public class JudgeTeleOp extends OpMode {
                 break;
             case HORIZONTAL:
                 setV4B(V4B_HORIZONTAL);
+                break;
+            case STACK1:
+                setV4B(V4B_CONE1);
+                break;
+            case STACK2:
+                setV4B(V4B_CONE2);
+                break;
+            case STACK3:
+                setV4B(V4B_CONE3);
+                break;
+            case STACK4:
+                setV4B(V4B_CONE4);
+                break;
+            case STACK5:
+                setV4B(V4B_CONE5);
                 break;
             default:
                 setV4B(V4B_VERTICAL);
