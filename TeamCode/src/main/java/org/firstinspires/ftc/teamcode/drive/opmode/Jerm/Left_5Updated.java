@@ -216,7 +216,7 @@ public class Left_5Updated extends LinearOpMode {
 
             if (tagOfInterest == null || tagOfInterest.id == LEFT) {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
-                        .back(44.6)
+                        .forward(1.4)
                         .build();
             } else if (tagOfInterest.id == MIDDLE) {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
@@ -225,7 +225,7 @@ public class Left_5Updated extends LinearOpMode {
             } else {
                 trajFinal = drive.trajectorySequenceBuilder(traj6.end())
 
-                        .forward(1.4)
+                        .back(44.6)
                         .build();
             }
         }

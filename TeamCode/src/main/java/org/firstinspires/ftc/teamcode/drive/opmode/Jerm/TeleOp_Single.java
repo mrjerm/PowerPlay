@@ -210,7 +210,7 @@ public class TeleOp_Single extends OpMode {
 
     @Override
     public void loop() {
-//        turtle(gamepad1.y, gamepad1.a);
+        turtle(gamepad1.dpad_left, gamepad1.dpad_right);
         if (pizza) {
             resetRuntime();
         }
@@ -233,7 +233,8 @@ public class TeleOp_Single extends OpMode {
         highLeft(gamepad1.x);
         highRight(gamepad1.b);
         junctionFinder();
-        resetTurret(gamepad1.dpad_left, gamepad1.dpad_right);
+        resetTurret(gamepad1.left_stick_button, gamepad1.right_stick_button);
+
 
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/

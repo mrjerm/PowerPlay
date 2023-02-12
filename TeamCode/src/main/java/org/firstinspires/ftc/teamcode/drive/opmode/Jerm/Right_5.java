@@ -148,7 +148,7 @@ public class Right_5 extends LinearOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         TrajectorySequence traj3 = drive.trajectorySequenceBuilder(traj2.end().plus(new Pose2d(0, 0, Math.toRadians(-90))))
-                .lineToLinearHeading(new Pose2d(56, -11.5, Math.toRadians(-9)))
+                .lineToLinearHeading(new Pose2d(55.5, -10.5, Math.toRadians(-8)))
                 .build();
         TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
                 .forward(0.4)
@@ -260,7 +260,7 @@ public class Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL + 0.04);
-            setTurretPosition(autoSouthEast+20);
+            setTurretPosition(autoSouthEast+40);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 50);
             waitForLift();
@@ -278,7 +278,7 @@ public class Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL + 0.04);
-            setTurretPosition(autoSouthEast+20);
+            setTurretPosition(autoSouthEast+40);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 50);
             waitForLift();
@@ -298,7 +298,7 @@ public class Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL + 0.04);
-            setTurretPosition(autoSouthEast + 40);
+            setTurretPosition(autoSouthEast + 60);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 50);
             waitForLift();
@@ -318,7 +318,7 @@ public class Right_5 extends LinearOpMode {
             setLift(DR4B_LOWJUNCTION);
             waitForLift();
             setV4B(V4B_HORIZONTAL);
-            setTurretPosition(autoSouthEast + 40);
+            setTurretPosition(autoSouthEast + 60);
             waitForTurret(turretMinPower, turretMaxPower);
             setLift(DR4B_LOWJUNCTION - 50);
             waitForLift();
@@ -352,6 +352,7 @@ public class Right_5 extends LinearOpMode {
 
 
             drive.followTrajectorySequence(trajFinal);
+            waitForTurret(turretMinPower, turretMaxPower);
         }
     }
 
