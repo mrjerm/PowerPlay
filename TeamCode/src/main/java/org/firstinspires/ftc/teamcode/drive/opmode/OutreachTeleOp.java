@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+@Disabled
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
 public class OutreachTeleOp extends OpMode {

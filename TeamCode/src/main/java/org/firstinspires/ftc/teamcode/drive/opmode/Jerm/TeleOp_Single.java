@@ -28,6 +28,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -40,11 +42,14 @@ public class TeleOp_Single extends OpMode {
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
-    public DcMotorEx motorDR4B;
+    public DcMotorEx motorDR4B1;
+    public DcMotorEx motorDR4B2;
     public DcMotorEx motorTurret;
+    DcMotorEx revEncoder;
+
+    public DigitalChannel grabberLight;
 
     public DcMotorEx underglow;
-    public DcMotorEx grabberLight;
 
     public Servo servoGrabber;
     public Servo servoV4BL, servoV4BR;
@@ -189,19 +194,32 @@ public class TeleOp_Single extends OpMode {
         motorFR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         motorBR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        motorDR4B = hardwareMap.get(DcMotorEx.class, "Motor DR4B");
-        motorDR4B.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        motorDR4B.setDirection(DcMotorEx.Direction.REVERSE);
+        motorDR4B1 = hardwareMap.get(DcMotorEx.class, "Motor DR4B 1");
+        motorDR4B2 = hardwareMap.get(DcMotorEx.class, "Motor DR4B 2");
+        motorDR4B1.setDirection(DcMotorEx.Direction.REVERSE);
+        motorDR4B2.setDirection(DcMotorEx.Direction.REVERSE);
+        revEncoder = hardwareMap.get(DcMotorEx.class, "Motor DR4B 1");
+        revEncoder.setDirection(DcMotorSimple.Direction.REVERSE);
+        revEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorDR4B1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorDR4B2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorDR4B1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorDR4B2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
 
         motorTurret = hardwareMap.get(DcMotorEx.class, "Motor Turret");
 
         underglow = hardwareMap.get(DcMotorEx.class, "Underglow");
-        grabberLight = hardwareMap.get(DcMotorEx.class, "Grabber Light");
 
         servoGrabber = hardwareMap.get(Servo.class, "Servo Intake");
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
+
+        grabberLight = hardwareMap.get(DigitalChannel.class, "Grabber Light");
+        grabberLight.setMode(DigitalChannel.Mode.OUTPUT);
+        grabberLight.setState(false);
 
         distanceSensor = hardwareMap.get(DistanceSensor.class, "Distance Sensor");
 
@@ -236,6 +254,7 @@ public class TeleOp_Single extends OpMode {
         resetTurret(gamepad1.left_stick_button, gamepad1.right_stick_button);
 
 
+
 /*        lift(gamepad2.dpad_up, gamepad2.dpad_down);
         stick(gamepad2.y, gamepad2.a);*/
     }
@@ -263,10 +282,10 @@ public class TeleOp_Single extends OpMode {
 
     public void junctionFinder(){
         if (distanceSensor.getDistance(DistanceUnit.MM) < 400){
-            grabberLight.setPower(-1);
+            grabberLight.setState(true);
         }
         else {
-            grabberLight.setPower(0);
+            grabberLight.setState(false);
         }
     }
 
@@ -514,12 +533,16 @@ public class TeleOp_Single extends OpMode {
 
 
     public void setLiftPosition(int position){
-        motorDR4B.setTargetPosition(position);
-        if (Math.abs(motorDR4B.getCurrentPosition() - motorDR4B.getTargetPosition()) < 10){
-            motorDR4B.setPower(0);
+        motorDR4B1.setTargetPosition(position);
+        motorDR4B2.setTargetPosition(position);
+        if (Math.abs(motorDR4B1.getCurrentPosition() - motorDR4B1.getTargetPosition()) < 7){
+            motorDR4B1.setPower(0);
+            motorDR4B2.setPower(0);
         } else {
-            motorDR4B.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorDR4B.setPower(dr4bPower);
+            motorDR4B1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorDR4B2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorDR4B1.setPower(dr4bPower);
+            motorDR4B2.setPower(dr4bPower);
         }
     }
 

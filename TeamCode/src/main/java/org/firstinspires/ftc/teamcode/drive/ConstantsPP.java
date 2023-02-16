@@ -6,10 +6,12 @@ import java.util.List;
 public class ConstantsPP {
 
     //DR4B values
+    public static double DR4B_REVCONSTANT = 8192/1992.6;
+    public static double DR4B_117_84CONSTANT = 1425.1/1992.6;
     public static int DR4B_GROUNDFLOORTURRETCLEARANCE = 0;
-    public static int DR4B_LOWJUNCTION = 190;
-    public static int DR4B_MIDHIGHJUNCTION = 365;
-    public static double DR4B_LOWPOWER = 0.2;
+    public static int DR4B_LOWJUNCTION = (int) (190 * DR4B_117_84CONSTANT);
+    public static int DR4B_MIDHIGHJUNCTION = (int) (365 * DR4B_117_84CONSTANT);
+    public static double DR4B_LOWPOWER = 0.2 * 0.6;
 
     //V4B values
     public static double V4B_RETRACTED = 0.20;
