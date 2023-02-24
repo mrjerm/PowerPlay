@@ -20,9 +20,10 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.WEST;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberClose;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.grabberOpen;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.max;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.min;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.speedLimit;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretDefaultPower;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretMaxPower;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretMinPower;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -33,12 +34,11 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import com.qualcomm.robotcore.util.Range;
 
 @TeleOp
 
-public class TeleOp_Single extends OpMode {
+public class TeleOp_SingleUpdated extends OpMode {
     /*TODO: V4B AUTOLIFT WHEN TURNING TURRET, SEPARATE STATE MACHINE*/
 
     public DcMotorEx motorFL, motorBL, motorFR, motorBR;
@@ -74,6 +74,7 @@ public class TeleOp_Single extends OpMode {
     public double dr4bPower = 1;
     public boolean pizza = true;
     public boolean flashing = false;
+    public boolean toggle = true;
 
 
 
@@ -481,12 +482,14 @@ public class TeleOp_Single extends OpMode {
             boolean turretLeftCurrent = left;
             if (turretLeftCurrent && !turretLeftPrevious) {
                 turretState = turretState.previous();
+                toggle = true;
             }
             turretLeftPrevious = turretLeftCurrent;
 
             boolean turretRightCurrent = right;
             if (turretRightCurrent && !turretRightPrevious) {
                 turretState = turretState.next();
+                toggle = true;
             }
             turretRightPrevious = turretRightCurrent;
 
@@ -515,10 +518,15 @@ public class TeleOp_Single extends OpMode {
         telemetry.update();
     }
 
+    int distance=1;
     public void setTurretPosition(int position){
+        if (toggle = true) {
+            distance = Math.abs(motorTurret.getCurrentPosition() - motorTurret.getTargetPosition());
+        }
+        toggle = false;
         motorTurret.setTargetPosition(position);
         motorTurret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorTurret.setPower(turretDefaultPower);
+        motorTurret.setPower(Range.clip((-1 * (Math.pow(Math.abs((Math.abs(motorTurret.getTargetPosition() - motorTurret.getCurrentPosition()) / (distance / 2)) - 1), 6)) + 1), turretMinPower, turretMaxPower));
     }
 
     public void grippers(boolean open, boolean close){
@@ -547,7 +555,7 @@ public class TeleOp_Single extends OpMode {
     }
 
     public void setV4B(double position){
-        servoV4BL.setPosition(position + 0.02);
+        servoV4BL.setPosition(position+0.02);
         servoV4BR.setPosition(position);
     }
 }

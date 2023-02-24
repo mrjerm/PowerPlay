@@ -24,6 +24,7 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.turretMinPower;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -42,6 +43,8 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
+
+@Disabled
 
 @Autonomous
 public class Left_5 extends LinearOpMode {
@@ -378,7 +381,7 @@ public class Left_5 extends LinearOpMode {
     public void waitForTurret(double lowConst, double highConst){
         int distance = Math.abs(motorTurret.getCurrentPosition() - motorTurret.getTargetPosition());
         while (Math.abs(motorTurret.getCurrentPosition() - motorTurret.getTargetPosition()) > 3){
-            double power = Range.clip((-1 * (Math.pow(Math.abs((Math.abs(motorTurret.getTargetPosition() - motorTurret.getCurrentPosition()) / (distance / 2)) - 1), 14)) + 1), turretMinPower, turretMaxPower);
+            double power = Range.clip((-1 * (Math.pow(Math.abs((Math.abs(motorTurret.getTargetPosition() - motorTurret.getCurrentPosition()) / (distance / 2)) - 1), 10)) + 1), turretMinPower, turretMaxPower);
             motorTurret.setPower(power);
         }
     }

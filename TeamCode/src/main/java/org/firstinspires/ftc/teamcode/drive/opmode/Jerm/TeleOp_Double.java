@@ -547,7 +547,7 @@ public class TeleOp_Double extends OpMode {
     }
 
     public void setV4B(double position){
-        servoV4BL.setPosition(position * V4B_SCALELEFT);
+        servoV4BL.setPosition(position+0.02);
         servoV4BR.setPosition(position);
     }
 }
