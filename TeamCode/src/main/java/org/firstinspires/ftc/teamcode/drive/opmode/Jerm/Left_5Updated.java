@@ -8,7 +8,8 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.EAST;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.NORTH;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOW;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_MID;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_RETRACTED;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
@@ -413,7 +414,7 @@ public class Left_5Updated extends LinearOpMode {
 
     public void setLow(){
         setLift(DR4B_LOWJUNCTION);
-        setV4B(V4B_LOWMID);
+        setV4B(V4B_LOW);
     }
 
     public void setHigh(){
@@ -423,7 +424,7 @@ public class Left_5Updated extends LinearOpMode {
 
     public void setMid(){
         setLift(DR4B_MIDHIGHJUNCTION);
-        setV4B(V4B_LOWMID);
+        setV4B(V4B_MID);
     }
 
     public void prepareStack(int coneNumber){

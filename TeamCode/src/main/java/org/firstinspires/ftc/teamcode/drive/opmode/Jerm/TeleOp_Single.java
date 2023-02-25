@@ -12,7 +12,8 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_FLOOR;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_GROUNDJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOW;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_MID;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
@@ -216,6 +217,7 @@ public class TeleOp_Single extends OpMode {
 //        distanceSensor = hardwareMap.get(DistanceSensor.class, "Distance Sensor");
 
         magLimSwitch = hardwareMap.get(TouchSensor.class, "Magnetic Limit Switch");
+        speedLimit = 0.6;
     }
 
     @Override
@@ -300,34 +302,35 @@ public class TeleOp_Single extends OpMode {
 
     public void low(boolean keybind){
         if (keybind) {
-            if (turretState == TurretState.EAST){
-                turretState = TurretState.NORTH;
-            } else if (turretState == TurretState.WEST){
-                turretState = TurretState.NORTH;
+            if (robotState != RobotState.PICKING_UP) {
+                if (turretState == TurretState.EAST) {
+                    turretState = TurretState.NORTH;
+                } else if (turretState == TurretState.WEST) {
+                    turretState = TurretState.NORTH;
+                }
+                switch (turretState) {
+                    case SOUTH1:
+                        setTurretPosition(SOUTH1);
+                        break;
+                    case SOUTH2:
+                        setTurretPosition(SOUTH2);
+                        break;
+                    case EAST:
+                        setTurretPosition(EAST);
+                        break;
+                    case NORTH:
+                        setTurretPosition(NORTH);
+                        break;
+                    case WEST:
+                        setTurretPosition(WEST);
+                        break;
+                    default:
+                        telemetry.addData("turret status", "we messed up 💀");
+                        telemetry.update();
+                }
+                robotState = RobotState.PICKING_UP;
+                dr4bPower = DR4B_LOWPOWER;
             }
-            switch (turretState) {
-                case SOUTH1:
-                    setTurretPosition(SOUTH1);
-                    break;
-                case SOUTH2:
-                    setTurretPosition(SOUTH2);
-                    break;
-                case EAST:
-                    setTurretPosition(EAST);
-                    break;
-                case NORTH:
-                    setTurretPosition(NORTH);
-                    break;
-                case WEST:
-                    setTurretPosition(WEST);
-                    break;
-                default:
-                    telemetry.addData("turret status", "we messed up 💀");
-                    telemetry.update();
-            }
-            robotState = RobotState.PICKING_UP;
-            dr4bPower = DR4B_LOWPOWER;
-
         }
     }
 
@@ -430,10 +433,10 @@ public class TeleOp_Single extends OpMode {
                 setV4B(V4B_HIGHJUNCTION);
                 break;
             case MID:
-                setV4B(V4B_LOWMID);
+                setV4B(V4B_MID);
                 break;
             case LOW:
-                setV4B(V4B_LOWMID);
+                setV4B(V4B_LOW);
                 break;
             case GROUND:
                 setV4B(V4B_GROUNDJUNCTION);
@@ -457,12 +460,12 @@ public class TeleOp_Single extends OpMode {
             speedLimit = max;
         }
         else if (slow){
-            speedLimit = 0.5;
+            speedLimit = 0.6;
         }
     }
 
     public void drive() {
-        float x1 = -gamepad1.left_stick_x;
+        float x1 = (float) (-gamepad1.left_stick_x * 1.3);
         float y1 =  gamepad1.left_stick_y;
         float x2 = gamepad1.right_stick_x;
 

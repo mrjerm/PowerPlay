@@ -8,9 +8,9 @@ public class ConstantsPP {
     //DR4B values
     public static double DR4B_REVCONSTANT = 8192/1992.6;
     public static double DR4B_117_84CONSTANT = 1425.1/1992.6;
-    public static int DR4B_GROUNDFLOORTURRETCLEARANCE = (int) (-5 * DR4B_117_84CONSTANT);
+    public static int DR4B_GROUNDFLOORTURRETCLEARANCE = (int) (-7 * DR4B_117_84CONSTANT);
     public static int DR4B_LOWJUNCTION = (int) (190 * DR4B_117_84CONSTANT);
-    public static int DR4B_MIDHIGHJUNCTION = (int) (365 * DR4B_117_84CONSTANT);
+    public static int DR4B_MIDHIGHJUNCTION = (int) (370 * DR4B_117_84CONSTANT);
     public static double DR4B_LOWPOWER = 0.2 * 0.7;
 
     //V4B values
@@ -21,7 +21,8 @@ public class ConstantsPP {
     public static double V4B_TURRETCLEARANCE = 0.69;
     public static double V4B_GROUNDJUNCTION = 0.69;
     public static double V4B_FLOOR = 0.80;
-    public static double V4B_LOWMID = 0.8;
+    public static double V4B_MID = 0.8;
+    public static double V4B_LOW = 0.74;
     public static double V4B_SCALELEFT = 0.975;
 
     //cone 1 is top cone, cone 5 is bottom cone

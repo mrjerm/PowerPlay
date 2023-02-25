@@ -12,7 +12,8 @@ import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_FLOOR;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_GROUNDJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HIGHJUNCTION;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_HORIZONTAL;
-import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOWMID;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_LOW;
+import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_MID;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_SCALELEFT;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_TURRETCLEARANCE;
 import static org.firstinspires.ftc.teamcode.drive.ConstantsPP.V4B_VERTICAL;
@@ -47,14 +48,11 @@ public class TeleOp_Double extends OpMode {
     public DcMotorEx motorTurret;
     DcMotorEx revEncoder;
 
-    public DigitalChannel grabberLight;
 
     public DcMotorEx underglow;
 
     public Servo servoGrabber;
     public Servo servoV4BL, servoV4BR;
-
-    public DistanceSensor distanceSensor;
 
     public TouchSensor magLimSwitch;
 
@@ -218,12 +216,6 @@ public class TeleOp_Double extends OpMode {
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
-        grabberLight = hardwareMap.get(DigitalChannel.class, "Grabber Light");
-        grabberLight.setMode(DigitalChannel.Mode.OUTPUT);
-        grabberLight.setState(false);
-
-        distanceSensor = hardwareMap.get(DistanceSensor.class, "Distance Sensor");
-
         magLimSwitch = hardwareMap.get(TouchSensor.class, "Magnetic Limit Switch");
     }
 
@@ -250,7 +242,7 @@ public class TeleOp_Double extends OpMode {
         liftControl();
         v4bControl();
         low(gamepad2.a);
-        junctionFinder();
+//        junctionFinder();
 
         resetTurret(gamepad1.dpad_left, gamepad1.dpad_right);
 
@@ -280,14 +272,14 @@ public class TeleOp_Double extends OpMode {
     }
 
 
-    public void junctionFinder(){
-        if (distanceSensor.getDistance(DistanceUnit.MM) < 400){
-            grabberLight.setState(true);
-        }
-        else {
-            grabberLight.setState(false);
-        }
-    }
+//    public void junctionFinder(){
+//        if (distanceSensor.getDistance(DistanceUnit.MM) < 400){
+//            grabberLight.setState(true);
+//        }
+//        else {
+//            grabberLight.setState(false);
+//        }
+//    }
 
     public void highLeft(boolean keybind){
         if (keybind){
@@ -404,10 +396,10 @@ public class TeleOp_Double extends OpMode {
                 setV4B(V4B_HIGHJUNCTION);
                 break;
             case MID:
-                setV4B(V4B_LOWMID);
+                setV4B(V4B_MID);
                 break;
             case LOW:
-                setV4B(V4B_LOWMID);
+                setV4B(V4B_LOW);
                 break;
             case GROUND:
                 setV4B(V4B_GROUNDJUNCTION);
