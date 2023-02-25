@@ -14,22 +14,22 @@ public class ConstantsPP {
     public static double DR4B_LOWPOWER = 0.2 * 0.7;
 
     //V4B values
-    public static double V4B_RETRACTED = 0.20;
-    public static double V4B_VERTICAL = 0.33;
-    public static double V4B_HIGHJUNCTION = 0.5;
-    public static double V4B_HORIZONTAL = 0.7;
-    public static double V4B_TURRETCLEARANCE = 0.72;
-    public static double V4B_GROUNDJUNCTION = 0.72;
+    public static double V4B_RETRACTED = 0.17;
+    public static double V4B_VERTICAL = 0.3;
+    public static double V4B_HIGHJUNCTION = 0.47;
+    public static double V4B_HORIZONTAL = 0.67;
+    public static double V4B_TURRETCLEARANCE = 0.69;
+    public static double V4B_GROUNDJUNCTION = 0.69;
     public static double V4B_FLOOR = 0.80;
     public static double V4B_LOWMID = 0.8;
     public static double V4B_SCALELEFT = 0.975;
 
     //cone 1 is top cone, cone 5 is bottom cone
-    public static double V4B_CONE1 = 0.65;
-    public static double V4B_CONE2 = 0.69;
-    public static double V4B_CONE3 = 0.73;
-    public static double V4B_CONE4 = 0.77;
-    public static double V4B_CONE5 = 0.83;
+    public static double V4B_CONE1 = 0.62;
+    public static double V4B_CONE2 = 0.66;
+    public static double V4B_CONE3 = 0.7;
+    public static double V4B_CONE4 = 0.74;
+    public static double V4B_CONE5 = 0.8;
 
     public static List<Double> starterStack = Arrays.asList(V4B_CONE1, V4B_CONE2, V4B_CONE3, V4B_CONE4, V4B_CONE5);
 

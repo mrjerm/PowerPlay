@@ -57,9 +57,6 @@ public class Right_5Updated extends LinearOpMode {
     public Servo servoGrabber;
     public Servo servoV4BL, servoV4BR;
 
-    public DigitalChannel grabberLight;
-
-
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -142,9 +139,6 @@ public class Right_5Updated extends LinearOpMode {
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
 
-        grabberLight = hardwareMap.get(DigitalChannel.class, "Grabber Light");
-        grabberLight.setMode(DigitalChannel.Mode.OUTPUT);
-        grabberLight.setState(false);
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {

@@ -47,8 +47,6 @@ public class TeleOp_Single extends OpMode {
     public DcMotorEx motorTurret;
     DcMotorEx revEncoder;
 
-    public DigitalChannel grabberLight;
-
     public DcMotorEx underglow;
 
     public Servo servoGrabber;
@@ -203,8 +201,6 @@ public class TeleOp_Single extends OpMode {
         revEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorDR4B1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorDR4B2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorDR4B1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorDR4B2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
 
@@ -216,10 +212,6 @@ public class TeleOp_Single extends OpMode {
         servoV4BL = hardwareMap.get(Servo.class, "Servo V4BL");
         servoV4BR = hardwareMap.get(Servo.class, "Servo V4BR");
         servoV4BL.setDirection(Servo.Direction.REVERSE);
-
-        grabberLight = hardwareMap.get(DigitalChannel.class, "Grabber Light");
-        grabberLight.setMode(DigitalChannel.Mode.OUTPUT);
-        grabberLight.setState(false);
 
 //        distanceSensor = hardwareMap.get(DistanceSensor.class, "Distance Sensor");
 
@@ -248,6 +240,7 @@ public class TeleOp_Single extends OpMode {
         liftControl();
         v4bControl();
         low(gamepad1.a);
+        retract(gamepad1.y);
         highLeft(gamepad1.x);
         highRight(gamepad1.b);
 //        junctionFinder();
@@ -333,6 +326,14 @@ public class TeleOp_Single extends OpMode {
                     telemetry.update();
             }
             robotState = RobotState.PICKING_UP;
+            dr4bPower = DR4B_LOWPOWER;
+
+        }
+    }
+
+    public void retract(boolean keybind){
+        if (keybind) {
+            robotState = RobotState.RETRACT;
             dr4bPower = DR4B_LOWPOWER;
 
         }

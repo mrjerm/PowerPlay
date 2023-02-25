@@ -307,31 +307,6 @@ public class TeleOp_Double extends OpMode {
 
     public void low(boolean keybind){
         if (keybind) {
-            if (turretState == TurretState.EAST){
-                turretState = TurretState.NORTH;
-            } else if (turretState == TurretState.WEST){
-                turretState = TurretState.NORTH;
-            }
-            switch (turretState) {
-                case SOUTH1:
-                    setTurretPosition(SOUTH1);
-                    break;
-                case SOUTH2:
-                    setTurretPosition(SOUTH2);
-                    break;
-                case EAST:
-                    setTurretPosition(EAST);
-                    break;
-                case NORTH:
-                    setTurretPosition(NORTH);
-                    break;
-                case WEST:
-                    setTurretPosition(WEST);
-                    break;
-                default:
-                    telemetry.addData("turret status", "we messed up 💀");
-                    telemetry.update();
-            }
             robotState = RobotState.PICKING_UP;
             dr4bPower = DR4B_LOWPOWER;
 
